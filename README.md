@@ -1,6 +1,6 @@
 # PokemonGoBack
 
-## Development Enviornment
+## Development Environment
 - VM: Debian 9.4
 - Connection: ssh username@host
 - Apache2 WebRoot: /var/www/html
