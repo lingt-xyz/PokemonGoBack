@@ -41,3 +41,4 @@
 1. https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-ubuntu-18-04
 2. https://www.digitalocean.com/community/tutorials/how-to-install-and-secure-phpmyadmin-on-ubuntu-16-04
 3. https://askubuntu.com/questions/668734/the-requested-url-phpmyadmin-was-not-found-on-this-server
+4. https://askubuntu.com/questions/763336/cannot-enter-phpmyadmin-as-root-mysql-5-7
