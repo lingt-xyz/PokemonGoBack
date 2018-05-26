@@ -1,7 +1,6 @@
 # PokemonGoBack
-COMP354
 
-## Development
+## Development Enviornment
 - VM: Debian 9.4
 - Connection: ssh username@host
 - Apache2 WebRoot: /var/www/html
@@ -30,5 +29,5 @@ COMP354
 - $MySQL_U: MySQL username
 - $MySQL_P: MySQL password
 
-References:
+## References:
 1. https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-ubuntu-18-04
