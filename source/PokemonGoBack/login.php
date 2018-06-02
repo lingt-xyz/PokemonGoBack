@@ -1,6 +1,3 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
   <head>
     <!-- Required meta tags -->
@@ -17,13 +14,35 @@
     <title>Login</title>
   </head>
   <body class="text-center">
+<?php
+$user_name = "";
+$user_pwd = "";
+function test_input($data) {
+	$data = trim($data);
+	$data = stripslashes($data);
+	$data = htmlspecialchars($data);
+	return $data;
+}
+if ($_SERVER["REQUEST_METHOD"] == 'POST') {
+	$user_name = test_input($_POST["username"]);
+	$user_pwd = test_input($_POST["password"]);
+	$query = new pokemongoback_db();
+	if($query->login($user_name, $user_pwd){
+		if(!isset($_SESSION)){
+			session_start();
+		}
+		$_SESSION['user_name'] = $user_name;
+		header('Location: /');	
+	}else{
+		// invalid
+	}
+?>
     <form class="form-signin" action="LoginServlet" method="post">
-      <img class="mb-4" src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
       <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
       <label for="username" class="sr-only">Username</label>
       <input type="text" id="username" name="username" class="form-control" placeholder="Username: test" required autofocus>
       <label for="inputPassword" class="sr-only">Password</label>
-      <input type="password" id="inputPassword" name="inputPassword" class="form-control" placeholder="Password: COMP354" required>
+      <input type="password" id="password" name="password" class="form-control" placeholder="Password: COMP354" required>
       <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
       <p class="mt-5 mb-3 text-muted">&copy; 2018 - 2019</p>
     </form>
