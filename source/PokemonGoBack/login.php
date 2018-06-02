@@ -32,6 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 			session_start();
 		}
 		$_SESSION['user_name'] = $user_name;
+		$_SESSION['logged_in'] = true;
 		header('Location: /');	
 	}else{
 		// invalid
