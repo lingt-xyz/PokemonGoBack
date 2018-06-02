@@ -1,6 +1,6 @@
 PokemonGoBack
 
-    http://dumblev3.encs.concordia.ca/
+    <a href="http://dumblev3.encs.concordia.ca/">http://dumblev3.encs.concordia.ca/</a>
     http://dumblev3.encs.concordia.ca/index.html
     http://dumblev3.encs.concordia.ca/info.php
 
