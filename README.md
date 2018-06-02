@@ -12,7 +12,6 @@ Development Environment
         # apt install mysql-server
         # apt install php libapache2-mod-php php-mysql
         # apt install phpmyadmin php-mbstring php-gettext
-        phpmyadmin: PokemonGoBack
         # vi /etc/apache2/apache2.conf
         Add the following line to the end of the file:
             Include /etc/phpmyadmin/apache.conf
@@ -24,13 +23,9 @@ Development Environment
             Move the PHP index file to the first position after the DirectoryIndex specification
         # systemctl restart apache2
         # mysql --user=root mysql
-            > DROP USER 'phpmyadmin'@'localhost';
-            > FLUSH PRIVILEGES;
-            > CREATE USER 'phpmyadmin'@'localhost' IDENTIFIED BY 'phpmyadmin';
-            > GRANT ALL PRIVILEGES ON *.* TO 'phpmyadmin'@'localhost' WITH GRANT OPTION;
-            > FLUSH PRIVILEGES;
-            > CREATE USER 'phpmyadmin'@'%' IDENTIFIED BY 'some_pass';
-            > GRANT ALL PRIVILEGES ON *.* TO 'phpmyadmin'@'%' WITH GRANT OPTION;
+            > CREATE DATABASE pokemongoback;
+            > CREATE USER 'pokemongoback'@'localhost' IDENTIFIED BY 'pokemongoback';
+            > GRANT ALL PRIVILEGES ON pokemongoback.* TO 'pokemongoback'@'localhost';
             > FLUSH PRIVILEGES;
             > EXIT;
         # exit
