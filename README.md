@@ -23,7 +23,17 @@ Development Environment
         # vi /etc/apache2/mods-enabled/dir.conf
             Move the PHP index file to the first position after the DirectoryIndex specification
         # systemctl restart apache2
-        exit
+        # mysql --user=root mysql
+            > DROP USER 'phpmyadmin'@'localhost';
+            > FLUSH PRIVILEGES;
+            > CREATE USER 'phpmyadmin'@'localhost' IDENTIFIED BY 'phpmyadmin';
+            > GRANT ALL PRIVILEGES ON *.* TO 'phpmyadmin'@'localhost' WITH GRANT OPTION;
+            > FLUSH PRIVILEGES;
+            > CREATE USER 'phpmyadmin'@'%' IDENTIFIED BY 'some_pass';
+            > GRANT ALL PRIVILEGES ON *.* TO 'phpmyadmin'@'%' WITH GRANT OPTION;
+            > FLUSH PRIVILEGES;
+            > EXIT;
+        # exit
 
 PokemonGoBackInstallation
 System Requirement
@@ -48,3 +58,5 @@ References:
     https://www.digitalocean.com/community/tutorials/how-to-install-and-secure-phpmyadmin-on-ubuntu-16-04
     https://askubuntu.com/questions/668734/the-requested-url-phpmyadmin-was-not-found-on-this-server
     https://askubuntu.com/questions/763336/cannot-enter-phpmyadmin-as-root-mysql-5-7
+    https://dev.mysql.com/doc/refman/8.0/en/create-user.html
+    https://stackoverflow.com/questions/5555328/error-1396-hy000-operation-create-user-failed-for-jacklocalhost
