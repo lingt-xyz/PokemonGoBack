@@ -15,6 +15,7 @@
   </head>
   <body class="text-center">
 <?php
+require_once( 'db.php');
 $user_name = "";
 $user_pwd = "";
 function test_input($data) {
