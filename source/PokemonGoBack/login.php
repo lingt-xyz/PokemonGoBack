@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 	$user_name = test_input($_POST["username"]);
 	$user_pwd = test_input($_POST["password"]);
 	$query = new pokemongoback_db();
-	if($query->user_query($user_name, $user_pwd){
+	if($query->user_query($user_name, $user_pwd)){
 		if(!isset($_SESSION)){
 			session_start();
 		}
@@ -38,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 	}else{
 		// invalid
 	}
-}else{
+}else{?>
 	<form class="form-signin" action="LoginServlet" method="post">
 		<h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
 		<label for="username" class="sr-only">Username</label>
@@ -48,6 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 		<button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
 		<p class="mt-5 mb-3 text-muted">&copy; 2018 - 2019</p>
 	</form>
+<?
 }
 ?>
     
