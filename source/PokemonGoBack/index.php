@@ -14,11 +14,16 @@
     <title>Login</title>
   </head>
   <body class="text-center">
-    <?php if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
-                    echo '<li><a href="#"><span>' . $_SESSION['user_name'] . ' </span></a></li><li><a href="logout.php"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>';
-                } else {
-                    echo '<li><a href="login.php"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>';
-                } ?>
+    <?php
+        if(!isset($_SESSION)){
+            session_start();
+        }
+        if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
+            echo '<li><a href="#"><span>' . $_SESSION['user_name'] . ' </span></a></li><li><a href="logout.php"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>';
+        } else {
+            echo '<li><a href="login.php"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>';
+        }
+    ?>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
