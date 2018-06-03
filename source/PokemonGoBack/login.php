@@ -14,44 +14,48 @@
     <title>Login</title>
   </head>
   <body class="text-center">
-<?php
-require_once( 'db.php');
-$user_name = "";
-$user_pwd = "";
-function test_input($data) {
-	$data = trim($data);
-	$data = stripslashes($data);
-	$data = htmlspecialchars($data);
-	return $data;
-}
-if ($_SERVER["REQUEST_METHOD"] == 'POST') {
-	$user_name = test_input($_POST["username"]);
-	$user_pwd = test_input($_POST["password"]);
-	$query = new pokemongoback_db();
-	if($query->user_query($user_name, $user_pwd)){
-		if(!isset($_SESSION)){
-			session_start();
-		}
-		$_SESSION['user_name'] = $user_name;
-		$_SESSION['logged_in'] = true;
-		header('Location: /');	
-	}else{
-		// invalid
-	}
-}else{?>
-	<form class="form-signin" action="LoginServlet" method="post">
-		<h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-		<label for="username" class="sr-only">Username</label>
-		<input type="text" id="username" name="username" class="form-control" placeholder="Username: test" required autofocus>
-		<label for="inputPassword" class="sr-only">Password</label>
-		<input type="password" id="password" name="password" class="form-control" placeholder="Password: COMP354" required>
-		<button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-		<p class="mt-5 mb-3 text-muted">&copy; 2018 - 2019</p>
-	</form>
-<?
-}
-?>
-    
+
+    <?php
+        require_once( 'db.php');
+
+        $user_name = "";
+        $user_pwd = "";
+
+        function test_input($data) {
+          $data = trim($data);
+          $data = stripslashes($data);
+          $data = htmlspecialchars($data);
+          return $data;
+        }
+
+        if (getenv('REQUEST_METHOD') == 'POST') {
+          $user_name = test_input($_POST["username"]);
+          $user_pwd = test_input($_POST["password"]);
+          $query = new pokemongoback_db();
+          if($query->user_query($user_name, $user_pwd)){
+              if(!isset($_SESSION)){
+                  session_start();
+              }
+              $_SESSION['user_name'] = $user_name;
+              $_SESSION['logged_in'] = true;
+              header('Location: /');
+          }else{
+              // invalid
+          }
+        }else{
+            ?>
+            <form class="form-signin" action="login.php" method="post">
+                <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+                <label for="username" class="sr-only">Username</label>
+                <input type="text" id="username" name="username" class="form-control" placeholder="Username: test" required autofocus>
+                <label for="inputPassword" class="sr-only">Password</label>
+                <input type="password" id="password" name="password" class="form-control" placeholder="Password: COMP354" required>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+                <p class="mt-5 mb-3 text-muted">&copy; 2018 - 2019</p>
+            </form>
+            <?php
+        }
+    ?>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
