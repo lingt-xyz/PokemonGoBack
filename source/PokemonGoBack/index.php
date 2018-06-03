@@ -36,16 +36,40 @@
         </nav>
     </div>
 
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
-            <div class="col-md-8">
-                .col-md-8
-                <div class="row">
-                    <div class="col-md-6">.col-md-6</div>
-                    <div class="col-md-6">.col-md-6</div>
+            <div class="col-md-8 offset-md-2">Cards in Hands</div>
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-10 offset-md-1" style="background-color: honeydew">
+                    <div class="row">
+                        <div class="col-md-1 offset-md-1">Discard</div>
+                        <div class="col-md-8">Active Cards</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-1 offset-md-1">Deck</div>
+                    </div>
+                    <div class="row">
+                        <div class="col align-self-center">
+                            <svg height="300" width="300">
+                                <ellipse cx="150" cy="150" rx="150" ry="150"
+                                         style="fill:lightslategray;stroke:purple;stroke-width:2" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-1 offset-md-10">Deck</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 offset-md-2">Active Cards</div>
+                        <div class="col-md-1">Discard</div>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-4">.col-md-4</div>
+        </div>
+        <div class="row">
+            <div class="col-md-8 offset-md-2">Cards in Hands</div>
         </div>
     </div>
   </body>
