@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 	$user_name = test_input($_POST["username"]);
 	$user_pwd = test_input($_POST["password"]);
 	$query = new pokemongoback_db();
-	if($query->login($user_name, $user_pwd){
+	if($query->user_query($user_name, $user_pwd){
 		if(!isset($_SESSION)){
 			session_start();
 		}
