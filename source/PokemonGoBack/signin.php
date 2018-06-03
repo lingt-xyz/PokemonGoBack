@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-
+    <link rel="shortcut icon" href="favicon.ico" />
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 
     <style type="text/css">
@@ -131,112 +131,150 @@
       }
 
       if (getenv('REQUEST_METHOD') == 'POST') {
-          $user_name = test_input($_POST["username"]);
-          $user_pwd = test_input($_POST["password"]);
-          $query = new pokemongoback_db();
-          if($query->user_query($user_name, $user_pwd)){
-              if(!isset($_SESSION)){
-                  session_start();
+          if(isset($_POST["login-submit"])){
+              $user_name = test_input($_POST["username"]);
+              $user_pwd = test_input($_POST["password"]);
+              $query = new pokemongoback_db();
+              if($query->user_query($user_name, $user_pwd)){
+                  if(!isset($_SESSION)){
+                      session_start();
+                  }
+                  $_SESSION['user_name'] = $user_name;
+                  $_SESSION['logged_in'] = true;
+                  $sign_error = "";
+                  header('Location: /');
+              }else{
+                  $sign_error = "Invalid Username or Password.";
               }
-              $_SESSION['user_name'] = $user_name;
-              $_SESSION['logged_in'] = true;
-              header('Location: /');
-          }else{
-              echo "Invalid login";
+          }else if(isset($_POST["register-submit"])){
+              $user_name = test_input($_POST["username"]);
+              $user_pwd = test_input($_POST["password"]);
+              $user_pwd2 = test_input($_POST["confirm-password"]);
+              if($user_pwd != $user_pwd2){
+                  $sign_error =  "Passwords do not match.";
+              }else{
+                  $query = new pokemongoback_db();
+                  if($query->user_query_id($user_name)){
+                      $sign_error = "Your username has been occupied.";
+                  }else{
+                      if($query->user_insert($user_name, $user_pwd)){
+                          if(!isset($_SESSION)){
+                              session_start();
+                          }
+                          $_SESSION['user_name'] = $user_name;
+                          $_SESSION['logged_in'] = true;
+                          $sign_error = "";
+                          header('Location: /');
+                      }else{
+                          $sign_error = "Internal error.";
+                      }
+                  }
+              }
           }
-      }else{
-          ?>
-          <div class="container">
-              <div class="row">
-                  <div class="col-md-4 col-md-offset-4">
-                      <div class="panel panel-login">
-                          <div class="panel-heading">
-                              <div class="row">
-                                  <div class="col-xs-6">
-                                      <a href="#" class="active" id="login-form-link">Sign In</a>
-                                  </div>
-                                  <div class="col-xs-6">
-                                      <a href="#" id="register-form-link">Sign up</a>
-                                  </div>
-                              </div>
-                              <hr>
+      }
+  ?>
+  <div class="container">
+      <div class="row">
+          <div class="col-md-4 col-md-offset-4">
+              <div class="panel panel-login">
+                  <div class="panel-heading">
+                      <div class="row">
+                          <div class="col-xs-6">
+                              <a href="#" class="active" id="login-form-link">Sign In</a>
                           </div>
-                          <div class="panel-body">
-                              <div class="row">
-                                  <div class="col-lg-12">
-                                      <form id="login-form" action="signin.php" method="post" role="form" style="display: block;">
-                                          <div class="form-group">
-                                              <input type="text" name="username"  tabindex="1" class="form-control" placeholder="Username: test" required autofocus>
-                                          </div>
-                                          <div class="form-group">
-                                              <input type="password" name="password"  tabindex="2" class="form-control" placeholder="Password: COMP354" required>
-                                          </div>
-                                          <div class="form-group">
-                                              <div class="row">
-                                                  <div class="col-sm-6 col-sm-offset-3">
-                                                      <input type="submit" name="login-submit" tabindex="4" class="form-control btn btn-login" value="Sign In">
-                                                  </div>
-                                              </div>
-                                          </div>
-                                          <div class="form-group">
-                                              <div class="row">
-                                                  <div class="col-lg-12">
-                                                      <div class="text-center">
-                                                          <a href="#" tabindex="5" class="forgot-password">Forgot Password?</a>
-                                                      </div>
-                                                  </div>
-                                              </div>
-                                          </div>
-                                      </form>
-                                      <form id="register-form" action="signup.php" method="post" role="form" style="display: none;">
-                                          <div class="form-group">
-                                              <input type="text" name="username"  tabindex="1" class="form-control" placeholder="Username" required autofocus>
-                                          </div>
-                                          <div class="form-group">
-                                              <input type="password" name="password" tabindex="2" class="form-control" placeholder="Password" required>
-                                          </div>
-                                          <div class="form-group">
-                                              <input type="password" name="confirm-password" tabindex="2" class="form-control" placeholder="Confirm Password" required>
-                                          </div>
-                                          <div class="form-group">
-                                              <div class="row">
-                                                  <div class="col-sm-6 col-sm-offset-3">
-                                                      <input type="submit" name="register-submit" tabindex="4" class="form-control btn btn-register" value="Sign up Now">
-                                                  </div>
-                                              </div>
-                                          </div>
-                                      </form>
+                          <div class="col-xs-6">
+                              <a href="#" id="register-form-link">Sign up</a>
+                          </div>
+                      </div>
+                      <hr>
+                  </div>
+                  <div class="panel-body">
+                      <div class="row">
+                          <?php
+                            if(!empty($sign_error)){
+                               echo '<div class="col-lg-12 alert alert-danger">' . $sign_error . '</div>';
+                            }
+                          ?>
+
+                      </div>
+                      <div class="row">
+                          <div class="col-lg-12">
+                              <form id="login-form" action="signin.php" method="post" role="form" style="display: block;">
+                                  <div class="form-group">
+                                      <input type="text" name="username"  tabindex="1" class="form-control" placeholder="Username: test" required autofocus>
                                   </div>
-                              </div>
+                                  <div class="form-group">
+                                      <input type="password" name="password"  tabindex="2" class="form-control" placeholder="Password: COMP354" required>
+                                  </div>
+                                  <div class="form-group">
+                                      <div class="row">
+                                          <div class="col-sm-6 col-sm-offset-3">
+                                              <input type="submit" name="login-submit" tabindex="4" class="form-control btn btn-login" value="Sign In">
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="form-group">
+                                      <div class="row">
+                                          <div class="col-lg-12">
+                                              <div class="text-center">
+                                                  <a href="#" tabindex="5" class="forgot-password">Forgot Password?</a>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </form>
+                              <form id="register-form" action="signin.php" method="post" role="form" style="display: none;">
+                                  <div class="form-group">
+                                      <input type="text" name="username"  tabindex="1" class="form-control" placeholder="Username" required autofocus>
+                                  </div>
+                                  <div class="form-group">
+                                      <input type="password" name="password" tabindex="2" class="form-control" placeholder="Password" required>
+                                  </div>
+                                  <div class="form-group">
+                                      <input type="password" name="confirm-password" tabindex="2" class="form-control" placeholder="Confirm Password" required>
+                                  </div>
+                                  <div class="form-group">
+                                      <div class="row">
+                                          <div class="col-sm-6 col-sm-offset-3">
+                                              <input type="submit" name="register-submit" tabindex="4" class="form-control btn btn-register" value="Sign up Now">
+                                          </div>
+                                      </div>
+                                  </div>
+                              </form>
                           </div>
                       </div>
                   </div>
               </div>
           </div>
-          <?php
-      }
-  ?>
-
+      </div>
+  </div>
 
   <script type="text/javascript">
-      $(function() {
+        $(function() {
 
-          $('#login-form-link').click(function(e) {
+            $('#login-form-link').click(function(e) {
               $("#login-form").delay(100).fadeIn(100);
               $("#register-form").fadeOut(100);
               $('#register-form-link').removeClass('active');
               $(this).addClass('active');
               // e.preventDefault();
-          });
-          $('#register-form-link').click(function(e) {
+            });
+            $('#register-form-link').click(function(e) {
               $("#register-form").delay(100).fadeIn(100);
               $("#login-form").fadeOut(100);
               $('#login-form-link').removeClass('active');
               $(this).addClass('active');
-              e.preventDefault();
-          });
+              // e.preventDefault();
+            });
 
-      });
+        });
+
+        <?php if(isset($_POST["register-submit"])){ ?>
+            $(document).ready(function() {
+                $('#register-form-link').click();
+            });
+
+        <?php }?>
 
   </script>
   </body>

@@ -31,12 +31,6 @@ class pokemongoback_db
         if ($this->conn->query($sql_insert) == TRUE) {
             $this->db_execute_result = true;
 
-            //$sql_last_insert = "SELECT USER_NAME, USER_PWD FROM USER WHERE USER_NAME = LAST_INSERT_ID()";
-            //$result = $this->conn->query($sql_last_insert);
-            //$row = $result->fetch_object();
-
-            //$result_json['Result'] = "OK";
-            //$result_json['Record'] = $row;
         } else {
             $this->db_execute_result = false;
             //$result_json['Result'] = "ERROR";
@@ -50,6 +44,22 @@ class pokemongoback_db
         $this->db_connect();
 
         $sql = "SELECT USER_NAME, USER_PWD FROM USER WHERE USER_NAME = '$user_name' AND USER_PWD = '$user_pwd'";
+        $result = $this->conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            $this->db_execute_result = true;
+        } else {
+            $this->db_execute_result = false;
+        }
+        $this->db_close();
+        return $this->db_execute_result;
+    }
+
+    public function user_query_id($user_name)
+    {
+        $this->db_connect();
+
+        $sql = "SELECT USER_NAME FROM USER WHERE USER_NAME = '$user_name'";
         $result = $this->conn->query($sql);
 
         if ($result->num_rows > 0) {
