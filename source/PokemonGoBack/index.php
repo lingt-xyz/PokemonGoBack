@@ -8,22 +8,50 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
-
-	<link href="css/signin.css" rel="stylesheet">
+    <link href="grid.css" rel="stylesheet">
 	
-    <title>Login</title>
+    <title>PokemonGoBack</title>
   </head>
   <body class="text-center">
-    <?php
+    <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
+        <h5 class="my-0 mr-md-auto font-weight-normal">PokemonGoBack</h5>
+        <nav class="my-2 my-md-0 mr-md-3">
+            <a class="p-2 text-dark" href="#">Link</a>
+            <a class="p-2 text-dark" href="#">Link</a>
+
+            <?php
+            if(!isset($_SESSION)){
+                session_start();
+            }
+            if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
+                echo '<a class="p-2 text-dark" href="#">' . $_SESSION['user_name'] . ' </a>';
+            }
+            ?>
+        </nav>
+        <?php
         if(!isset($_SESSION)){
             session_start();
         }
         if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
-            echo '<li><a href="#"><span>' . $_SESSION['user_name'] . ' </span></a></li><li><a href="logout.php"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>';
-        } else {
-            echo '<li><a href="login.php"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>';
+            echo '<a class="btn btn-outline-primary" href="#">Log out</a>';
+        }else{
+            echo '<a class="btn btn-outline-primary" href="#">Sign up</a>';
         }
-    ?>
+        ?>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                .col-md-8
+                <div class="row">
+                    <div class="col-md-6">.col-md-6</div>
+                    <div class="col-md-6">.col-md-6</div>
+                </div>
+            </div>
+            <div class="col-md-4">.col-md-4</div>
+        </div>
+    </div>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
