@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="author" content="">aqx
     <link rel="shortcut icon" href="image/favicon.ico" />
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
@@ -23,12 +23,20 @@
             <a class="p-2 text-dark" href="#">Link</a>
 
             <?php
+            require_once( 'db.php');
+
             if(!isset($_SESSION)){
                 session_start();
             }
             if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
                 echo '<a class="p-2 text-dark" href="#">' . $_SESSION['user_name'] . ' </a>';
                 echo '<a class="btn btn-outline-primary" href="signout.php">Log out</a>';
+                $query = new pokemongoback_db();
+                if($query->card_query_id($user_name)){
+                    // get cards
+                }else{
+                    // upload cards
+                }
             }else{
                 header('Location: signin.php');
             }
@@ -53,8 +61,7 @@
                     <div class="row">
                         <div class="col align-self-center">
                             <svg height="300" width="300">
-                                <ellipse cx="150" cy="150" rx="150" ry="150"
-                                         style="fill:lightslategray;stroke:purple;stroke-width:2" />
+                                <ellipse cx="150" cy="150" rx="150" ry="150" style="fill:lightslategray;stroke:purple;stroke-width: 2px" />
                             </svg>
                         </div>
                     </div>

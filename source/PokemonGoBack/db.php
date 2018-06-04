@@ -70,6 +70,22 @@ class pokemongoback_db
         $this->db_close();
         return $this->db_execute_result;
     }
+
+    public function card_query_id($user_name)
+    {
+        $this->db_connect();
+
+        $sql = "SELECT USER_NAME FROM USER WHERE USER_NAME = '$user_name'";
+        $result = $this->conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            $this->db_execute_result = true;
+        } else {
+            $this->db_execute_result = false;
+        }
+        $this->db_close();
+        return $this->db_execute_result;
+    }
     
     public function insert()
     {
