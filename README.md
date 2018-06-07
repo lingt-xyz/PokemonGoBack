@@ -6,6 +6,9 @@ http://dumblev3.encs.concordia.ca/index.html
 
 http://dumblev3.encs.concordia.ca/info.php
 
+http://dumblev3.encs.concordia.ca/phpmyadmin
+
+User/Password for phpmyadmin: pokemongoback/pokemongoback
 
 Development Environment
 
