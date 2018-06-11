@@ -6,12 +6,6 @@ class Card{
 	public $hp = 0;
 	public $type = "";
 	
-	function __construct ($quantity, $name, $category, $hp){
-		$this->quantity = $quantity;
-		$this->name = $name;
-		$this->category = $category;
-		$this->hp = $hp;
-	}
 	
 	function __construct ($quantity, $name, $category, $hp, $type){
 		$this->quantity = $quantity;
