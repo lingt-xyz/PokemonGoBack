@@ -118,6 +118,7 @@
   <body>
 
   <?php
+      require_once( 'util.php');
       require_once( 'db.php');
 
       $user_name = "";
