@@ -124,13 +124,6 @@
       $user_name = "";
       $user_pwd = "";
 
-      function test_input($data) {
-          $data = trim($data);
-          $data = stripslashes($data);
-          $data = htmlspecialchars($data);
-          return $data;
-      }
-
       if (getenv('REQUEST_METHOD') == 'POST') {
           if(isset($_POST["login-submit"])){
               $user_name = test_input($_POST["username"]);
