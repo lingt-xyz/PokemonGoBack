@@ -60,7 +60,7 @@
                         $query -> card_delete_user_name($_SESSION['user_name']);
                         $query -> card_array_insert($_SESSION['cards_user'], $_SESSION['user_name']);
                         $query -> card_array_insert($_SESSION['cards_ai'], $_SESSION['user_name'], true);
-                        header('Location: update.php');
+                        header('Location: deck.php');
                     }
                 }
             }
@@ -103,7 +103,7 @@
     </div<
     <div class="row">
         <div class="col-md-8 offset-md-2">
-            <form id="upload_form" action="upload.php" method="post">
+            <form id="upload_form" action="collection.php" method="post">
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="card_collection_1">User</label>
