@@ -65,8 +65,11 @@
                             header('Location: /');
                         }
                     }
+                }if (getenv('REQUEST_METHOD') == 'GET') {//update the current deck
+                    //if (isset($_POST["action"])) {
+                        
+                    //}
                 }
-
             }else{
                 header('Location: signin.php');
             }
