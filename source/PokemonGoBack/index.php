@@ -28,18 +28,39 @@
             if(!isset($_SESSION)){
                 session_start();
             }
+
+            // step 1: sign in
             if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
                 echo '<a class="p-2 text-dark" href="#">' . $_SESSION['user_name'] . ' </a>';
                 echo '<a class="btn btn-outline-primary" href="signout.php">Log out</a>';
-                $query = new pokemongoback_db();
-                if($query->card_query_id($user_name)){
-                    // get cards
+
+                // step 2: card collection
+                if (isset($_SESSION['cards_user'])){
+                    // step 3: deck
+                    if(isset($_SESSION['deck_user'])){
+                        // everything is ready
+                    }else{
+                        header('Location: update.php');
+                    }
                 }else{
-                    // upload cards
+                    $query = new pokemongoback_db();
+                    $cards = $query -> card_collection_query_user_name($_SESSION['user_name']);
+                    if(count($cards) == 0){
+                        header('Location: upload.php');
+                    }else{
+                        $_SESSION['cards_user'] = $cards;
+                        // step 3: deck
+                        if(isset($_SESSION['deck_user'])){
+                            // everything is ready
+                        }else{
+                            header('Location: update.php');
+                        }
+                    }
                 }
             }else{
                 header('Location: signin.php');
             }
+
             ?>
         </nav>
     </div>

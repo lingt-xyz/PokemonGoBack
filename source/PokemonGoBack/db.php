@@ -1,5 +1,7 @@
 <?php
 
+require_once ("Card.php");
+
 define('DB_NAME', 'pokemongoback');
 /** MySQL database username */
 define('DB_USER', 'pokemongoback');
@@ -22,7 +24,14 @@ class pokemongoback_db
     private $conn;
     private $db_connect_error;
     private $db_execute_result;
-    
+
+    /**
+     * Sign up
+     *
+     * @param $user_name
+     * @param $user_pwd
+     * @return bool
+     */
     public function user_insert($user_name, $user_pwd)
     {
         $this->db_connect();
@@ -39,6 +48,13 @@ class pokemongoback_db
         return $this->db_execute_result;
     }
 
+    /**
+     * Validating sign in
+     *
+     * @param $user_name
+     * @param $user_pwd
+     * @return bool
+     */
     public function user_query($user_name, $user_pwd)
     {
         $this->db_connect();
@@ -55,6 +71,11 @@ class pokemongoback_db
         return $this->db_execute_result;
     }
 
+    /**
+     * Check the existence of $user_name
+     * @param $user_name
+     * @return bool
+     */
     public function user_query_id($user_name)
     {
         $this->db_connect();
@@ -71,11 +92,16 @@ class pokemongoback_db
         return $this->db_execute_result;
     }
 
-    public function card_query_id($user_name)
+    /**
+     * Check whether $user_name has any card.
+     * @param $user_name
+     * @return bool
+     */
+    public function card_existence_query_id($user_name)
     {
         $this->db_connect();
 
-        $sql = "SELECT USER_NAME FROM USER WHERE USER_NAME = '$user_name'";
+        $sql = "SELECT USER_NAME FROM CARD WHERE USER_NAME = '$user_name'";
         $result = $this->conn->query($sql);
 
         if ($result->num_rows > 0) {
@@ -86,7 +112,68 @@ class pokemongoback_db
         $this->db_close();
         return $this->db_execute_result;
     }
-    
+
+    /**
+     * Get all cards
+     * @param $user_name
+     * @return array
+     */
+    public function card_collection_query_user_name($user_name)
+    {
+        $cards = array();
+        $this->db_connect();
+
+        $sql = "SELECT QUANTITY, NAME, CATEGORY, HP, TYPE FROM CARD WHERE USER_NAME = '$user_name'";
+        $result = $this->conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $cards[] = new Card($row["QUANTITY"], $row["NAME"], $row["CATEGORY"], $row["HP"], $row["TYPE"]);
+            }
+        }
+
+        $this->db_close();
+
+        return $cards;
+    }
+
+    public function card_delete_user_name($user_name)
+    {
+        $this->db_connect();
+
+        $sql = "DELETE FROM CARD WHERE USER_NAME = '$user_name'";
+        if ($this->conn->query($sql) == TRUE) {
+            $this->db_execute_result = true;
+        } else {
+            $this->db_execute_result = false;
+        }
+        $this->db_close();
+        return $this->db_execute_result;
+    }
+
+    public function card_array_insert($cards_user, $user_name, $is_ai = false)
+    {
+        $this->db_connect();
+
+        $sql = "";
+        foreach ($cards_user as $card){
+            $card_quantity = $card -> quantity;
+            $card_name = $card -> name;
+            $card_category = $card->category;
+            $card_hp = $card -> hp;
+            $card_type = $card -> type;
+            $sql .= "INSERT INTO CARD VALUES (DEFAULT, '$user_name', '$card_quantity', '$card_name', '$card_category', '$card_hp', '$card_type', '$is_ai');";
+        }
+        $sql = substr($sql, 0, strlen($sql) - 1);
+        if ($this->conn->multi_query($sql) == TRUE) {
+            $this->db_execute_result = true;
+        } else {
+            $this->db_execute_result = false;
+        }
+        $this->db_close();
+        return $this->db_execute_result;
+    }
+
     public function insert()
     {
         $this->db_connect();

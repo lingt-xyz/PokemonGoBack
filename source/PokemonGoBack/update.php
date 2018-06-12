@@ -17,7 +17,7 @@
   </head>
   <body class="text-center">
     <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
-        <h5 class="my-0 mr-md-auto font-weight-normal">Upload Card Collection</h5>
+        <h5 class="my-0 mr-md-auto font-weight-normal">Upload Deck</h5>
         <nav class="my-2 my-md-0 mr-md-3">
             <a class="p-2 text-dark" href="#">Link</a>
             <a class="p-2 text-dark" href="#">Link</a>
@@ -25,40 +25,51 @@
             <?php
             require_once( 'util.php');
             require_once( 'Card.php');
-            //require_once( 'db.php');
+            require_once( 'db.php');
 
             if(!isset($_SESSION)){
                 session_start();
             }
-			
-			$card_collection_1 = "";
-			$card_collection_2 = "";
-            //if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
-                //echo '<a class="p-2 text-dark" href="#">' . $_SESSION['user_name'] . ' </a>';
-                //echo '<a class="btn btn-outline-primary" href="signout.php">Log out</a>';
-				if (getenv('REQUEST_METHOD') == 'POST') {
-					if(isset($_POST["upload_submit"])){
-					  $card_collection_1 = test_input($_POST["card_collection_1"]);
-					  $card_collection_2 = test_input($_POST["card_collection_2"]);
-					  if (empty($card_collection_1) || empty($card_collection_2)){
-						  // Do nothing
-					  }else{
-							$card_collection_user = getCardsWithType($card_collection_1);
-							$card_collection_ai = getCardsWithType($card_collection_2);
-						  //$query = new pokemongoback_db();
-						  //if($query->user_query($user_name, $user_pwd)){
-							  // If first time: insert
-						  //}else{
-							  // Update
-						  //}
-							//header('Location: /');
-					  }
-					  
-					}
-				}
-            //}else{
-                //header('Location: signin.php');
-            //}
+
+            // step 1: sign in
+            if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
+                echo '<a class="p-2 text-dark" href="#">' . $_SESSION['user_name'] . ' </a>';
+                echo '<a class="btn btn-outline-primary" href="signout.php">Log out</a>';
+
+                // step 2: card collection
+                if (isset($_SESSION['cards_user'])){
+
+                }else{
+                    $query = new pokemongoback_db();
+                    $cards = $query -> card_collection_query_user_name($_SESSION['user_name']);
+                    if(count($cards) == 0){
+                        header('Location: upload.php');
+                        exit();
+                    }else{
+                        $_SESSION['cards_user'] = $cards;
+                    }
+                }
+
+                // step 3: deck
+                $deck_1 = "";
+                $deck_2 = "";
+                if (getenv('REQUEST_METHOD') == 'POST') {
+                    if (isset($_POST["update_submit"])) {
+                        $deck_1 = test_input($_POST["deck_1"]);
+                        $deck_2 = test_input($_POST["deck_2"]);
+                        if (empty($deck_1) || empty($deck_2)) {
+                            // Do nothing
+                        } else {
+                            $_SESSION['deck_user'] = splitByNewLine($deck_1);
+                            $_SESSION['deck_ai'] = splitByNewLine($deck_2);
+                            header('Location: /');
+                        }
+                    }
+                }
+
+            }else{
+                header('Location: signin.php');
+            }
             ?>
         </nav>
     </div>
@@ -69,9 +80,9 @@
 				<div class="row">
 					<div class="col-md-6">
 						<?php
-							if(count($card_collection_user) != 0){
+							if(count($deck_user) != 0){
 								echo "<table>";
-								foreach($card_collection_user as $card) {
+								foreach($deck_user as $card) {
 									echo '<tr><td>' . $card->quantity. '</td><td>' .$card->name. '</td><td>' .$card->category. '</td><td>' .$card->hp. '</td><td>' .$card->type. '</td></tr>';
 								}
 								echo "</table>";
@@ -80,9 +91,9 @@
 					</div>
 					<div class="col-md-6">
 						<?php
-							if(count($card_collection_ai) != 0){
+							if(count($deck_ai) != 0){
 								echo "<table>";
-								foreach($card_collection_ai as $card) {
+								foreach($deck_ai as $card) {
 									echo '<tr><td>' . $card->quantity. '</td><td>' .$card->name. '</td><td>' .$card->category. '</td><td>' .$card->hp. '</td><td>' .$card->type. '</td></tr>';
 								}
 								echo "</table>";
@@ -94,18 +105,18 @@
 		</div<
         <div class="row">
             <div class="col-md-8 offset-md-2">
-				<form id="upload_form" action="upload.php" method="post">
+				<form id="upload_form" action="update.php" method="post">
 					<div class="form-row">
 						<div class="form-group col-md-6">
-							<label for="inputEmail4">1</label>
-							<textarea class="form-control" id="card_collection_1" name="card_collection_1" rows="10"></textarea>
+							<label for="deck_1">User</label>
+							<textarea class="form-control" id="deck_1" name="deck_1" rows="10"></textarea>
 						</div>
 						<div class="form-group col-md-6">
-							<label for="inputPassword4">2</label>
-							<textarea class="form-control" id="card_collection_2" name="card_collection_2" rows="10"></textarea>
+							<label for="deck_2">AI</label>
+							<textarea class="form-control" id="deck_2" name="deck_2" rows="10"></textarea>
 						</div>
 					</div>
-					<button type="submit" class="btn btn-primary" name="upload_submit">Submit</button>
+					<button type="submit" class="btn btn-primary" name="update_submit">Submit</button>
 				</form>
 			</div>
         </div>

@@ -15,11 +15,8 @@ function startsWith($haystack, $needle)
      return (substr($haystack, 0, $length) === $needle);
 }
 
-function splitByNewLine(){
-	$data = explode("\n", $data); // preg_split('#\n#', $data); Please don't
-	foreach($data as &$row) {
-		$row = explode(' ', $row); // preg_split('#\s#', $row); Seriously
-	}
+function splitByNewLine($data){
+	return explode("\n", $data);
 }
 
 function getCards($str){
