@@ -63,6 +63,10 @@
                         header('Location: deck.php');
                     }
                 }
+            }else if(getenv('REQUEST_METHOD') == 'GET') {// update the current card collection
+                //if (isset($_POST["action"])) {
+                    
+                //}
             }
         }else{
             header('Location: signin.php');
