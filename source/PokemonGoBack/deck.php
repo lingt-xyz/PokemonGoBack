@@ -43,7 +43,7 @@
                     $query = new pokemongoback_db();
                     $cards = $query -> card_collection_query_user_name($_SESSION['user_name']);
                     if(count($cards) == 0){
-                        header('Location: upload.php');
+                        header('Location: collection.php');
                         exit();
                     }else{
                         $_SESSION['cards_user'] = $cards;
@@ -105,7 +105,7 @@
 		</div<
         <div class="row">
             <div class="col-md-8 offset-md-2">
-				<form id="upload_form" action="update.php" method="post">
+				<form id="upload_form" action="deck.php" method="post">
 					<div class="form-row">
 						<div class="form-group col-md-6">
 							<label for="deck_1">User</label>
