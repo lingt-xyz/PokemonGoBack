@@ -16,6 +16,7 @@ function startsWith($haystack, $needle)
 }
 
 function splitByNewLine($data){
+    $data = trim($data);
 	return explode("\n", $data);
 }
 
@@ -24,6 +25,7 @@ function getCards($str){
 	$data = explode("\n", $str);
 	foreach($data as $row) {
 		//echo $row;
+        $row = trim($row);
 		$pattern = "/\*\s+([0-9]{1,2})\s+(([a-zA-ZÀ-ÿ\-]+)|([a-zA-ZÀ-ÿ\-]+\s+[a-zA-ZÀ-ÿ\-]+)|([a-zA-ZÀ-ÿ\-]+\s+[a-zA-ZÀ-ÿ\-]+\s+[a-zA-ZÀ-ÿ\-]+))\s+([\w\-]+)\s+([0-9]{1,})/";
 		// group 1, group 2, group 6, group 7
 		preg_match_all($pattern, $row, $matches, PREG_SET_ORDER);
@@ -41,6 +43,7 @@ function getCardsWithType($str){
 	$data = explode("\n", $str);
 	$type = "";
 	foreach($data as $row) {
+        $row = trim($row);
 		if(!empty($row)){
 			if(startsWith($row, "##Pokémon")){
 				$type = "Pokémon";
