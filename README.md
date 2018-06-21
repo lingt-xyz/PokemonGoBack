@@ -49,7 +49,7 @@ Prerequisites
     PHP7.0
     MySQL
 
-    Assumptions
+Assumptions
 
     $Web_Root: Web Document Root (e.g. /var/www/html)
     $MySQL_U: MySQL username
