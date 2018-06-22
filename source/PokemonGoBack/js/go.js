@@ -25,8 +25,9 @@ $(function () {
 	game.start();
 
 	//$( "#draggable" ).draggable({ axis: "y" });
-    $( "#draggable3" ).draggable({ axis: "x" });
+    //$( "#draggable3" ).draggable({ axis: "x" });
  
     //$( "#draggable3" ).draggable({ containment: "#containment-wrapper", scroll: false });
-    $( "#draggable4" ).draggable({ containment: "parent" });
+	//$( "#draggable4" ).draggable({ containment: "parent" });
+	$( ".pokemon" ).draggable({ containment: "parent" });
 });

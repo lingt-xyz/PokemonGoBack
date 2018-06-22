@@ -14,7 +14,7 @@ class Game {
         //this.ai.deck;
         //this.ai.cardInHand;
         $("#divCardInHand").html(this.player.cardInHand[0].toHtml());
-        $("#divCardInHand").append(this.player.cardInHand[1].toHtml2());
+        $("#divCardInHand").append(this.player.cardInHand[1].toHtml());
     }
 
     toString() {
