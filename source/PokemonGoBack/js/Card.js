@@ -54,3 +54,9 @@ class Card {
         //return "Card: "+this.cardName + ":" + str + this.hp+" "+this.initalep+" "+this.maxep;
     }
 }
+
+class Pokemon extends Card{
+    constructor(name, cardType, hp, initalep, maxep){
+        super(name, cardType, hp, initalep, maxep);
+    }
+}
