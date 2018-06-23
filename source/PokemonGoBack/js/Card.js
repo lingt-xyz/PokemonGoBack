@@ -8,12 +8,14 @@ class Card {
         this.CardMaxHealth = hp;
         this.cardCurrentEnergy = initalep;
         this.cardMaxEnergy = maxep;
+		
     }
 
     toHtml() {
-        return "<p id='draggable4' class='pokemon ui-widget-header'>" + this.cardName + "</p>";
+      return "<div id='draggable4' class='pokemonallcard ui-widget-header'>" + this.cardName +"<img height='90px' width='60px' src='image/" + this.cardName +"Card.png'></div>";
+		
     }
-
+    
     toString() {
         var str = "";
         switch (this.cardType) {
@@ -52,11 +54,5 @@ class Card {
         }
         document.getElementById("handcard").innerHTML = "switch funtion";
         //return "Card: "+this.cardName + ":" + str + this.hp+" "+this.initalep+" "+this.maxep;
-    }
-}
-
-class Pokemon extends Card{
-    constructor(name, cardType, hp, initalep, maxep){
-        super(name, cardType, hp, initalep, maxep);
     }
 }

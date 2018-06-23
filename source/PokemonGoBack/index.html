@@ -31,7 +31,7 @@
             <a class="p-2 text-dark" href="deck.php?action=update">Update Deck</a>
         </nav>
     </div>
-    <div class="container-fluid">
+    <div class="container-fluid" id="divPlayMat">
         <div class="row">
             <div class="col-md-8 offset-md-2">Cards in Hands</div>
         </div>
@@ -46,18 +46,23 @@
                         <div class="col-md-1 offset-md-1">Deck</div>
                     </div>
                     <div class="row">
-                        <div class="col align-self-center">
-                            <svg height="300" width="300">
-                                <ellipse cx="150" cy="150" rx="150" ry="150" style="fill:lightslategray;stroke:purple;stroke-width: 2px" />
+                        <div class="col align-self-center" id="svgCardMat">
+                            <svg height="300" width="300"  >
+                                
+                                <ellipse cx="150" cy="150" rx="150" ry="150" style="fill:lightslategray;stroke:purple;stroke-width: 2px" id="svgCardMat"/>
+                                
                             </svg>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-1 offset-md-10">Deck</div>
+                       
+                        <div class="col-md-1 offset-md-10" id="divCardDeck">Deck</div>
+                        <img src="image/DeckCard.png" height="90" width="63">
                     </div>
                     <div class="row">
-                        <div class="col-md-8 offset-md-2">Active Cards</div>
-                        <div class="col-md-1">Discard</div>
+                        <div class="col-md-8 offset-md-2" id="divCardActive">Active Cards</div>
+                        <div class="col-md-1" id="divCardDiscard">Discard</div>
+                        <img src="image/DeckCard.png" height="90" width="63">
                     </div>
                 </div>
             </div>

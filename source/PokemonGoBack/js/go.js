@@ -29,5 +29,50 @@ $(function () {
  
     //$( "#draggable3" ).draggable({ containment: "#containment-wrapper", scroll: false });
 	//$( "#draggable4" ).draggable({ containment: "parent" });
-	$( ".pokemon" ).draggable({ containment: "parent" });
+	$( ".pokemonallcard" ).draggable({
+		appendTo: "body",
+		cursor: "move",
+		helper: 'clone',
+		revert: "invalid"
+	});
+	
+	$("#divCardActive").droppable(
+	{
+		tolerance: "intersect",
+		accept: ".pokemonallcard",
+		activeClass: "ui-state-default",
+		hoverClass: "ui-state-hover",
+		drop: function(event, ui) {        
+			$(this).append($(ui.draggable));
+		}
+	});
+/*	$("#svgCardMat").droppable(
+	{
+		tolerance: "intersect",
+		accept: ".pokemon",
+		activeClass: "ui-state-default",
+		hoverClass: "ui-state-hover",
+		
+		drop: function(event, ui) {        
+			$(this).append($(ui.draggable));
+			
+		}
+	});*/
+	$("#svgCardMat").droppable({
+		accept:".pokemonallcard",
+		tolerance: "intersect",
+		activeClass: "ui-state-default",
+		hoverClass: "ui-state-hover",
+		drop: function(event, ui) {
+			var $this = $(this);
+			ui.draggable.position({
+			my: "bottom",
+			at: "bottom",
+			of: $this,
+			using: function(pos) {
+				$(this).animate(pos, 100, "linear");
+				}
+			});
+		}
+	});
 });
