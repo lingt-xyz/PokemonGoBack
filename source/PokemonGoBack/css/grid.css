@@ -25,3 +25,23 @@ hr {
   margin-top: 2rem;
   margin-bottom: 2rem;
 }
+#divCardInHand{
+	height:160px;
+	}
+#divCardDeck{
+	height:160px;
+}
+#divCardActive{
+	height:160px;
+}
+#divCardDiscard{
+	height:160px;
+}
+#divAiHand {
+	height:160px;}
+#divAiDeck{
+	height:160px;}
+#divAiActive{
+	 height:160px;}
+#divAiDiscard{
+	 height:160px;}
