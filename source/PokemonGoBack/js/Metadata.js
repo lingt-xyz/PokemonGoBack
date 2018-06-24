@@ -1,5 +1,4 @@
-{// use local scope
-    let cardString = `
+let cardString = `
 Glameow:pokemon:cat:basic:cat:colorless:60:retreat:cat:colorless:2:attacks:cat:colorless:1:1,cat:colorless:2:2
 Pikachu Libre:pokemon:cat:basic:cat:lightning:80:retreat:cat:colorless:1:attacks:cat:colorless:2:3,cat:colorless:2,cat:lightning:1:4
 Pikachu:pokemon:cat:basic:cat:lightning:60:retreat:cat:colorless:1:attacks:cat:colorless:1:5,cat:colorless:2:6
@@ -59,7 +58,8 @@ Wally:trainer:cat:supporter:74
 Fight:energy:cat:fight
 Psychic:energy:cat:psychic
 `;
-    let ability_string = `
+
+let ability_string = `
 Act Cute:deck:target:opponent:destination:deck:bottom:choice:them:1
 Scratch:dam:target:opponent-active:20
 Quick Attack:dam:target:opponent-active:10,cond:flip:dam:target:opponent-active:30
@@ -136,7 +136,9 @@ Red Card:deck:target:opponent:destination:deck:count(opponent-hand),shuffle:targ
 Wally:search:target:choice:your-pokemon:cat:basic:source:deck:filter:evolves-from:target:last:1,shuffle:target:your
 `;
 
+var Card_Map = new Map();
 
+function initCardCollection() {
     /**
     Glameow:pokemon : cat:basic : cat:colorless : 60 : retreat:cat:colorless:2 : attacks : cat:colorless:1:1 , cat:colorless:2:2
     Raichu:pokemon : cat:stage-one : Pikachu : cat:lightning : 90 : attacks:cat:colorless:2:7, cat:colorless:1,cat:lightning:2:8
@@ -145,7 +147,6 @@ Wally:search:target:choice:your-pokemon:cat:basic:source:deck:filter:evolves-fro
     Shauna:trainer : cat:supporter : 69
     Psychic:energy : cat:psychic
     */
-    //([a-zA-ZÀ-ÿ-]+):(pokemon|trainer|energy):cat:([a-zA-ZÀ-ÿ\-]+):([a-zA-ZÀ-ÿ\-]+):cat:\w+:[0-9]+:retreat:cat:\w+:[0-9]+:attacks:cat:\w+:[0-9]+:[0-9]+,cat:\w+:[0-9]+,cat:\w+:[0-9]+:[0-9]+
     let cardStrings = cardString.split('\n');
     let cardIndex = 0;
     let typePattern = /^([a-zA-ZÀ-ÿ-' ]+):(pokemon|trainer|energy):(.*)$/;
@@ -169,11 +170,12 @@ Wally:search:target:choice:your-pokemon:cat:basic:source:deck:filter:evolves-fro
                         // stge
                         let pokemonInfos = subString.match(pokemonPattern);
                         let cardStage = "";
+                        let basicPokemon = "";
                         if ("basic" == pokemonInfos[1]) {// basic
                             cardStage = "basic";
                         } else {// stage-one
                             cardStage = "stage-one";
-                            let basicPokemon = pokemonInfos[1].split(":")[1];
+                            basicPokemon = pokemonInfos[1].split(":")[1];
                         }
 
                         // hp
@@ -183,48 +185,56 @@ Wally:search:target:choice:your-pokemon:cat:basic:source:deck:filter:evolves-fro
                         let attackString = "";
 
                         //retreat
+                        let retreatEnergyType = "";
+                        let retreatEnergyPoint = 0;
                         if (abilityString.startsWith("retreat")) {
                             let retreatInfos = abilityString.match(retreatPattern);
-							//console.log(retreatInfos);
-                            let retreatEnergyType = retreatInfos[1];
-                            let retreatEnergyPoint = retreatInfos[2];
+                            retreatEnergyType = retreatInfos[1];
+                            retreatEnergyPoint = retreatInfos[2];
                             attackString = retreatInfos[3];
-                        }else{
+                        } else {
                             attackString = abilityString;
                         }
 
                         // attacks
-                        attackString = attackString.substring("attacks".length+1, attackString.length);
+                        attackString = attackString.substring("attacks".length + 1, attackString.length);
                         let attackInfos = attackString.split(",");
-                        for(let i=0; i<attackInfos.length; i++){
+                        for (let i = 0; i < attackInfos.length; i++) {
                             let attack = attackInfos[i];
                             let simpleAttackInfos = attack.match(attackPattern1);
-                            if(simpleAttackInfos){
+                            if (simpleAttackInfos) {
                                 let energyType1 = simpleAttackInfos[1];
                                 let energyType1Point = simpleAttackInfos[2];
                                 let ability = simpleAttackInfos[3];
-                            }else{
+                                Card_Map.set(cardName, new Pokemon(cardIndex, cardName, cardStage, basicPokemon, property, hp, 
+                                    [retreatEnergyPoint, retreatEnergyType], 
+                                    [[energyType1, energyType1Point], ability]));
+                            } else {
                                 attack += attackInfos[++i];
                                 let complexAttackInfos = attack.match(attackPattern2);
-                                if(complexAttackInfos){
+                                if (complexAttackInfos) {
                                     let energyType1 = complexAttackInfos[1];
                                     let energyType1Point = complexAttackInfos[2];
                                     let energyType2 = complexAttackInfos[3];
                                     let energyType2Point = complexAttackInfos[4];
                                     let ability = complexAttackInfos[5];
+                                    Card_Map.set(cardName, new Pokemon(cardIndex, carName, cardStage, basicPokemon, property, hp, 
+                                        [retreatEnergyPoint, retreatEnergyType], 
+                                        [[energyType1, energyType1Point], [energyType2, energyType2Point], ability]));
                                 }
                             }
                         }
-
                         break;
                     case "trainer":
                         let infos = subString.split(":");
                         let trainerType = infos[1];
                         let ability = infos[2];
+                        Card_Map.set(cardName, new Trainer(cardIndex, cardName, trainerType, ability));
                         break;
                     case "energy":
                         let energyInfos = subString.split(":");
                         let energyType = energyInfos[1];
+                        Card_Map.set(cardName, new Energy(cardIndex, cardName, energyType));
                         break;
                     default:
                         break;
