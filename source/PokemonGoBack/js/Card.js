@@ -15,7 +15,10 @@ class Card {
       return "<div id='draggable4' class='pokemonallcard ui-widget-header'>" + this.cardName +"<img height='90px' width='60px' src='image/" + this.cardName +"Card.png'></div>";
 		
     }
-    
+    toHtmlAi() {
+      return "<div id='draggable4' class='pokemonCardAiHand ui-widget-header'>Card?<img height='90px' width='60px' src='image/DeckCard.png'></div>";
+		
+    }
     toString() {
         var str = "";
         switch (this.cardType) {
