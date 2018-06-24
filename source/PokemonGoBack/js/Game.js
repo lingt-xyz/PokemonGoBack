@@ -16,15 +16,15 @@ class Game {
 		var tails = 0;
 		while(n >0)
 		{	
-			 x=(Math.floor(Math.random()*2)==0);
+			 let x=(Math.floor(Math.random()*2)==0);
 			 if(x)
 				 heads += 1;
 			 else 
 				 tails +=1;
 			 n--;
 		}
-		coinhead=heads;
-		cointail=tails;
+		this.coinhead=heads;
+		this.cointail=tails;
 	}
 	
     // Pokemon, GoGoGo!
@@ -34,14 +34,29 @@ class Game {
         //this.ai.deck;
         //this.ai.cardInHand;
 		
+
 		
-		$("#divCardDeck").html("Deck:"+this.player.deck.length);
-		$("#divCardDiscard").html("Discard:"+this.player.cardDiscard.length)
+		$("#divAiDeck-p").html("Deck:"+this.ai.deck.length);
+		$("#divAiDiscard-p").html("Discard:"+this.ai.cardDiscard.length)
+		
+		$("#divCardDeck-p").html("Deck:"+this.player.deck.length);
+		$("#divCardDiscard-p").html("Discard:"+this.player.cardDiscard.length)
 		
 		this.player.dealcard();
-        //$("#divCardInHand").html(this.player.cardInHand[0].toHtml());
-       // $("#divCardInHand").append(this.player.cardInHand[1].toHtml());
-		
+		this.ai.dealCardAi();
+        
+		this.flipcoin(1);
+		if(this.coinhead ==1)
+		{//player's turn
+			$("#svgCardMat-p").html("Player's Turn");
+			$( ".pokemonallcard" ).draggable({disabled:false});
+		}	
+		else{
+			//AI's turn
+			//try disable player 
+			$("#svgCardMat-p").html("AI's Turn");
+			$( ".pokemonallcard" ).draggable({disabled:true});
+		}
     }
 
     toString() {
