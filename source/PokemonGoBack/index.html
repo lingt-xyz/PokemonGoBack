@@ -27,25 +27,27 @@
     <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
         <h5 class="my-0 mr-md-auto font-weight-normal">PokemonGoBack</h5>
         <nav class="my-2 my-md-0 mr-md-3">
+			<button type="button" onclick ="funcion()">Start Game</button>
             <a class="p-2 text-dark" href="collection.php?action=update">Update Collection</a>
             <a class="p-2 text-dark" href="deck.php?action=update">Update Deck</a>
         </nav>
     </div>
     <div class="container-fluid" id="divPlayMat">
         <div class="row">
-            <div class="col-md-8 offset-md-2">Cards in Hands</div>
+            <div class="col-md-8 offset-md-2" id="divAiHand">Cards in Hands</div>
         </div>
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-10 offset-md-1" style="background-color: honeydew">
                     <div class="row">
-                        <div class="col-md-1 offset-md-1">Discard</div>
-                        <div class="col-md-8">Active Cards</div>
+                        <div class="col-md-1 offset-md-1" id="divAiDiscard"><p id="divAiDiscard-p">Discard</p><img src="image/DeckCard.png" height="90" width="63" ></div>
+                        <div class="col-md-8" id="divAiActive">Active Cards</div>
                     </div>
                     <div class="row">
-                        <div class="col-md-1 offset-md-1">Deck</div>
+                        <div class="col-md-1 offset-md-1" id="divAiDeck"><p id="divAiDeck-p">Deck</p><img src="image/DeckCard.png" height="90" width="63"></div>
                     </div>
                     <div class="row">
+                            <p id="svgCardMat-p"></p>
                         <div class="col align-self-center" id="svgCardMat">
                             <svg height="300" width="300"  >
                                 
@@ -56,13 +58,13 @@
                     </div>
                     <div class="row">
                        
-                        <div class="col-md-1 offset-md-10" id="divCardDeck">Deck</div>
-                        <img src="image/DeckCard.png" height="90" width="63">
+                        <div class="col-md-1 offset-md-10" id="divCardDeck"><p id="divCardDeck-p">Deck</p>
+                        <img src="image/DeckCard.png" height="90" width="63"></div>
                     </div>
                     <div class="row">
                         <div class="col-md-8 offset-md-2" id="divCardActive">Active Cards</div>
-                        <div class="col-md-1" id="divCardDiscard">Discard</div>
-                        <img src="image/DeckCard.png" height="90" width="63">
+                        <div class="col-md-1" id="divCardDiscard"><p id="divCardDiscard-p" >Discard</p>
+                        <img src="image/DeckCard.png" height="90" width="63"></div>
                     </div>
                 </div>
             </div>
