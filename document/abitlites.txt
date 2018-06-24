@@ -1,0 +1,109 @@
+Act Cute:deck: target:opponent:destination:deck:bottom:choice:them:1
+1.技能名称：deck=对手把一张手牌放到deck底部 ： target:对手 ：destination : deck : bottom: 选择： them??? 1
+
+Scratch:dam: target:opponent-active:20
+2.dam: target: opponent-active
+Quick Attack:dam: target:opponent-active:10,cond:flip:dam:target:opponent-active:30
+3.condition, filp a coin, heads do 30 more damage
+Flying Elekick:dam:target:opponent-active:50
+4.
+Nuzzle:cond:flip:applystat:status:paralyzed:opponent-active
+5.filp a coind, if heads, opponent active pokemon is now paralyzed
+	
+Quick Attack:dam:target:opponent-active:20,cond:flip:dam:target:opponent-active:10
+6.
+Circle Circuit:dam:target:opponent-active:20*count(target:your-bench)
+7.20 times num of your benched pokemon
+Thunderbolt:dam:target:opponent-active:100,deenergize:target:your-active:count(target:your-active:energy)
+8. deenergize: discard all energy attached to this pokemon
+
+Rain Splash:dam:target:opponent-active:20
+9.
+Soaking Horn:dam:target:opponent-active:10,cond:healed:target:your-active:dam:target:opponent-active:80
+10. if this pokemon was healed during this turn, this attack soes 80 more damage
+
+Reckless Charge:dam:target:opponent-active:40,dam:target:your-active:10
+11. does 10 damage to itself
+
+Reckless Charge:dam:target:opponent-active:20,dam:target:your-active:10
+12. does 10 damage to itself
+
+Cut:dam:target:opponent-active:30
+13.
+14.Pound:dam:target:opponent-active:10
+15.Clamp Crush:dam:target:opponent-active:30,cond:flip:deenergize:target:opponent-active:1,applystat:status:paralyzed:opponent-active
+	flip a coin. if heads, your opponent's active pokemon is now paralyzed and discard an Energy attached to that Pokemon
+16.Spike Cannon:dam:target:opponent-active:30,cond:flip:dam:target:opponent-active:30,cond:flip:dam:target:opponent-active:30,cond:flip:dam:target:opponent-active:30,cond:flip:dam:target:opponent-active:30,cond:flip:dam:target:opponent-active:30
+	flip 5 coins. this attack does 30 damage times the number of heads
+
+17. Spiral Drain:dam:target:opponent-active:20,heal:target:your-active:20
+	remove 2 damage counter from Vaporeon
+18.Aurora Beam:dam:target:opponent-active:80
+19.Wing Attack:dam:target:opponent-active:20
+20.Brave Bird:dam:target:opponent-active:80,dam:target:your-active:20
+21.Lunge:cond:flip:dam:target:opponent-active:20
+22.Slash:dam:target:opponent-active:30
+23.Nyan Press:dam:target:opponent-active:40,cond:flip:dam:target:opponent-active:40:else:applystat:status:paralyzed:opponent-active
+	flip a coin. If heads this attack does 40 more damage. If tails, your opponent's Active Pokemon is now Paralyzed.
+24.Random Spark:dam:target:choice:opponent:30
+	this attack does 30 damage to 1 of your opponent's Pokemon. (don't apply weakness and resitance for benched pokemon)
+25.Bite:dam:target:opponent-active:40
+26.Bite:dam:target:opponent-active:10
+27.Knuckle Punch:dam:target:opponent-active:30
+28.Electroslug:dam:target:opponent-active:90
+29.Knuckle Punch:dam:target:opponent-active:20
+30.Destructive Beam:cond:flip:deenergize:target:opponent-active:1
+31.Tierno:draw:3
+32.Potion:heal:target:choice:your:30
+	 heal 30 damage from 1 of your pokemon
+33.Misty's Determination:cond:ability:deck:target:your:destination:discard:choice:you:1:(search:target:your:source:deck:filter:top:8:1,shuffle:target:your)
+	discard a card from your hand. If you do, look at the top 8 cards of your deck and put 1 of them into your hand. Shuffle the other cards back into your deck.
+
+34.Pokémon Center Lady:heal:target:choice:your:60,destat:target:last
+Clemont:search:target:your:source:deck:filter:energy:4
+Ear Influence:redamage:source:choice:opponent:destination:opponent:count(target:last:source:damage)
+Psychic:dam:target:opponent-active:60,dam:target:opponent-active:count(target:opponent-active:energy)*10
+Hug:dam:target:opponent-active:30,applystat:status:stuck:opponent-active
+Wish:search:target:your:source:deck:1
+Heart Sign:dam:target:opponent-active:50
+Act Tough:dam:target:opponent-active:10,cond:count(target:your-active:energy:psychic)>0:dam:target:opponent-active:20
+Exhausted Tackle:cond:flip:dam:target:opponent-active:30:else:dam:target:your-active:30
+Knuckle Punch:dam:target:opponent-active:10
+Double Stab:cond:flip:dam:target:opponent-active:10,cond:flip:dam:target:opponent-active:10
+Doduo Delivery:draw:2
+Fury Attack:dam:target:opponent-active:40,cond:flip:dam:target:opponent-active:40,cond:flip:dam:target:opponent-active:40,cond:flip:dam:target:opponent-active:40
+Rollout:dam:target:opponent-active:10
+Flail:dam:target:opponent-active:count(target:your-active:damage)*10
+Skill Dive:dam:target:opponent:10
+Poison Ring:applystat:status:stuck:opponent-active,applystat:status:poisoned:opponent-active
+Sleep Poison:cond:flip:(applystat:status:asleep:opponent-active,applystat:status:poisoned:opponent-active)
+Mine:search:target:opponent:source:deck:filter:top:1:0,cond:choice:shuffle:target:opponent
+Mud Slap:dam:target:opponent-active:20
+Earthquake:dam:target:opponent-active:60,dam:target:your-bench:10
+Rock Tumble:dam:target:opponent-active:60
+Scratch:dam:target:opponent-active:10
+Spacing Out:cond:flip:heal:target:your-active:10
+Scavenge:cond:ability:deenergize:target:your-active:1:(search:target:your:source:discard:filter:cat:item:1)
+Stretch Kick:dam:target:choice:opponent-bench:30
+Spiral Kick:dam:target:opponent-active:30
+Bullet Punch:dam:target:opponent-active:20,cond:flip:dam:target:opponent-active:20,cond:flip:dam:target:opponent-active:20
+Mach Cross:dam:target:opponent-active:60
+Beatdown:dam:target:opponent-active:40
+Twinkle:applystat:status:asleep:opponent-active
+Fake Out:dam:target:opponent-active:30,cond:flip:applystat:status:paralyzed:opponent-active
+Ambush:dam:target:opponent-active:40,cond:flip:dam:target:opponent-active:30
+Floral Crown:add:target:your:trigger:opponent:turn-end:(heal:target:self:20)
+Poké Ball:cond:flip:search:target:your:source:deck:filter:pokemon:1
+Shauna:deck:target:your:destination:deck:count(your-hand),shuffle:target:your,draw:5
+Pokémon Fan Club:search:target:your:source:deck:filter:pokemon:cat:basic:2,shuffle:target:your
+Switch:swap:source:your-active:destination:choice:your-bench
+Energy Switch:reenergize:target:choice:your:1:target:choice:your:1
+Red Card:deck:target:opponent:destination:deck:count(opponent-hand),shuffle:target:opponent,draw:opponent:4
+Wally:search:target:choice:your-pokemon:cat:basic:source:deck:filter:evolves-from:target:last:1,shuffle:target:your
+
+
+special condition
+1.paralyzed： 被麻痹后一局不能攻击或撤退。一轮后解除
+2.asleep: 不能攻击或撤退，每一轮有一半机会取消效果
+3.stuck:不能撤退。一轮后可解除
+4.poisoned:被效果玩家自己论攻击后收到一点伤害
