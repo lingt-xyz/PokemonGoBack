@@ -149,7 +149,7 @@ Wally:search:target:choice:your-pokemon:cat:basic:source:deck:filter:evolves-fro
     let cardStrings = cardString.split('\n');
     let cardIndex = 0;
     let typePattern = /^([a-zA-ZÀ-ÿ-' ]+):(pokemon|trainer|energy):(.*)$/;
-    let pokemonPattern = /^cat:((basic)|(stage-one:[a-zA-ZÀ-ÿ-' ]+)):cat:([a-zA-Z]+):([0-9]+):(retreat|attacks).*$/;
+    let pokemonPattern = /^cat:((basic)|(stage-one:[a-zA-ZÀ-ÿ-' ]+)):cat:([a-zA-Z]+):([0-9]+):(retreat.*|attacks.*)$/;
     let retreatPattern = /^retreat:cat:([a-zA-Z]+):([0-9]+):(.*)$/;
     let attackPattern1 = /^cat:([a-zA-Z]+):([0-9]+):([0-9]+)$/;
     let attackPattern2 = /^cat:([a-zA-Z]+):([0-9]+),cat:([a-zA-Z]+):([0-9]+):([0-9]+)$/;
@@ -185,9 +185,10 @@ Wally:search:target:choice:your-pokemon:cat:basic:source:deck:filter:evolves-fro
                         //retreat
                         if (abilityString.startsWith("retreat")) {
                             let retreatInfos = abilityString.match(retreatPattern);
+							//console.log(retreatInfos);
                             let retreatEnergyType = retreatInfos[1];
                             let retreatEnergyPoint = retreatInfos[2];
-                            attackString = retreateInfos[3];
+                            attackString = retreatInfos[3];
                         }else{
                             attackString = abilityString;
                         }
@@ -197,20 +198,20 @@ Wally:search:target:choice:your-pokemon:cat:basic:source:deck:filter:evolves-fro
                         let attackInfos = attackString.split(",");
                         for(let i=0; i<attackInfos.length; i++){
                             let attack = attackInfos[i];
-                            let attackInfos = attack.match(attackPattern1);
-                            if(attackInfos){
-                                let energyType1 = attackInfos[1];
-                                let energyType1Point = attackInfos[2];
-                                let ability = attackInfos[3];
+                            let simpleAttackInfos = attack.match(attackPattern1);
+                            if(simpleAttackInfos){
+                                let energyType1 = simpleAttackInfos[1];
+                                let energyType1Point = simpleAttackInfos[2];
+                                let ability = simpleAttackInfos[3];
                             }else{
                                 attack += attackInfos[++i];
-                                attackInfos = attack.match(attackPattern2);
-                                if(attackInfos){
-                                    let energyType1 = attackInfos[1];
-                                    let energyType1Point = attackInfos[2];
-                                    let energyType2 = attackInfos[3];
-                                    let energyType2Point = attackInfos[4];
-                                    let ability = attackInfos[5];
+                                let complexAttackInfos = attack.match(attackPattern2);
+                                if(complexAttackInfos){
+                                    let energyType1 = complexAttackInfos[1];
+                                    let energyType1Point = complexAttackInfos[2];
+                                    let energyType2 = complexAttackInfos[3];
+                                    let energyType2Point = complexAttackInfos[4];
+                                    let ability = complexAttackInfos[5];
                                 }
                             }
                         }
@@ -222,8 +223,8 @@ Wally:search:target:choice:your-pokemon:cat:basic:source:deck:filter:evolves-fro
                         let ability = infos[2];
                         break;
                     case "energy":
-                        let infos = subString.split(":");
-                        let energyType = infos[1];
+                        let energyInfos = subString.split(":");
+                        let energyType = energyInfos[1];
                         break;
                     default:
                         break;
