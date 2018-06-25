@@ -1,5 +1,6 @@
 class Card {
     constructor(id, cardName, cardType) {
+        this.id = id;
         this.cardName = cardName;
         this.cardType = cardType;
     }
@@ -19,7 +20,7 @@ class Card {
 
 class Pokemon extends Card {
     constructor(id, cardName, cardStage, cardBasic, property, hp, retreat, attacks) {
-        super(id, cardName, "pokemon");
+        super(id, cardName, Card_Type.pokemon);
         this.cardStage = cardStage;
         this.cardBasic = cardBasic;
         this.property = property;
@@ -32,11 +33,15 @@ class Pokemon extends Card {
     toString(){
         return super.toString() + this.cardStage;
     }
+
+    clone(){
+        return new Pokemon(this.id, this.cardName, this.cardStage, this.cardBasic, this.property, this.hp, this.retreat, this.attacks);
+    }
 }
 
 class Trainer extends Card {
     constructor(id, cardName, trainerType, ability) {
-        super(id, cardName, "trainer");
+        super(id, cardName, Card_Type.trainer);
         this.trainerType = trainerType;
         this.ability = ability;
     }
@@ -44,15 +49,23 @@ class Trainer extends Card {
     toString(){
         return super.toString() + this.ability;
     }
+
+    clone(){
+        return new Trainer(this.id, this.cardName, this.trainerType, this.ability);
+    }
 }
 
 class Energy extends Card {
     constructor(id, cardName, energy) {
-        super(id, cardName, "energy");
+        super(id, cardName, Card_Type.energy);
         this.energy = energy;
     }
 
     toString(){
         return super.toString() + this.energy;
+    }
+
+    clone(){
+        return new Energy(this.id, this.cardName, this.energy);
     }
 }
