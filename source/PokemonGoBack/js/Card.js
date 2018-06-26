@@ -14,7 +14,7 @@ class Card {
 
     }
     toString() {
-        return this.cardName + "," + this.cardType;
+        return "Name:" + this.cardName + ", type:" + this.cardType;
     }
 }
 
@@ -25,13 +25,15 @@ class Pokemon extends Card {
         this.cardBasic = cardBasic;
         this.property = property;
         this.hp = hp;
+        //[retreatEnergyPoint, retreatEnergyType]
         this.retreat = retreat;
+        //[energyType1, energyType1Point, energyType2, energyType2Point, ability]
         this.attacks = attacks;
         this.currentHp = hp;
     }
 
     toString(){
-        return super.toString() + this.cardStage;
+        return super.toString() + ", stage:" + this.cardStage;
     }
 
     clone(){
@@ -47,7 +49,7 @@ class Trainer extends Card {
     }
 
     toString(){
-        return super.toString() + this.ability;
+        return super.toString() + ", ability:" + Ability_Collection[this.ability];
     }
 
     clone(){
@@ -62,7 +64,7 @@ class Energy extends Card {
     }
 
     toString(){
-        return super.toString() + this.energy;
+        return super.toString() + "energy: " + this.energy;
     }
 
     clone(){

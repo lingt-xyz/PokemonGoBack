@@ -198,6 +198,7 @@ function initCardCollection() {
                             retreatEnergyPoint = retreatInfos[2];
                             attackString = retreatInfos[3];
                         } else {
+                            retreatEnergyType = property;
                             attackString = abilityString;
                         }
 
