@@ -5,10 +5,10 @@ class Card {
         this.cardType = cardType;
     }
 
+    // Generate a string that can match it's picture's name
     getImageName(){
-        // TODO convert French letters to English letters
-        // TODO remove blans between letters
-        // TODO e.g.: a b c =>abc
+        // TODO convert French letters to English letters, remove blanks between letters
+        // e.g.: a b c =>abcCard.png
     }
 
     toHtml() {
