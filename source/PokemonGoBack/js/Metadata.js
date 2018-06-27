@@ -1,5 +1,4 @@
-{// use local scope
-    let cardString = `
+let cardString = `
 Glameow:pokemon:cat:basic:cat:colorless:60:retreat:cat:colorless:2:attacks:cat:colorless:1:1,cat:colorless:2:2
 Pikachu Libre:pokemon:cat:basic:cat:lightning:80:retreat:cat:colorless:1:attacks:cat:colorless:2:3,cat:colorless:2,cat:lightning:1:4
 Pikachu:pokemon:cat:basic:cat:lightning:60:retreat:cat:colorless:1:attacks:cat:colorless:1:5,cat:colorless:2:6
@@ -59,7 +58,8 @@ Wally:trainer:cat:supporter:74
 Fight:energy:cat:fight
 Psychic:energy:cat:psychic
 `;
-    let ability_string = `
+
+let abilityString = `
 Act Cute:deck:target:opponent:destination:deck:bottom:choice:them:1
 Scratch:dam:target:opponent-active:20
 Quick Attack:dam:target:opponent-active:10,cond:flip:dam:target:opponent-active:30
@@ -136,7 +136,10 @@ Red Card:deck:target:opponent:destination:deck:count(opponent-hand),shuffle:targ
 Wally:search:target:choice:your-pokemon:cat:basic:source:deck:filter:evolves-from:target:last:1,shuffle:target:your
 `;
 
+var Card_Map = new Map();
+var Card_Collection = new Array();
 
+function initCardCollection() {
     /**
     Glameow:pokemon : cat:basic : cat:colorless : 60 : retreat:cat:colorless:2 : attacks : cat:colorless:1:1 , cat:colorless:2:2
     Raichu:pokemon : cat:stage-one : Pikachu : cat:lightning : 90 : attacks:cat:colorless:2:7, cat:colorless:1,cat:lightning:2:8
@@ -145,7 +148,6 @@ Wally:search:target:choice:your-pokemon:cat:basic:source:deck:filter:evolves-fro
     Shauna:trainer : cat:supporter : 69
     Psychic:energy : cat:psychic
     */
-    //([a-zA-ZÀ-ÿ-]+):(pokemon|trainer|energy):cat:([a-zA-ZÀ-ÿ\-]+):([a-zA-ZÀ-ÿ\-]+):cat:\w+:[0-9]+:retreat:cat:\w+:[0-9]+:attacks:cat:\w+:[0-9]+:[0-9]+,cat:\w+:[0-9]+,cat:\w+:[0-9]+:[0-9]+
     let cardStrings = cardString.split('\n');
     let cardIndex = 0;
     let typePattern = /^([a-zA-ZÀ-ÿ-' ]+):(pokemon|trainer|energy):(.*)$/;
@@ -153,11 +155,15 @@ Wally:search:target:choice:your-pokemon:cat:basic:source:deck:filter:evolves-fro
     let retreatPattern = /^retreat:cat:([a-zA-Z]+):([0-9]+):(.*)$/;
     let attackPattern1 = /^cat:([a-zA-Z]+):([0-9]+):([0-9]+)$/;
     let attackPattern2 = /^cat:([a-zA-Z]+):([0-9]+),cat:([a-zA-Z]+):([0-9]+):([0-9]+)$/;
+
+    Card_Collection.push(null);
     for (let item of cardStrings) {
         if (item) {// ignore empty string
             cardIndex++;
             //console.log(item, index, _card_index);
-            if ("#" != item) {// ignore "#"
+            if ("#" == item) {// ignore "#"
+                Card_Collection.push(null);
+            } else {
                 let items = item.match(typePattern);
 
                 // name, type
@@ -165,15 +171,16 @@ Wally:search:target:choice:your-pokemon:cat:basic:source:deck:filter:evolves-fro
                 let cardType = items[2];
                 let subString = items[3];
                 switch (cardType) {
-                    case "pokemon":
+                    case Card_Type.pokemon:
                         // stge
                         let pokemonInfos = subString.match(pokemonPattern);
                         let cardStage = "";
+                        let basicPokemon = "";
                         if ("basic" == pokemonInfos[1]) {// basic
                             cardStage = "basic";
                         } else {// stage-one
                             cardStage = "stage-one";
-                            let basicPokemon = pokemonInfos[1].split(":")[1];
+                            basicPokemon = pokemonInfos[1].split(":")[1];
                         }
 
                         // hp
@@ -183,53 +190,179 @@ Wally:search:target:choice:your-pokemon:cat:basic:source:deck:filter:evolves-fro
                         let attackString = "";
 
                         //retreat
+                        let retreatEnergyType = "";
+                        let retreatEnergyPoint = 0;
                         if (abilityString.startsWith("retreat")) {
                             let retreatInfos = abilityString.match(retreatPattern);
-							//console.log(retreatInfos);
-                            let retreatEnergyType = retreatInfos[1];
-                            let retreatEnergyPoint = retreatInfos[2];
+                            retreatEnergyType = retreatInfos[1];
+                            retreatEnergyPoint = retreatInfos[2];
                             attackString = retreatInfos[3];
-                        }else{
+                        } else {
+                            retreatEnergyType = property;
                             attackString = abilityString;
                         }
 
                         // attacks
-                        attackString = attackString.substring("attacks".length+1, attackString.length);
+                        attackString = attackString.substring("attacks".length + 1, attackString.length);
                         let attackInfos = attackString.split(",");
-                        for(let i=0; i<attackInfos.length; i++){
+                        let attackArray = new Array();
+                        for (let i = 0; i < attackInfos.length; i++) {
                             let attack = attackInfos[i];
                             let simpleAttackInfos = attack.match(attackPattern1);
-                            if(simpleAttackInfos){
+                            if (simpleAttackInfos) {
                                 let energyType1 = simpleAttackInfos[1];
                                 let energyType1Point = simpleAttackInfos[2];
                                 let ability = simpleAttackInfos[3];
-                            }else{
+                                attackArray.push([energyType1, energyType1Point, ability]);
+                            } else {
                                 attack += attackInfos[++i];
                                 let complexAttackInfos = attack.match(attackPattern2);
-                                if(complexAttackInfos){
+                                if (complexAttackInfos) {
                                     let energyType1 = complexAttackInfos[1];
                                     let energyType1Point = complexAttackInfos[2];
                                     let energyType2 = complexAttackInfos[3];
                                     let energyType2Point = complexAttackInfos[4];
                                     let ability = complexAttackInfos[5];
+                                    attackArray.push([energyType1, energyType1Point, energyType2, energyType2Point, ability]);
                                 }
                             }
                         }
-
+                        Card_Map.set(cardName, new Pokemon(cardIndex, cardName, cardStage, basicPokemon, property, hp,
+                            [retreatEnergyPoint, retreatEnergyType], attackArray));
+                        Card_Collection.push(new Pokemon(cardIndex, cardName, cardStage, basicPokemon, property, hp,
+                            [retreatEnergyPoint, retreatEnergyType], attackArray));
                         break;
-                    case "trainer":
+                    case Card_Type.trainer:
                         let infos = subString.split(":");
                         let trainerType = infos[1];
                         let ability = infos[2];
+                        Card_Map.set(cardName, new Trainer(cardIndex, cardName, trainerType, ability));
+                        Card_Collection.push(new Trainer(cardIndex, cardName, trainerType, ability));
                         break;
-                    case "energy":
+                    case Card_Type.energy:
                         let energyInfos = subString.split(":");
                         let energyType = energyInfos[1];
+                        Card_Map.set(cardName, new Energy(cardIndex, cardName, energyType));
+                        Card_Collection.push(new Energy(cardIndex, cardName, energyType));
                         break;
                     default:
                         break;
                 }
             }
+        }
+    }
+}
+
+var Ability_Collection = new Array();
+function initAbility() {
+    let abilityStrings = abilityString.split('\n');
+    let abilityRegex = /^([a-zA-ZÀ-ÿ-' ]+):(.*)$/;
+    let abilityTypeRegex = /^([a-zA-Z]+):(.*)$/;
+    let abilityIndex = 0;
+
+    Ability_Collection.push(null);
+    for (let item of abilityStrings) {
+        if (item) {// ignore empty string
+            abilityIndex++;
+            let items = item.match(abilityRegex);
+            let abilityName = items[1];
+            items[2].split(",").forEach((value) => {
+                let typeInfos = value.match(abilityTypeRegex);
+                switch (typeInfos[1]) {
+                    case Ability_Type.dam:
+                        let damInfos = typeInfos[2].split(":");
+                        if (damInfos.length == 3) {
+                            let damTarget = damInfos[1];
+                            // 10; 20*count(target:your-bench); 
+                            let damHp = damInfos[2];
+                            Ability_Collection.push(new Dam(abilityIndex, damTarget, damHp));
+                        } else {//target:choice:opponent-bench:30
+                            let damTarget = damInfos[1] + ":" + damInfos[2];
+                            let damHp = damInfos[3];
+                            Ability_Collection.push(new Dam(abilityIndex, damTarget, damHp));
+                        }
+                        break;
+                    case Ability_Type.heal:
+                        let healInfos = typeInfos[2].split(":");
+                        //target:choice:your:60,
+                        let healHp = healInfos[3];
+                        Ability_Collection.push(new Heal(abilityIndex, healHp));
+                        break;
+                    case Ability_Type.deenergize:
+                        //target:your-active:1:(search:target:your:source:discard:filter:cat:item:1)
+                        //target:opponent-active:1
+                        //target:your-active:count(target:your-active:energy)
+                        //TODO
+                        let deenInfos = typeInfos[2].split(":");
+                        Ability_Collection.push(new Reenergize(abilityIndex));
+                        break;
+                    case Ability_Type.reenergize:
+                        //target:choice:your:1:target:choice:your:1
+                        let reenInfos = typeInfos[2].split(":");
+                        Ability_Collection.push(new Reenergize(abilityIndex, reenInfos[1] + ":" + reenInfos[2], reenInfos[4] + ":" + reenInfos[5], reenInfos[6]));
+                        break;
+                    case Ability_Type.redamage:
+                        //source:choice:opponent:destination:opponent:count(target:last:source:damage)
+                        //TODO
+                        Ability_Collection.push(new Redamage(abilityIndex, ));
+                        break;
+                    case Ability_Type.swap:
+                        //source:your-active:destination:choice:your-bench
+                        let swapInfos = typeInfos[2].split(":");
+                        let swapSource = swapInfos[1];
+                        let swapDestination = swapInfos[3] + ":" + swapInfos[4];
+                        Ability_Collection.push(new Swap(abilityIndex, swapSource, swapDestination));
+                        break;
+                    case Ability_Type.destat:
+                        //target:last
+                        let destatTarget = typeInfos[2].split(":")[1];
+                        Ability_Collection.push(new Destat(abilityIndex, destatTarget));
+                        break;
+                    case Ability_Type.applystat:
+                        let statInfos = typeInfos[2].split(":");
+                        let statusType = statInfos[1];
+                        let statusTarget = statInfos[2];
+                        Ability_Collection.push(new ApplyStat(abilityIndex, statusType, statusTarget));
+                        break;
+                    case Ability_Type.draw:
+                        let drawNumber = typeInfos[2].split(":")[1];
+                        Ability_Collection.push(new Draw(abilityIndex, drawNumber));
+                        break;
+                    case Ability_Type.search:
+                        //target:your:source:deck:filter:pokemon:cat:basic:2
+                        //target:your:source:deck:1
+                        //target:opponent:source:deck:filter:top:1:0
+                        //target:your:source:deck:filter:energy:4
+                        //target:choice:your-pokemon:cat:basic:source:deck:filter:evolves-from:target:last:1
+                        //TODO
+                        Ability_Collection.push(new Search(abilityIndex, ));
+                        break;
+                    case Ability_Type.deck:
+                        //target:opponent:destination:deck:bottom:choice:them:1
+                        //target:your:destination:deck:count(your-hand)
+                        //TODO
+                        let deckInfos = typeInfos[2].split(":");
+                        Ability_Collection.push(new Deck(abilityIndex, ));
+                        break;
+                    case Ability_Type.shuffle:
+                        //target:your
+                        let shuffleTarget = typeInfos[2].split(":")[1];
+                        Ability_Collection.push(new Shuffle(abilityIndex, shuffleTarget));
+                        break;
+                    case Ability_Type.cond:
+                        //TODO
+                        Ability_Collection.push(new Cond(abilityIndex, ));
+                        break;
+                    case Ability_Type.add:
+                        //target:your:trigger:opponent:turn-end:(heal:target:self:20)
+                        //TODO
+                        Ability_Collection.push(new Add(abilityIndex, ));
+                        break;
+                    default:
+                        break;
+                }
+            });
+
         }
     }
 }
