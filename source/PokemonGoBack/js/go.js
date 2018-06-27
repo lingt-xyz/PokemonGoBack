@@ -12,7 +12,7 @@ $(function () {
 
 	game.start();
 
-	//in order to enable/disable draggable during game , move all draggablefunction inside  game.js 
+	// set all cards draggable
 	$(".pokemonallcard").draggable({
 		appendTo: "body",
 		cursor: "move",
@@ -20,16 +20,50 @@ $(function () {
 		revert: "invalid",
 		//disabled: false
 	});
+
+	// set trainers and energy can be dropped to pokemon
+	$(".pokemonallcard").droppable({
+		tolerance: "intersect",
+		accept: ".pokemonallcard",
+		activeClass: "ui-state-default",
+		hoverClass: "ui-state-hover",
+		drop: function (event, ui) {
+			let target = $(this)[0];
+			let source = $(ui.draggable)[0];
+			let targetCard = Card_Collection[target.id];
+			let sourceCard = Card_Collection[source.id];
+			// TODO check parent class
+			if(sourceCard.cardType == Card_Type.trainer){
+				$("#battle-info").html("Apply trainer " + sourceCard.cardName + " to " + targetCard.cardName);
+				//$(this).append($(ui.draggable));
+			}else if(sourceCard.cardType == Card_Type.energy){
+				$("#battle-info").html("Apply energy " + sourceCard.cardName + " to " + targetCard.cardName);
+				$("#hiddenCards").append($(ui.draggable));
+			}else{
+				// pokemon, cannot put here
+			}
+		}
+	});
+
+	// set pokemons can be dragged to bench
 	$("#divCardActive").droppable({
 		tolerance: "intersect",
 		accept: ".pokemonallcard",
 		activeClass: "ui-state-default",
 		hoverClass: "ui-state-hover",
 		drop: function (event, ui) {
-			$(this).append($(ui.draggable));
+			let target = $(this)[0];
+			let source = $(ui.draggable)[0];
+			let sourceCard = Card_Collection[source.id];
+			if(sourceCard.cardType == Card_Type.pokemon){
+				$(this).append($(ui.draggable));
+			}else{
+				// not a pokemon, cannot put here
+			}
 		}
 	});
 
+	// set cards can be dragged to battle mat
 	$("#svgCardMat").droppable({
 		accept: ".pokemonallcard",
 		tolerance: "intersect",

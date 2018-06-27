@@ -6,13 +6,13 @@ class Card {
     }
 
     toHtml() {
-        return "<div id='draggable4' class='pokemonallcard ui-widget-header'>" + this.cardName + "<img height='90px' width='60px' src='image/" + this.cardName + "Card.png'></div>";
+        return "<div id='" + this.id + "' class='pokemonallcard ui-widget-header'>" + this.cardName + "<img height='90px' width='60px' src='image/" + this.cardName + "Card.png'></div>";
     }
 
     toHtmlAi() {
-        return "<div id='draggable4' class='pokemonCardAiHand ui-widget-header'>Card?<img height='90px' width='60px' src='image/DeckCard.png'></div>";
-
+        return "<div id='" + this.id + "' class='pokemonCardAiHand ui-widget-header'>Card?<img height='90px' width='60px' src='image/DeckCard.png'></div>";
     }
+
     toString() {
         return "Name:" + this.cardName + ", type:" + this.cardType;
     }
@@ -32,11 +32,11 @@ class Pokemon extends Card {
         this.currentHp = hp;
     }
 
-    toString(){
+    toString() {
         return super.toString() + ", stage:" + this.cardStage;
     }
 
-    clone(){
+    clone() {
         return new Pokemon(this.id, this.cardName, this.cardStage, this.cardBasic, this.property, this.hp, this.retreat, this.attacks);
     }
 }
@@ -48,11 +48,11 @@ class Trainer extends Card {
         this.ability = ability;
     }
 
-    toString(){
+    toString() {
         return super.toString() + ", ability:" + Ability_Collection[this.ability];
     }
 
-    clone(){
+    clone() {
         return new Trainer(this.id, this.cardName, this.trainerType, this.ability);
     }
 }
@@ -63,11 +63,11 @@ class Energy extends Card {
         this.energy = energy;
     }
 
-    toString(){
+    toString() {
         return super.toString() + "energy: " + this.energy;
     }
 
-    clone(){
+    clone() {
         return new Energy(this.id, this.cardName, this.energy);
     }
 }

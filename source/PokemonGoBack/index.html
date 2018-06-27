@@ -43,29 +43,28 @@
         <div class="row">
             <div class="col-md-10 offset-md-1" style="background-color: honeydew">
                 <div class="row">
-                    <div class="col-md-1 offset-md-1" id="divAiDiscard"><p id="divAiDiscard-p">Discard</p><img src="image/DeckCard.png" height="90" width="63" ></div>
-                    <div class="col-md-8" id="divAiActive"></div>
+                    <div class="col-md-1 offset-md-2" id="divAiDeck"><p id="divAiDeck-p">Deck</p><img src="image/DeckCard.png" height="90" width="63"></div>
+                    <div class="col-md-1" id="divAiDiscard"><p id="divAiDiscard-p">Discard</p><img src="image/DeckCard.png" height="90" width="63" ></div>
+                    <div class="col-md-6" id="divAiActive"></div>
                 </div>
                 <div class="row">
-                    <div class="col-md-1 offset-md-1" id="divAiDeck"><p id="divAiDeck-p">Deck</p><img src="image/DeckCard.png" height="90" width="63"></div>
-                </div>
-                <div class="row">
-                    <p id="svgCardMat-p"></p>
-                    <div class="col align-self-center" id="svgCardMat">
-                        <svg height="300" width="300"  >
+                    <div class="col-md-1 offset-md-2" id="svgCardMat-turn"></div>
+                    <div class="col-md-4 offset-md-1" id="svgCardMat">
+                        <svg height="300" width="300">
                             <ellipse cx="150" cy="150" rx="150" ry="150" style="fill:lightslategray;stroke:purple;stroke-width: 2px" id="svgCardMat"/>
                         </svg>
                     </div>
+                    <div class="col-md-2" id="battle-info"></div>
                 </div>
                 <div class="row">
-
-                    <div class="col-md-1 offset-md-10" id="divCardDeck"><p id="divCardDeck-p">Deck</p>
-                        <img src="image/DeckCard.png" height="90" width="63"></div>
-                </div>
-                <div class="row">
-                    <div class="col-md-8 offset-md-2" id="divCardActive"></div>
-                    <div class="col-md-1" id="divCardDiscard"><p id="divCardDiscard-p" >Discard</p>
-                        <img src="image/DeckCard.png" height="90" width="63"></div>
+                    <div class="col-md-6 offset-md-2" id="divCardActive"></div>
+                    <div class="col-md-1" id="divCardDiscard"><p id="divCardDiscard-p">Discard</p>
+                        <img src="image/DeckCard.png" height="90" width="63">
+                    </div>
+                    <div class="col-md-1" id="divCardDeck"><p id="divCardDeck-p">Deck</p>
+                        <img src="image/DeckCard.png" height="90" width="63">
+                    </div>
+                    <div class="" id="hiddenCards" style="display:none;"></div>
                 </div>
             </div>
         </div>

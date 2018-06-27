@@ -15,23 +15,27 @@ class Game {
 		$("#divCardDeck-p").html("Deck:" + this.player.deck.length);
 		$("#divCardDiscard-p").html("Discard:" + this.player.cardDiscard.length)
 
+
+		// show user's cards
 		this.player.cardInHand.forEach(element => {
 			$("#divCardInHand").append(element.toHtml());
 		});
 		$("#divCardDeck-p").html("Deck:" + this.player.deck.length);
 
+		// show AI's cards
 		this.ai.cardInHand.forEach(element => {
 			$("#divAiHand").append(element.toHtmlAi());
 		});
 		$("#divAiDeck-p").html("Deck:" + this.ai.deck.length);
 
+		// decide who is first
 		this.flipCoin(1);
 		if (this.coinHead == 1) {//player's turn
-			$("#svgCardMat-p").html("Player's Turn");
+			$("#svgCardMat-turn").html("Player's Turn");
 			$(".pokemonallcard").draggable({ disabled: false });
 		} else {//AI's turn
 			//try disable player 
-			$("#svgCardMat-p").html("AI's Turn");
+			$("#svgCardMat-turn").html("AI's Turn");
 			$(".pokemonallcard").draggable({ disabled: true });
 		}
 	}
