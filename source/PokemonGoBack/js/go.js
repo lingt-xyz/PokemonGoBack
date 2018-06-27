@@ -77,9 +77,12 @@ $("#svgCardMat").droppable({
 					at: "bottom",
 					of: $this,
 					using: function(pos) {
-						$(this).animate(pos, 100, "linear");
+						$(this).animate(pos, 200, "linear");
+						
 					}
+					
 				})
+				//ui.draggable({disabled:false});
 				}
 		});
 	
