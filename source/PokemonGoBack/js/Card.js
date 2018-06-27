@@ -5,6 +5,12 @@ class Card {
         this.cardType = cardType;
     }
 
+    getImageName(){
+        // TODO convert French letters to English letters
+        // TODO remove blans between letters
+        // TODO e.g.: a b c =>abc
+    }
+
     toHtml() {
         return "<div id='" + this.id + "' class='pokemonallcard ui-widget-header'>" + this.cardName + "<img height='90px' width='60px' src='image/" + this.cardName + "Card.png'></div>";
     }
