@@ -9,6 +9,7 @@ class Card {
     getImageName(){
         // TODO convert French letters to English letters, remove blanks between letters
         // e.g.: a b c =>abcCard.png
+        return this.cardName + ".png";
     }
 
     toHtml() {
