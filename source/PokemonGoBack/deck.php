@@ -24,6 +24,7 @@
 
             <?php
             require_once( 'util.php');
+            require_once( 'Card.php');
             require_once( 'db.php');
 
             if(!isset($_SESSION)){
@@ -35,7 +36,21 @@
                 echo '<a class="p-2 text-dark" href="#">' . $_SESSION['user_name'] . ' </a>';
                 echo '<a class="btn btn-outline-primary" href="signout.php">Log out</a>';
 
-                // step 2 deck
+                // step 2: card collection
+                if (isset($_SESSION['cards_user'])){
+
+                }else{
+                    $query = new pokemongoback_db();
+                    $cards = $query -> card_collection_query_user_name($_SESSION['user_name']);
+                    if(count($cards) == 0){
+                        header('Location: collection.php');
+                        exit();
+                    }else{
+                        $_SESSION['cards_user'] = $cards;
+                    }
+                }
+
+                // step 3: deck
                 $deck_1 = "";
                 $deck_2 = "";
                 if (getenv('REQUEST_METHOD') == 'POST') {
@@ -63,6 +78,34 @@
     </div>
 
     <div class="container-fluid">
+		<div class="row">
+			<div class="col-md-8 offset-md-2">
+				<div class="row">
+					<div class="col-md-6">
+						<?php
+							if(count($deck_user) != 0){
+								echo "<table>";
+								foreach($deck_user as $card) {
+									echo '<tr><td>' . $card->quantity. '</td><td>' .$card->name. '</td><td>' .$card->category. '</td><td>' .$card->hp. '</td><td>' .$card->type. '</td></tr>';
+								}
+								echo "</table>";
+							}
+						?>
+					</div>
+					<div class="col-md-6">
+						<?php
+							if(count($deck_ai) != 0){
+								echo "<table>";
+								foreach($deck_ai as $card) {
+									echo '<tr><td>' . $card->quantity. '</td><td>' .$card->name. '</td><td>' .$card->category. '</td><td>' .$card->hp. '</td><td>' .$card->type. '</td></tr>';
+								}
+								echo "</table>";
+							}
+						?>
+					</div>
+				</div>
+			</div>
+		</div<
         <div class="row">
             <div class="col-md-8 offset-md-2">
 				<form id="upload_form" action="deck.php" method="post">
