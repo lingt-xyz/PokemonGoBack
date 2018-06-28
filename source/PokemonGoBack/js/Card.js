@@ -12,7 +12,7 @@ class Card {
     }
 
     toHtml() {
-        return "<div id='" + this.id + "' class='pokemonallcard ui-widget-header'>" + this.cardName + "<img height='90px' width='60px' src='image/" + this.cardName + ".png'></div>";
+        return "<div id='" + this.id + "' class='pokemonallcard ui-widget-header'>" + this.cardName +"<br>Energy:"+this.currentEnergy+"<br>Hp:"+this.currentHp+"/"+this.hp+"<img height='90px' width='60px' src='image/" + this.cardName +".png'></div>";
     }
 
     toHtmlAi() {
