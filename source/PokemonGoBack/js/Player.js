@@ -19,9 +19,7 @@ class Player {
         });
 
         this.buildCardInHand();
-		//Test look at discard
-		this.cardDiscard.push(this.deck[0]);
-		this.cardDiscard.push(this.deck[1]);
+		
     }
 		
     // build deck: user fixed order or randomly generate
@@ -87,7 +85,23 @@ class Player {
             }
         }
     }
-
+	
+	putToDiscardAi(){
+		//put active card to discard
+		//test just put deckcard to discard
+		 this.cardDiscard.unshift(this.deck[0]);
+		 this.deck.shift();
+		 $("#divAiDeck-p").html("Deck:" + this.deck.length)
+		 $("#divAiDiscard-p").html("Discard:" + this.cardDiscard.length);
+	}
+	putToDiscard(){
+		//put active card to discard
+		//test just put deckcard to discard
+		 this.cardDiscard.unshift(this.deck[0]);
+		 this.deck.shift();
+		 $("#divCardDeck-p").html("Deck:" + this.deck.length);
+		 $("#divCardDiscard-p").html("Discard:" + this.cardDiscard.length);
+	}
     // check Mulligan by looking into cards in hands
     isMulligan() {
         return !(this.cardInHand.find(item => item.cardType == Card_Type.pokemon));

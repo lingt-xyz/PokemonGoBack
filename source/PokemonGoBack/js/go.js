@@ -89,10 +89,18 @@ $(function () {
 		$("#battle-info").html(game.player.monitorDeck[$(this).attr("data-deckId")].toString());
 	});
 	
-	//lookatdiscard
+	//lookatdiscard//TODO:MAKE THE CARD SHOW IN THE BATTLE-INFO AUTO-SIZING TO FIT THE DIV OR MAKE A SCROLLER AREA
 	$("#divCardDiscard").dblclick(function(){
 		$("#battle-info").empty();
 		game.player.cardDiscard.forEach((element) => {
+			$("#battle-info").append(element.toHtml());
+		});
+		
+	}); 	
+	//lookatdiscardAi
+	$("#divAiDiscard").dblclick(function(){
+		$("#battle-info").empty();
+		game.ai.cardDiscard.forEach((element) => {
 			$("#battle-info").append(element.toHtml());
 		});
 		

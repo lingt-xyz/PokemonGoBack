@@ -11,10 +11,12 @@ class Card {
         // TODO convert French letters to English letters, remove blanks between letters
         // e.g.: a b c =>abcCard.png
     }
+	
 
     toHtml() {
         return "<div id='" + this.id + "' data-deckId='"+ this.deckId+ "' class='pokemonallcard ui-widget-header'>" + this.cardName + "<img height='90px' width='60px' src='image/" + this.cardName + ".png'></div>";
     }
+	
 
     toHtmlAi() {
         return "<div id='" + this.id + "' class='pokemonCardAiHand ui-widget-header'>Card?<img height='90px' width='60px' src='image/DeckCard.png'></div>";

@@ -26,7 +26,13 @@ class Game {
 			$("#divAiHand").append(element.toHtmlAi());
 		});
 		$("#divAiDeck-p").html("Deck:" + this.ai.deck.length);
-
+		//Test look at discard
+		this.player.putToDiscard();
+		this.player.putToDiscard();
+		this.player.putToDiscard();
+		this.player.putToDiscard();
+		
+		this.ai.putToDiscardAi();
 		// decide who is first
 		this.flipCoin(1);
 		if (this.coinHead == 1) {//player's turn
