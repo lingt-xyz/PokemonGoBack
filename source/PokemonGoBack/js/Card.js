@@ -38,6 +38,13 @@ class Pokemon extends Card {
         this.currentHp = hp;
     }
 
+	attack(target, abilityIndex){
+let ability = Ability_Collection[abilityIndex];
+if(ability instanceof Dam){
+switch(ability.target):
+case: 
+}
+
     toString() {
         return super.toString() + ", stage:" + this.cardStage;
     }
