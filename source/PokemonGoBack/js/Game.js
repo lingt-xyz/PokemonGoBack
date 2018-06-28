@@ -50,7 +50,6 @@ class Game {
 		{//player's turn
 			$("#svgCardMat-p").html("Player's Turn");
 			$( ".pokemonallcard" ).draggable({disabled:false});
-			
 		}	
 		else{
 			//AI's turn
