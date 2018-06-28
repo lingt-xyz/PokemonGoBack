@@ -50,18 +50,21 @@
                 <div class="row">
                     <div class="col-md-1 offset-md-2" id="svgCardMat-turn"></div>
                     <div class="col-md-4 offset-md-1" id="svgCardMat">
+			<div></div>
                         <svg height="300" width="300">
                             <ellipse cx="150" cy="150" rx="150" ry="150" style="fill:lightslategray;stroke:purple;stroke-width: 2px" id="svgCardMat"/>
                         </svg>
+			<div class="dragPlayer"></div>
                     </div>
                     <div class="col-md-2" id="battle-info"></div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6 offset-md-2" id="divCardActive"></div>
+                    <div class="col-md-1 offset-md-2"> <button type="button" id="endTurn" onclick="alert('Hello World!')">End My Turn</button> </div>
+                    <div class="col-md-5" id="divCardActive"></div>
                     <div class="col-md-1" id="divCardDiscard"><p id="divCardDiscard-p">Discard</p>
                         <img src="image/DeckCard.png" height="90" width="63">
                     </div>
-                    <div class="col-md-1" id="divCardDeck"><p id="divCardDeck-p">Deck</p>
+                    <div class="col-md-1 dragPlayer" id="divCardDeck"><p id="divCardDeck-p">Deck</p>
                         <img src="image/DeckCard.png" height="90" width="63">
                     </div>
                     <div class="" id="hiddenCards" style="display:none;"></div>
@@ -70,7 +73,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-8 offset-md-2 draggable ui-widget-content" id="divCardInHand"></div>
+        <div class="col-md-8 offset-md-2 draggable ui-widget-content dragPlayer" id="divCardInHand"></div>
     </div>
 </div>
 </body>
