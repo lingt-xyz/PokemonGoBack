@@ -1,87 +1,84 @@
 $(function () {
 	// make up some data
-	let cardType = { Energy: "Energy", PokeMon: "PokeMon", Trainer: "Trainer" };
-	let energyType = { Colorless: "colorless", Water: "water", Lightning: "lightning", Psychic: "psychic", Fighting: "fighting", notE: "ne" };
+	let userOrder = [51, 52, 53, 58, 44, 43, 33, 32, 57, 57, 34, 35, 33, 33, 45, 46, 28, 31, 46, 47, 29, 57, 58, 57, 57, 55, 58, 56, 58, 58, 58, 57, 48, 57, 57, 38, 58, 58, 34, 36, 37, 54, 39, 52, 41, 49, 50, 37, 58, 39, 40, 40, 57, 47, 36, 30, 58, 54, 57, 30];
+	let aiOrder = userOrder;
 
-	let cardDeck = [];
-	cardDeck.push(new Card('Pikachu', cardType.PokeMon, 60, 0, 3));
-	cardDeck.push(new Card('Energy', cardType.Energy, 0, 1, 0));
-	cardDeck.push(new Card('Energy', cardType.Energy, 0, 1, 0));
-	cardDeck.push(new Card('Energy', cardType.Energy, 0, 1, 0));
-	cardDeck.push(new Card('Energy', cardType.Energy, 0, 1, 0));
-	cardDeck.push(new Card('Zapdos', cardType.Energy, 120, 0, 4));
-	cardDeck.push(new Card('Energy', cardType.Energy, 0, 1, 0));
-	cardDeck.push(new Card('Energy', cardType.Energy, 0, 1, 0));
-	cardDeck.push(new Card('Energy', cardType.Energy, 0, 1, 0));
-	cardDeck.push(new Card('Energy', cardType.Energy, 0, 1, 0));
-	cardDeck.push(new Card('Energy', cardType.Energy, 0, 1, 0));
-	cardDeck.push(new Card('Energy', cardType.Energy, 0, 1, 0));
-	cardDeck.push(new Card('Energy', cardType.Energy, 0, 1, 0));
+	initAbility();
+	initCardCollection();
 
-	let cardDeckai = [];
-	cardDeckai.push(new Card('Pikachu', cardType.PokeMon, 60, 0, 3));
-	cardDeckai.push(new Card('Energy', cardType.Energy, 0, 1, 0));
-	cardDeckai.push(new Card('Energy', cardType.Energy, 0, 1, 0));
-	cardDeckai.push(new Card('Energy', cardType.Energy, 0, 1, 0));
-	cardDeckai.push(new Card('Energy', cardType.Energy, 0, 1, 0));
-	cardDeckai.push(new Card('Zapdos', cardType.Energy, 120, 0, 4));
-	cardDeckai.push(new Card('Energy', cardType.Energy, 0, 1, 0));
-	cardDeckai.push(new Card('Energy', cardType.Energy, 0, 1, 0));
-	cardDeckai.push(new Card('Energy', cardType.Energy, 0, 1, 0));
-	cardDeckai.push(new Card('Energy', cardType.Energy, 0, 1, 0));
-	cardDeckai.push(new Card('Energy', cardType.Energy, 0, 1, 0));
-	cardDeckai.push(new Card('Energy', cardType.Energy, 0, 1, 0));
-	cardDeckai.push(new Card('Energy', cardType.Energy, 0, 1, 0));
-
-	let player = new Player(cardDeck, cardDeck);
-	let ai = new Player(cardDeck, cardDeckai);
+	let player = new Player(userOrder, false);
+	let ai = new Player(aiOrder, true);
 	let game = new Game(player, ai);
-	
-	
-		
+
 	game.start();
 
-	//$( "#draggable" ).draggable({ axis: "y" });
-    //$( "#draggable3" ).draggable({ axis: "x" });
- 
-    //$( "#draggable3" ).draggable({ containment: "#containment-wrapper", scroll: false });
-	//$( "#draggable4" ).draggable({ containment: "parent" });
+	// set all cards draggable
+	$(".pokemonallcard").draggable({
+		appendTo: "body",
+		cursor: "move",
+		helper: 'clone',
+		revert: "invalid",
+		//disabled: false
+	});
 
-	//in order to enable/disable draggable during game , move all draggablefunction inside  game.js 
-	$( ".pokemonallcard" ).draggable({
-			appendTo: "body",
-			cursor: "move",
-			helper: 'clone',
-			revert: "invalid",
-			//disabled: false
-		});
-	$("#divCardActive").droppable({
-			tolerance: "intersect",
-			accept: ".pokemonallcard",
-			activeClass: "ui-state-default",
-			hoverClass: "ui-state-hover",
-			drop: function(event, ui) {        
-				$(this).append($(ui.draggable));
+	// set trainers and energy can be dropped to pokemon
+	$(".pokemonallcard").droppable({
+		tolerance: "intersect",
+		accept: ".pokemonallcard",
+		activeClass: "ui-state-default",
+		hoverClass: "ui-state-hover",
+		drop: function (event, ui) {
+			let target = $(this)[0];
+			let source = $(ui.draggable)[0];
+			let targetCard = Card_Collection[target.id];
+			let sourceCard = Card_Collection[source.id];
+			// TODO check parent class
+			if(sourceCard.cardType == Card_Type.trainer){
+				$("#battle-info").html("Apply trainer " + sourceCard.cardName + " to " + targetCard.cardName);
+				//$(this).append($(ui.draggable));
+			}else if(sourceCard.cardType == Card_Type.energy){
+				$("#battle-info").html("Apply energy " + sourceCard.cardName + " to " + targetCard.cardName);
+				$("#hiddenCards").append($(ui.draggable));
+			}else{
+				// pokemon, cannot put here
 			}
-		});
+		}
+	});
 
-$("#svgCardMat").droppable({
-			accept:".pokemonallcard",
-			tolerance: "intersect",
-			activeClass: "ui-state-default",
-			hoverClass: "ui-state-hover",
-			drop: function(event, ui) {
-				var $this = $(this);
-				ui.draggable.position({
-					my: "bottom",
-					at: "bottom",
-					of: $this,
-					using: function(pos) {
-						$(this).animate(pos, 100, "linear");
-					}
-				})
+	// set pokemons can be dragged to bench
+	$("#divCardActive").droppable({
+		tolerance: "intersect",
+		accept: ".pokemonallcard",
+		activeClass: "ui-state-default",
+		hoverClass: "ui-state-hover",
+		drop: function (event, ui) {
+			let target = $(this)[0];
+			let source = $(ui.draggable)[0];
+			let sourceCard = Card_Collection[source.id];
+			if(sourceCard.cardType == Card_Type.pokemon){
+				$(this).append($(ui.draggable));
+			}else{
+				// not a pokemon, cannot put here
+			}
+		}
+	});
+
+	// set cards can be dragged to battle mat
+	$("#svgCardMat").droppable({
+		accept: ".pokemonallcard",
+		tolerance: "intersect",
+		activeClass: "ui-state-default",
+		hoverClass: "ui-state-hover",
+		drop: function (event, ui) {
+			var $this = $(this);
+			ui.draggable.position({
+				my: "bottom",
+				at: "bottom",
+				of: $this,
+				using: function (pos) {
+					$(this).animate(pos, 100, "linear");
 				}
-		});
-	
-	
+			})
+		}
+	});
 });

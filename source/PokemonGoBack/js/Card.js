@@ -1,61 +1,79 @@
 class Card {
-    constructor(name, cardType, hp, initalep, maxep) {
-        //energy card  has 0 hp, 1ep and 0maxep--> cannot apply energy card on it
-        //& train card has 0 hp ,0 ep and 0 maxep
-        this.cardName = name;
+    constructor(id, cardName, cardType) {
+        this.id = id;
+        this.cardName = cardName;
         this.cardType = cardType;
-        this.cardCurrentHealth = hp;
-        this.CardMaxHealth = hp;
-        this.cardCurrentEnergy = initalep;
-        this.cardMaxEnergy = maxep;
-		
+    }
+
+    // Generate a string that can match it's picture's name
+    getImageName(){
+        // TODO convert French letters to English letters, remove blanks between letters
+        // e.g.: a b c =>abcCard.png
     }
 
     toHtml() {
-      return "<div id='draggable4' class='pokemonallcard ui-widget-header'>" + this.cardName +"<img height='90px' width='60px' src='image/" + this.cardName +"Card.png'></div>";
-		
+        return "<div id='" + this.id + "' class='pokemonallcard ui-widget-header'>" + this.cardName + "<img height='90px' width='60px' src='image/" + this.cardName + "Card.png'></div>";
     }
+
     toHtmlAi() {
-      return "<div id='draggable4' class='pokemonCardAiHand ui-widget-header'>Card?<img height='90px' width='60px' src='image/DeckCard.png'></div>";
-		
+        return "<div id='" + this.id + "' class='pokemonCardAiHand ui-widget-header'>Card?<img height='90px' width='60px' src='image/DeckCard.png'></div>";
     }
+
     toString() {
-        var str = "";
-        switch (this.cardType) {
-            case cardType.Energy:
-                str = "Energy";
-                /*switch(this.energyType){
-                    case energyType.Colorless:str += ": colorless";break;
-                    case energyType.Water: str += ": water";break;
-                    case energyType.Lightning: str+=": lightning";break;
-                    case energyType.Psychic: str+= ": psychic"; break;
-                    case energyType.Fighting: str+=": fighting";break;
-                    case energyType.notE: srt = "error, not energy card"; break;
-                }*/
-                break;
-            case cardType.PokeMon:
-                str = "Pokemon";
-                /*switch(this.pokemonType)
-                {
-                    case pokemonType.Basic: str+=": basic";break;
-                    case pokemonType.Stage-one: str+=": stage1";break;
-                    case pokemonType.notP: str ="error, not pokemon card";break;
-                }		*/
-                break;
-            case cardType.Trainer:
-                str = "Trainer";
-                /*switch(this.trainType)
-                {
-                    case trainType.Stadium: str+=": stadium"; break;
-                    case trainType.Supporter: str+=": supporter"; break;
-                    case trainType.Itemm: str+=": item"; break;
-                    case trainType.notT: str ="error, not trainer card"; break;
-                }*/
-                break;
-            default:
-                alert('Default case');
-        }
-        document.getElementById("handcard").innerHTML = "switch funtion";
-        //return "Card: "+this.cardName + ":" + str + this.hp+" "+this.initalep+" "+this.maxep;
+        return "Name:" + this.cardName + ", type:" + this.cardType;
+    }
+}
+
+class Pokemon extends Card {
+    constructor(id, cardName, cardStage, cardBasic, property, hp, retreat, attacks) {
+        super(id, cardName, Card_Type.pokemon);
+        this.cardStage = cardStage;
+        this.cardBasic = cardBasic;
+        this.property = property;
+        this.hp = hp;
+        //[retreatEnergyPoint, retreatEnergyType]
+        this.retreat = retreat;
+        //[energyType1, energyType1Point, energyType2, energyType2Point, ability]
+        this.attacks = attacks;
+        this.currentHp = hp;
+    }
+
+    toString() {
+        return super.toString() + ", stage:" + this.cardStage;
+    }
+
+    clone() {
+        return new Pokemon(this.id, this.cardName, this.cardStage, this.cardBasic, this.property, this.hp, this.retreat, this.attacks);
+    }
+}
+
+class Trainer extends Card {
+    constructor(id, cardName, trainerType, ability) {
+        super(id, cardName, Card_Type.trainer);
+        this.trainerType = trainerType;
+        this.ability = ability;
+    }
+
+    toString() {
+        return super.toString() + ", ability:" + Ability_Collection[this.ability];
+    }
+
+    clone() {
+        return new Trainer(this.id, this.cardName, this.trainerType, this.ability);
+    }
+}
+
+class Energy extends Card {
+    constructor(id, cardName, energy) {
+        super(id, cardName, Card_Type.energy);
+        this.energy = energy;
+    }
+
+    toString() {
+        return super.toString() + "energy: " + this.energy;
+    }
+
+    clone() {
+        return new Energy(this.id, this.cardName, this.energy);
     }
 }
