@@ -1,9 +1,14 @@
 class Card {
-    constructor(id, cardName, cardType) {
+    constructor(id, cardName, cardType, isAi) {
         this.id = id;
         this.deckId = 0;
         this.cardName = cardName;
         this.cardType = cardType;
+	if(isAi){
+		this.role = "ai";
+	}else{
+		this.role = "player";
+	}
     }
 
     // Generate a string that can match it's picture's name
@@ -14,7 +19,7 @@ class Card {
 	
 
     toHtml() {
-        return "<div id='" + this.id + "' data-deckId='"+ this.deckId+ "' class='pokemonallcard ui-widget-header'>" + this.cardName + "<img height='90px' width='60px' src='image/" + this.cardName + ".png'></div>";
+        return "<div id='" + this.id + "' data-deckId='"+ this.deckId+ "' data-role='"+ this.role+ "' class='pokemonallcard ui-widget-header'>" + this.cardName + "<img height='90px' width='60px' src='image/" + this.cardName + ".png'></div>";
     }
 	
 
@@ -28,8 +33,8 @@ class Card {
 }
 
 class Pokemon extends Card {
-    constructor(id, cardName, cardStage, cardBasic, property, hp, retreat, attacks) {
-        super(id, cardName, Card_Type.pokemon);
+    constructor(id, cardName, cardStage, cardBasic, property, hp, retreat, attacks, isAi) {
+        super(id, cardName, Card_Type.pokemon, isAi);
         this.cardStage = cardStage;
         this.cardBasic = cardBasic;
         this.property = property;
@@ -365,14 +370,14 @@ class Pokemon extends Card {
         return super.toString() + ", stage:" + this.cardStage + ", currenyEnergy:" + this.currentEnergy + ", currenyHP:" + this.currentHp + ", Max HP:" + this.hp + ", attacks:" + s;
     }
 
-    clone() {
-        return new Pokemon(this.id, this.cardName, this.cardStage, this.cardBasic, this.property, this.hp, this.retreat, this.attacks);
+    clone(isAi) {
+        return new Pokemon(this.id, this.cardName, this.cardStage, this.cardBasic, this.property, this.hp, this.retreat, this.attacks, isAi);
     }
 }
 
 class Trainer extends Card {
-    constructor(id, cardName, trainerType, ability) {
-        super(id, cardName, Card_Type.trainer);
+    constructor(id, cardName, trainerType, ability, isAi) {
+        super(id, cardName, Card_Type.trainer, isAi);
         this.trainerType = trainerType;
         this.ability = ability;
     }
@@ -385,14 +390,14 @@ class Trainer extends Card {
         return super.toString() + ", ability:" + Ability_Collection[this.ability].abilityName;
     }
 
-    clone() {
-        return new Trainer(this.id, this.cardName, this.trainerType, this.ability);
+    clone(isAi) {
+        return new Trainer(this.id, this.cardName, this.trainerType, this.ability, isAi);
     }
 }
 
 class Energy extends Card {
-    constructor(id, cardName, energy) {
-        super(id, cardName, Card_Type.energy);
+    constructor(id, cardName, energy, isAi) {
+        super(id, cardName, Card_Type.energy, isAi);
         this.energy = energy;
     }
 /*
@@ -404,7 +409,7 @@ class Energy extends Card {
         return super.toString() + ", energy: " + this.energy;
     }
 
-    clone() {
-        return new Energy(this.id, this.cardName, this.energy);
+    clone(isAi) {
+        return new Energy(this.id, this.cardName, this.energy, isAi);
     }
 }

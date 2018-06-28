@@ -26,7 +26,7 @@ class Player {
     buildDeck() {
         if (this.order) {// if a order is given
             this.order.forEach((element, index) => {
-                this.deck[index] = Card_Collection[element].clone();
+                this.deck[index] = Card_Collection[element].clone(this.isAi);
             });
         } else {// generate deck
             this.generateDeck();
@@ -41,7 +41,7 @@ class Player {
         while (tempPokemonCount < pokemonCount) {
             let index = Math.floor(Math.random() * Card_Collection.length);
             if (Card_Collection[index].cardType == Card_Type.pokemon) {
-                this.deck.push(Card_Collection[index]);
+                this.deck.push(Card_Collection[index].clone(this.isAi));
                 tempPokemonCount++;
             }
         }
