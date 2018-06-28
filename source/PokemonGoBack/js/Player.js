@@ -4,11 +4,20 @@ class Player {
         this.isAi = isAi;
         this.cardCollection = Card_Collection;
         this.deck = [];
+        // this deck is used to store all the cards' current info
+        this.monitorDeck = [];
         this.cardInHand = [];
         //card in bench
         this.cardActive = [];
         this.cardDiscard = [];
         this.buildDeck();
+        
+        // to update deckId, so we can track cards' information from monitorDeck
+        this.deck.forEach((element, index) => {
+            element.deckId = index;
+            this.monitorDeck.push(element);
+        });
+
         this.buildCardInHand();
     }
 
@@ -19,7 +28,7 @@ class Player {
                 this.deck[index] = Card_Collection[element].clone();
             });
         } else {// generate deck
-            generateDeck();
+            this.generateDeck();
         }
     }
 

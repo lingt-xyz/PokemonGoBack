@@ -15,9 +15,8 @@ class Game {
 		$("#divCardDeck-p").html("Deck:" + this.player.deck.length);
 		$("#divCardDiscard-p").html("Discard:" + this.player.cardDiscard.length)
 
-
 		// show user's cards
-		this.player.cardInHand.forEach(element => {
+		this.player.cardInHand.forEach((element) => {
 			$("#divCardInHand").append(element.toHtml());
 		});
 		$("#divCardDeck-p").html("Deck:" + this.player.deck.length);

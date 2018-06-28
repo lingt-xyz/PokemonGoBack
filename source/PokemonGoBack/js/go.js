@@ -30,14 +30,16 @@ $(function () {
 		drop: function (event, ui) {
 			let target = $(this)[0];
 			let source = $(ui.draggable)[0];
-			let targetCard = Card_Collection[target.id];
-			let sourceCard = Card_Collection[source.id];
+			let targetCard = game.player.monitorDeck[target.attributes["data-deckId"].value];
+			let sourceCard = game.player.monitorDeck[source.attributes["data-deckId"].value];
 			// TODO check parent class
 			if(sourceCard.cardType == Card_Type.trainer){
 				$("#battle-info").html("Apply trainer " + sourceCard.cardName + " to " + targetCard.cardName);
 				//$(this).append($(ui.draggable));
 			}else if(sourceCard.cardType == Card_Type.energy){
 				$("#battle-info").html("Apply energy " + sourceCard.cardName + " to " + targetCard.cardName);
+				//targetCard.currentEnergy += sourceCard.energy;
+				targetCard.currentEnergy += 1;
 				$("#hiddenCards").append($(ui.draggable));
 			}else{
 				// pokemon, cannot put here
@@ -80,5 +82,9 @@ $(function () {
 				}
 			})
 		}
+	});
+
+	$(".pokemonallcard").dblclick(function(){
+		$("#battle-info").html(game.player.monitorDeck[$(this).attr("data-deckId")].toString());
 	});
 });
