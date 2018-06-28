@@ -85,6 +85,16 @@ $(function () {
 	});
 
 	$(".pokemonallcard").dblclick(function(){
+		
 		$("#battle-info").html(game.player.monitorDeck[$(this).attr("data-deckId")].toString());
+	});
+	
+	//lookatdiscard
+	$("#divCardDiscard").dblclick(function(){
+		$("#battle-info").empty();
+		game.player.cardDiscard.forEach((element) => {
+			$("#battle-info").append(element.toHtml());
+		});
+		
 	});
 });

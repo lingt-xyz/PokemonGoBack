@@ -19,8 +19,11 @@ class Player {
         });
 
         this.buildCardInHand();
+		//Test look at discard
+		this.cardDiscard.push(this.deck[0]);
+		this.cardDiscard.push(this.deck[1]);
     }
-
+		
     // build deck: user fixed order or randomly generate
     buildDeck() {
         if (this.order) {// if a order is given
