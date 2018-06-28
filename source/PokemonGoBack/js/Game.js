@@ -6,7 +6,17 @@ class Game {
 		this.coinTail = 0;
 		this.currentPlayer = null;
 	}
-
+    playerEndTurnButton()
+	{
+		var x = document.getElementById("endTurn");
+		if(this.player.ismyTurn = true)
+		{
+			x.style.display = "block";
+		}else
+			x.style.display = "none";
+		
+	}
+	
 	// Pokemon, GoGoGo!
 	start() {
 		$("#divAiDeck-p").html("Deck:" + this.ai.deck.length);
@@ -36,6 +46,8 @@ class Game {
 		// decide who is first
 		this.flipCoin(1);
 		if (this.coinHead == 1) {//player's turn
+			this.player.ismyTurn =true;
+			this.playerEndTurnButton();
 			$("#svgCardMat-turn").html("Player's Turn");
 			$(".pokemonallcard").draggable({ disabled: false });
 		} else {//AI's turn

@@ -9,7 +9,12 @@ $(function () {
 	let player = new Player(userOrder, false);
 	let ai = new Player(aiOrder, true);
 	let game = new Game(player, ai);
-
+	
+	/*function playerEndTurn()
+	{
+		game.player.ismyturn = false;
+		
+	}*/
 	game.start();
 
 	// set all cards draggable
