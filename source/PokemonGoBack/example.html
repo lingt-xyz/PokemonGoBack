@@ -1,78 +1,55 @@
-<html lang="en">
+<!DOCTYPE HTML>
+<html>
+
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="shortcut icon" href="image/favicon.ico" />
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
-    <link rel="stylesheet" href="css/grid.css">
-    <link rel="stylesheet" href="css/pokemon.css">
+    <style>
+        div {
+            width: 200px;
+            height: 50px;
+            border: 1px solid #aaaaaa;
+        }
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-
-    <script src="js/util.js"></script>
-    <script src="js/Ability.js"></script>
-    <script src="js/Card.js"></script>
-    <script src="js/Player.js"></script>
-    <script src="js/Game.js"></script>
-    <script src="js/Metadata.js"></script>
+        .card {
+            width: 40px;
+            height: 40px;
+            padding: 1px;
+            border: 1px solid #aaaaaa;
+        }
+    </style>
     <script>
         function dragstart_handler(ev) {
-            // Add the target element's id to the data transfer object
-            ev.dataTransfer.setData("text/plain", ev.target.id);
-            ev.dropEffect = "move";
+            ev.dataTransfer.setData("id", ev.target.id);
+            ev.dataTransfer.setData("deckId",ev.target.attributes["data-deckId"].value);
+            //ev.dataTransfer.setData("role",ev.target.attributes["data-role"].value);
+            //ev.dataTransfer.setData("type",ev.target.attributes["data-type"].value);
         }
+
         function dragover_handler(ev) {
             ev.preventDefault();
-            // Set the dropEffect to move
-            ev.dataTransfer.dropEffect = "move"
-        }
-        function drop_handler(ev) {
-            ev.preventDefault();
-            // Get the id of the target and add the moved element to the target's DOM
-            var data = ev.dataTransfer.getData("text");
-            ev.target.appendChild(document.getElementById(data));
+            ev.dataTransfer.dropEffect = "move";
         }
 
         function drop_handler_card(ev) {
             ev.preventDefault();
-            // Get the id of the target and add the moved element to the target's DOM
-            var data = ev.dataTransfer.getData("text");
-            alert(document.getElementById(data));
+            var data = ev.dataTransfer.getData("id");
+            //alert(data);
+            alert(ev.dataTransfer.getData("deckId"));
+            ev.target.appendChild(document.getElementById(data));
+            var ele = document.getElementById(data);
+            //alert(ele.attributes["data-deckId"].value);
         }
     </script>
 </head>
-<body class="text-center">
-<div class="container-fluid" id="divPlayMat">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-10 offset-md-1" style="background-color: honeydew">
-                <div class="row">
-                    <p id="svgCardMat-p"></p>
-                    <div class="col align-self-center" id="svgCardMat">zone 3
-                        <svg height="300" width="300"  >
-                            <ellipse cx="150" cy="150" rx="150" ry="150" style="fill:lightslategray;stroke:purple;stroke-width: 2px" id="svgCardMat"></ellipse>
-                        </svg>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-8 offset-md-2" id="target" ondrop="drop_handler(event);" ondragover="dragover_handler(event);">zone 2</div>
-                </div>
-            </div>
+
+<body>
+    <div id="divAi" ondrop="drop_handler_card(event)" ondragover="dragover_handler(event)"></div>
+    <div id="divUser" ondrop="drop_handler_card(event)" ondragover="dragover_handler(event)"></div>
+    <div id="divBench" ondrop="drop_handler_card(event)" ondragover="dragover_handler(event)"></div>
+    <div id="divHand" ondrop="drop_handler_card(event)" ondragover="dragover_handler(event)">
+        <div id="divCard" data-deckId = "2" class="card" draggable="true" ondragstart="dragstart_handler(event)" ondrop="drop_handler_card(event)" ondragover="dragover_handler(event)">
+            Test
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-8 offset-md-2 draggable ui-widget-content" id="divCardInHand" ondrop="drop_handler(event);" ondragover="dragover_handler(event);">
-            <div id="p1" draggable="true" ondragstart="dragstart_handler(event);" ondrop="drop_handler_card(event);" ondragover="dragover_handler(event);" style="width: 100px; height: 100px; background-color: grey; display: inline-block;">card1</div>
-            <div id="p2" draggable="true" ondragstart="dragstart_handler(event);" style="width: 100px; height: 100px; background-color: grey; display: inline-block;">card2</div>
-        </div>
-    </div>
-</div>
 </body>
+
 </html>
