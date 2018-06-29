@@ -35,6 +35,10 @@ function startNewGame(userOrder, aiOrder) {
     applyDrag();
 }
 
+function testAttack(target, abilityIndex){
+
+}
+
 function applyDrag() {
 
     // set all cards draggable
@@ -77,13 +81,29 @@ function applyDrag() {
                 $(ui.draggable).remove();
                 $("#hiddenCards").append($(ui.draggable));
             } else {
-                if (sourceCard.cardBasic == targetCard.cardName) {
-                    $("#battle-info").html("Evolve card " + targetCard.cardName + " to " + sourceCard.cardName);
-                    game.player.cardDiscard.push(targetCard);
-                    //TODO remove targetCard
-                    $("'#" + targetCard.id + "'").remove();
+                // is it an attack?
+                if (target.parentElement.attributes["id"].value == "svgCardMatAi") {
+                    $("#battle-info").html("");
+                    sourceCard.attacks.forEach(element => {
+                        if (element.length == 3) {
+                            //$("#battle-info").append("<button onclick='"+sourceCard.attack(targetCard, element[2])+"'>"+Ability_Collection[element[2]].abilityName+"</button><br/>");
+                            $("#battle-info").append("<button>"+Ability_Collection[element[2]].abilityName+"</button><br/>");
+                        } else if (element.length == 5) {
+                            //$("#battle-info").append("<button onclick='"+sourceCard.attack(targetCard, element[4])+"'>"+Ability_Collection[element[4]].abilityName+"</button><br/>");
+                            $("#battle-info").append("<button>"+Ability_Collection[element[4]].abilityName+"</button><br/>");
+                        }
+                    });
+                    //$("#battle-info").html("HP:" + hp1 + "=>" + hp2);
+                    return;
+                }else{
+                    if (sourceCard.cardBasic == targetCard.cardName) {
+                        $("#battle-info").html("Evolve card " + targetCard.cardName + " to " + sourceCard.cardName);
+                        game.player.cardDiscard.push(targetCard);
+                        //TODO remove targetCard
+                        $("'#" + targetCard.id + "'").remove();
+                    }
+                    // pokemon, cannot put here
                 }
-                // pokemon, cannot put here
             }
             game.showGameInfo();
         }

@@ -11,11 +11,8 @@ class Player {
         this.cardActive = [];
         this.cardDiscard = [];
         this.buildDeck();
-
-
         this.buildCardInHand();
-
-
+        this.currenPokemon = null;
     }
 
     // build deck: user fixed order or randomly generate
@@ -89,7 +86,6 @@ class Player {
             console.log("deal 1 --player ");
             this.cardInHand.unshift(this.deck[0]);
             this.deck.shift();
-            $("#divCardDeck-p").html("Deck:" + this.deck.length);
             $("#divCardInHand").append(this.cardInHand[0].toHtml());
         }
     }
@@ -99,6 +95,18 @@ class Player {
             alert("empty deck");
         else {
             console.log("deal 1 --ai");
+
+            if(this.currenPokemon == null){
+                let pokemonIndex = -1;
+                this.cardInHand.forEach((element, index)=>{
+                    if(element.cardType == Card_Type.pokemon){
+                        this.currenPokemon = element;
+                        pokemonIndex = index;
+                    }
+                });
+                this.cardInHand.splice(pokemonIndex, 1);
+                $("#svgCardMatAi").html(this.currenPokemon.toHtml());
+            }
             this.cardInHand.unshift(this.deck[0]);
             this.deck.shift();
             $("#divAiHand").append(this.cardInHand[0].toHtmlAi());

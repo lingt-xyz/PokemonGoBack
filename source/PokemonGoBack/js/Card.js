@@ -46,17 +46,23 @@ class Pokemon extends Card {
         this.currentHp = hp;
         this.currentEnergy = 0;
         this.currentColorLessEnergy = 0;
+        this.attackInfo = "";
+        this.attackResult = false;
     }
 
     attack(target, abilityIndex) {
+        let hp1 = 0;
+        let hp2 = 0;
         let ability = Ability_Collection[abilityIndex];
         if (ability instanceof Dam) {
             switch (ability.target) {
                 case Target_Pokemon.opponet_active:
-                    target.hp -= ability.damHp;
+                    hp1 = target.currentHp;
+                    target.currentHp -= ability.damHp;
+                    hp2 = target.currentHp;
                     break;
                 case Target_Pokemon.your_active:
-                    this.hp -= ability.damHp;
+                    this.currentHp -= ability.damHp;
                     break;
                 case Target_Pokemon.choice_opponet:
                     // TODO choose one card
@@ -73,6 +79,7 @@ class Pokemon extends Card {
                 default:
                     break;
             }
+            this.updateAttackInfo(hp1, hp2);
         } else if (ability instanceof Heal) {
             target.hp += ability.number;
         } else if (ability instanceof Deenergize) {
@@ -353,6 +360,23 @@ class Pokemon extends Card {
             }
         }
     }
+
+    updateAttackInfo(hp1, hp2){
+        $("#battle-info").html("HP:" + hp1 + "=>" + hp2);
+        this.attackResult = hp2 <= 0;
+
+        //TODO
+        if(this.attackResult){
+            if(this.role == "ai"){
+                game.ai.cardDiscard.push(this);
+                $("#svgCardMatAi").html("");
+            }else{
+                game.player.cardDiscard.push(this);
+                $("#svgCardMat").html("");
+            }
+        }
+    }
+
     /*
     toHtml() {
         return "<div id='" + this.id + "' class='pokemonallcard ui-widget-header'>" + this.cardName + "<br>Energy:" + this.currentEnergy + "<br>Hp:" + this.currentHp + "/" + this.hp + "<img height='90px' width='60px' src='image/" + this.cardName + ".png'></div>";
