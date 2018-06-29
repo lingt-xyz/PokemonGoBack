@@ -5,6 +5,12 @@ class Game {
 		this.coinHead = 0;
 		this.coinTail = 0;
 		this.currentPlayer = null;
+		$("#divCardInHand").html("");
+		$("#divCardActive").html("");
+		$("#divAiHand").html("");
+		$("#divAiActive").html("");
+		$("#svgCardMat").html("");
+		$("#svgCardMatAi").html("");
 	}
     playerEndTurnButton()
 	{

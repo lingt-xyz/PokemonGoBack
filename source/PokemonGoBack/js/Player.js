@@ -40,6 +40,9 @@ class Player {
         let tempPokemonCount = 0;
         while (tempPokemonCount < pokemonCount) {
             let index = Math.floor(Math.random() * Card_Collection.length);
+		while(Card_Collection[index] == null){
+index++;
+}
             if (Card_Collection[index].cardType == Card_Type.pokemon) {
                 this.deck.push(Card_Collection[index].clone(this.isAi));
                 tempPokemonCount++;
@@ -51,6 +54,9 @@ class Player {
         let tempTrainerCount = 0;
         while (tempTrainerCount < trainerCount) {
             let index = Math.floor(Math.random() * Card_Collection.length);
+while(Card_Collection[index] == null){
+index++;
+}
             if (Card_Collection[index].cardType == Card_Type.trainer) {
                 this.deck.push(Card_Collection[index]);
                 tempTrainerCount++;
@@ -62,6 +68,9 @@ class Player {
         let tempEnergyCount = 0;
         while (tempEnergyCount < energyCount) {
             let index = Math.floor(Math.random() * Card_Collection.length);
+while(Card_Collection[index] == null){
+index++;
+}
             if (Card_Collection[index].cardType == Card_Type.energy) {
                 this.deck.push(Card_Collection[index]);
                 tempEnergyCount++;
@@ -78,6 +87,7 @@ class Player {
         }
         if (this.isMulligan()) {
             this.cardInHand = [];
+		this.deck = shuffle(this.deck);
             this.buildCardInHand();
         } else {
             for (let i = 0; i < 7; i++) {
