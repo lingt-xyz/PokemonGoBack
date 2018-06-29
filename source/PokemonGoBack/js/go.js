@@ -77,15 +77,7 @@ $(function () {
 		activeClass: "ui-state-default",
 		hoverClass: "ui-state-hover",
 		drop: function (event, ui) {
-			var $this = $(this);
-			ui.draggable.position({
-				my: "bottom",
-				at: "bottom",
-				of: $this,
-				using: function (pos) {
-					$(this).animate(pos, 100, "linear");
-				}
-			})
+			$(this).append($(ui.draggable));
 		}
 	});
 
