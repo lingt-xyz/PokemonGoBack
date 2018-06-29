@@ -56,8 +56,13 @@ return;
 				//$(this).append($(ui.draggable));
 			}else if(sourceCard.cardType == Card_Type.energy){
 				$("#battle-info").html("Apply energy " + sourceCard.cardName + " to " + targetCard.cardName);
-				//targetCard.currentEnergy += sourceCard.energy;
+				if(sourceCard.cardName == targetCard.property){
+					
 				targetCard.currentEnergy += 1;
+				}else{
+				targetCard.currentColorLessEnergy += 1;
+				}
+				//targetCard.currentEnergy += sourceCard.cardName;
 				$("#hiddenCards").append($(ui.draggable));
 			}else{
 				// pokemon, cannot put here
