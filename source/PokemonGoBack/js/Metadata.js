@@ -215,7 +215,7 @@ function initCardCollection() {
                                 let ability = simpleAttackInfos[3];
                                 attackArray.push([energyType1, energyType1Point, ability]);
                             } else {
-                                attack += attackInfos[++i];
+                                attack = attack + "," + attackInfos[++i];
                                 let complexAttackInfos = attack.match(attackPattern2);
                                 if (complexAttackInfos) {
                                     let energyType1 = complexAttackInfos[1];

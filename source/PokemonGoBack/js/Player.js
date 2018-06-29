@@ -11,13 +11,13 @@ class Player {
         this.cardActive = [];
         this.cardDiscard = [];
         this.buildDeck();
-        
+
 
         this.buildCardInHand();
-		
-        
+
+
     }
-		
+
     // build deck: user fixed order or randomly generate
     buildDeck() {
         if (this.order) {// if a order is given
@@ -36,9 +36,9 @@ class Player {
         let tempPokemonCount = 0;
         while (tempPokemonCount < pokemonCount) {
             let index = Math.floor(Math.random() * Card_Collection.length);
-		while(Card_Collection[index] == null){
-index++;
-}
+            while (Card_Collection[index] == null) {
+                index++;
+            }
             if (Card_Collection[index].cardType == Card_Type.pokemon) {
                 this.deck.push(Card_Collection[index].clone(this.isAi));
                 tempPokemonCount++;
@@ -50,9 +50,9 @@ index++;
         let tempTrainerCount = 0;
         while (tempTrainerCount < trainerCount) {
             let index = Math.floor(Math.random() * Card_Collection.length);
-while(Card_Collection[index] == null){
-index++;
-}
+            while (Card_Collection[index] == null) {
+                index++;
+            }
             if (Card_Collection[index].cardType == Card_Type.trainer) {
                 this.deck.push(Card_Collection[index].clone(this.isAi));
                 tempTrainerCount++;
@@ -64,9 +64,9 @@ index++;
         let tempEnergyCount = 0;
         while (tempEnergyCount < energyCount) {
             let index = Math.floor(Math.random() * Card_Collection.length);
-while(Card_Collection[index] == null){
-index++;
-}
+            while (Card_Collection[index] == null) {
+                index++;
+            }
             if (Card_Collection[index].cardType == Card_Type.energy) {
                 this.deck.push(Card_Collection[index].clone(this.isAi));
                 tempEnergyCount++;
@@ -76,67 +76,56 @@ index++;
         // shuffle
         this.deck = shuffle(this.deck);
     }
-    dealCard(){
-		if(this.deck.length < 1)
-			alert("empty deck");
-		else{
-			console.log("deal 1 --player ");
-			this.cardInHand.unshift(this.deck[0]);
-			this.deck.shift();
-			$("#divCardDeck-p").html("Deck:"+this.deck.length);
-		   // $("#divCardActive-p").html("HandCard:"+this.cardInHand.length);
-			$("#divCardInHand").append(this.cardInHand[0].toHtml());
-		}
-	}
-	dealCardAi(){
-		if(this.deck.length < 1)
-			alert("empty deck");
-		else{
-			console.log("deal 1");
-			this.cardInHand.unshift(this.deck[0]);
-			this.deck.shift();
-			$("#divAiDeck-p").html("Deck:"+this.deck.length);
-		    //$("#divAiActive-p").html("HandCard:"+this.cardInHand.length);
-			$("#divAiHand").append(this.cardInHand[0].toHtmlAi());
-		}
-	}
+
+    validateCurrentCard(){
+        //TODO validate
+        return true;
+    }
+
+    dealCard() {
+        if (this.deck.length < 1)
+            alert("empty deck");
+        else {
+            console.log("deal 1 --player ");
+            this.cardInHand.unshift(this.deck[0]);
+            this.deck.shift();
+            $("#divCardDeck-p").html("Deck:" + this.deck.length);
+            $("#divCardInHand").append(this.cardInHand[0].toHtml());
+        }
+    }
+
+    dealCardAi() {
+        if (this.deck.length < 1)
+            alert("empty deck");
+        else {
+            console.log("deal 1 --ai");
+            this.cardInHand.unshift(this.deck[0]);
+            this.deck.shift();
+            $("#divAiHand").append(this.cardInHand[0].toHtmlAi());
+        }
+    }
+
     buildCardInHand() {
         for (let i = 0; i < 7; i++) {
             this.cardInHand.push(this.deck[i]);
         }
         if (this.isMulligan()) {
             this.cardInHand = [];
-		this.deck = shuffle(this.deck);
+            this.deck = shuffle(this.deck);
             this.buildCardInHand();
         } else {
-		// to update deckId, so we can track cards' information from monitorDeck
-        this.deck.forEach((element, index) => {
-            element.deckId = index;
-            this.monitorDeck.push(element);
-        });
+            // to update deckId, so we can track cards' information from monitorDeck
+            this.deck.forEach((element, index) => {
+                element.deckId = index;
+                this.monitorDeck.push(element);
+            });
 
             for (let i = 0; i < 7; i++) {
                 this.deck.shift();
             }
         }
     }
-	
-	putToDiscardAi(){
-		//put active card to discard
-		//test just put deckcard to discard
-		 this.cardDiscard.unshift(this.deck[0]);
-		 this.deck.shift();
-		 $("#divAiDeck-p").html("Deck:" + this.deck.length)
-		 $("#divAiDiscard-p").html("Discard:" + this.cardDiscard.length);
-	}
-	putToDiscard(){
-		//put active card to discard
-		//test just put deckcard to discard
-		 this.cardDiscard.unshift(this.deck[0]);
-		 this.deck.shift();
-		 $("#divCardDeck-p").html("Deck:" + this.deck.length);
-		 $("#divCardDiscard-p").html("Discard:" + this.cardDiscard.length);
-	}
+
     // check Mulligan by looking into cards in hands
     isMulligan() {
         return !(this.cardInHand.find(item => item.cardType == Card_Type.pokemon));

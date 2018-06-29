@@ -11,23 +11,11 @@ class Game {
 		$("#divAiActive").html("");
 		$("#svgCardMat").html("");
 		$("#svgCardMatAi").html("");
-$("#battle-info").html("");
+		$("#battle-info").html("");
 	}
-    playerEndTurnButton()
-	{
-		var x = document.getElementById("endTurn");
-		if(this.player.ismyTurn = true)
-		{
-			x.style.display = "block";
-		}else
-			x.style.display = "none";
-		
-	}
-	
+
 	// Pokemon, GoGoGo!
 	start() {
-		
-
 		// show user's cards
 		this.player.cardInHand.forEach((element) => {
 			$("#divCardInHand").append(element.toHtml());
@@ -38,42 +26,42 @@ $("#battle-info").html("");
 			$("#divAiHand").append(element.toHtmlAi());
 		});
 
-
-
-this.showGameInfo();
+		this.showGameInfo();
 		// decide who is first
 		this.flipCoin(1);
 		if (this.coinHead == 1) {//player's turn
-			this.player.ismyTurn =true;
-			this.playerEndTurnButton();
-			$("#svgCardMat-turn").html("Player's Turn");
 			this.userPlayTurn();
 		} else {//AI's turn
-			//try disable player 
-			$("#svgCardMat-turn").html("AI's Turn");
 			this.aiPlayTurn();
 		}
 	}
-	
-	aiPlayTurn(){
+
+	aiPlayTurn() {
+		document.getElementById("endTurn").disabled = true;
 		console.log("ai playing");
 		$("#svgCardMat-turn").html("AI's Turn");
 		$(".pokemonallcard").draggable({ disabled: true });
 		let temp = this;
 		//to test each time get one cardDiscard
-		 setTimeout(function() {
+		setTimeout(function () {
 			temp.ai.dealCardAi();
+			temp.showGameInfo();
+			$("#battle-info").html("");
+			applyDrag();
 			temp.userPlayTurn();
-			}, 3000);
-		
-		
+		}, 3000);
+
 		//TodoAistatemachine
 	}
-	userPlayTurn(){
+	userPlayTurn() {
+		document.getElementById("endTurn").disabled = false;
 		$("#svgCardMat-turn").html("Player's Turn");
 		$(".pokemonallcard").draggable({ disabled: false });
 		console.log("p playing");
 		this.player.dealCard();
+		this.showGameInfo();
+		$("#battle-info").html("");
+		applyDrag();
 	}
 	flipCoin(n) {
 		this.coinHead = 0;
@@ -87,14 +75,18 @@ this.showGameInfo();
 		}
 	}
 
-showGameInfo(){
-			$("#divAiDeck-p").html("Deck:" + this.ai.deck.length);
-		$("#divAiActive-p").html("HandCard:" + this.ai.cardInHand.length);
+	showGameInfo() {
+		$("#divAiDeck-p").html("Deck:" + this.ai.deck.length);
+		// iterate div
+
+		//$("#divSizeOfHandAi").html("HandCard:" + this.ai.cardInHand.length);
+		$("#divSizeOfHandAi").html("HandCard:" + $("#divAiHand").children().length);
 		$("#divAiDiscard-p").html("Discard:" + this.ai.cardDiscard.length);
 		$("#divCardDeck-p").html("Deck:" + this.player.deck.length);
-		$("#divCardActive-p").html("HandCard:" + this.player.cardInHand.length);
+
+		//$("#divSizeOfHand").html("HandCard:" + this.player.cardInHand.length);
+		$("#divSizeOfHand").html("HandCard:" + $("#divCardInHand").children().length);
 		$("#divCardDiscard-p").html("Discard:" + this.player.cardDiscard.length);
-$("#battle-info").html("");
 	}
 
 	toString() {

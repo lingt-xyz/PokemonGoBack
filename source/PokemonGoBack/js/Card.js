@@ -4,11 +4,11 @@ class Card {
         this.deckId = 0;
         this.cardName = cardName;
         this.cardType = cardType;
-	if(isAi){
-		this.role = "ai";
-	}else{
-		this.role = "player";
-	}
+        if (isAi) {
+            this.role = "ai";
+        } else {
+            this.role = "player";
+        }
     }
 
     // Generate a string that can match it's picture's name
@@ -16,12 +16,12 @@ class Card {
         // TODO convert French letters to English letters, remove blanks between letters
         // e.g.: a b c =>abcCard.png
     }
-	
+
 
     toHtml() {
-        return "<div id='" + this.id + "' data-deckId='"+ this.deckId+ "' data-role='"+ this.role+ "' class='pokemonallcard ui-widget-header'>" + this.cardName + "<img height='90px' width='60px' src='image/" + this.cardName + ".png'></div>";
+        return "<div id='" + this.id + "' data-deckId='" + this.deckId + "' data-role='" + this.role + "' class='pokemonallcard ui-widget-header'>" + this.cardName + "<img height='90px' width='60px' src='image/" + this.cardName + ".png'></div>";
     }
-	
+
 
     toHtmlAi() {
         return "<div id='" + this.id + "' class='pokemonCardAiHand ui-widget-header'>Card?<img height='90px' width='60px' src='image/DeckCard.png'></div>";
@@ -45,7 +45,7 @@ class Pokemon extends Card {
         this.attacks = attacks;
         this.currentHp = hp;
         this.currentEnergy = 0;
-	this.currentColorLessEnergy = 0;
+        this.currentColorLessEnergy = 0;
     }
 
     attack(target, abilityIndex) {
@@ -361,13 +361,13 @@ class Pokemon extends Card {
     toString() {
         let s = "";
         this.attacks.forEach(element => {
-            if(element.length == 3){
+            if (element.length == 3) {
                 s += ("AttackType:" + element[0] + ", AttackEnergy:" + element[1] + ", Ability:" + Ability_Collection[element[2]].abilityName + ",");
-            }else if(element.length == 5){
-                s += ("AttackType1:" + element[0] + ", AttackEnergy1:" + element[1] + ", AttackType2:" + element[2] + ", AttackEnergy2:" + element[2] + ", Ability:" + Ability_Collection[element[4]].abilityName + ",");
+            } else if (element.length == 5) {
+                s += ("AttackType1:" + element[0] + ", AttackEnergy1:" + element[1] + ", AttackType2:" + element[2] + ", AttackEnergy2:" + element[3] + ", Ability:" + Ability_Collection[element[4]].abilityName + ",");
             }
         });
-        s = s.substr(0, s.length -1);
+        s = s.substr(0, s.length - 1);
         return super.toString() + ", stage:" + this.cardStage + ", currenyEnergy:" + this.currentEnergy + ", currenyColorLessEnergy:" + this.currentColorLessEnergy + ", currenyHP:" + this.currentHp + ", Max HP:" + this.hp + ", attacks:" + s;
     }
 
@@ -382,11 +382,11 @@ class Trainer extends Card {
         this.trainerType = trainerType;
         this.ability = ability;
     }
-/*
-    toHtml() {
-        return "<div id='" + this.id + "' class='pokemonallcard ui-widget-header'>" + this.cardName + "<br>Type:" + this.trainerType + "<img height='90px' width='60px' src='image/" + this.cardName + ".png'></div>";
-    }
- */
+    /*
+        toHtml() {
+            return "<div id='" + this.id + "' class='pokemonallcard ui-widget-header'>" + this.cardName + "<br>Type:" + this.trainerType + "<img height='90px' width='60px' src='image/" + this.cardName + ".png'></div>";
+        }
+     */
     toString() {
         return super.toString() + ", ability:" + Ability_Collection[this.ability].abilityName;
     }
@@ -401,11 +401,11 @@ class Energy extends Card {
         super(id, cardName, Card_Type.energy, isAi);
         this.energy = energy;
     }
-/*
-    toHtml() {
-        return "<div id='" + this.id + "' class='pokemonallcard ui-widget-header'>" + this.cardName + "<br>Energy:" + this.energy + "<img height='90px' width='60px' src='image/" + this.cardName + ".png'></div>";
-    }
- */
+    /*
+        toHtml() {
+            return "<div id='" + this.id + "' class='pokemonallcard ui-widget-header'>" + this.cardName + "<br>Energy:" + this.energy + "<img height='90px' width='60px' src='image/" + this.cardName + ".png'></div>";
+        }
+     */
     toString() {
         return super.toString() + ", energy: " + this.energy;
     }
