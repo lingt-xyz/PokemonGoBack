@@ -80,7 +80,30 @@ index++;
         // shuffle
         this.deck = shuffle(this.deck);
     }
-
+    dealCard(){
+		if(this.deck.length < 1)
+			alert("empty deck");
+		else{
+			console.log("deal 1 --player ");
+			this.cardInHand.unshift(this.deck[0]);
+			this.deck.shift();
+			$("#divCardDeck-p").html("Deck:"+this.deck.length);
+		   // $("#divCardActive-p").html("HandCard:"+this.cardInHand.length);
+			$("#divCardInHand").append(this.cardInHand[0].toHtml());
+		}
+	}
+	dealCardAi(){
+		if(this.deck.length < 1)
+			alert("empty deck");
+		else{
+			console.log("deal 1");
+			this.cardInHand.unshift(this.deck[0]);
+			this.deck.shift();
+			$("#divAiDeck-p").html("Deck:"+this.deck.length);
+		    //$("#divAiActive-p").html("HandCard:"+this.cardInHand.length);
+			$("#divAiHand").append(this.cardInHand[0].toHtmlAi());
+		}
+	}
     buildCardInHand() {
         for (let i = 0; i < 7; i++) {
             this.cardInHand.push(this.deck[i]);

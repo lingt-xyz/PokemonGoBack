@@ -45,7 +45,7 @@
                 <div class="row">
                     <div class="col-md-1 offset-md-2" id="divAiDeck"><p id="divAiDeck-p">Deck</p><img src="image/DeckCard.png" height="90" width="63"></div>
                     <div class="col-md-1" id="divAiDiscard"><p id="divAiDiscard-p">Discard</p><img src="image/DeckCard.png" height="90" width="63" ></div>
-                    <div class="col-md-6" id="divAiActive"></div>
+                    <div class="col-md-6" id="divAiActive"><p id="divAiActive-p">hand card</p></div>
                 </div>
                 <div class="row">
                     <div class="col-md-1 offset-md-2" id="svgCardMat-turn"></div>
@@ -59,8 +59,8 @@
                     <div class="col-md-2" id="battle-info"></div>
                 </div>
                 <div class="row">
-                    <div class="col-md-1 offset-md-2"> <button type="button" id="endTurn" onclick="alert('Hello World!')">End My Turn</button> </div>
-                    <div class="col-md-5" id="divCardActive"></div>
+                    <div class="col-md-1 offset-md-2"> <button type="button" id="endTurn" onclick="game.aiPlayTurn()">End My Turn</button> </div>
+                    <div class="col-md-5" id="divCardActive"><p id ="divCardActive-p">handcard</p></div>
                     <div class="col-md-1" id="divCardDiscard"><p id="divCardDiscard-p">Discard</p>
                         <img src="image/DeckCard.png" height="90" width="63">
                     </div>

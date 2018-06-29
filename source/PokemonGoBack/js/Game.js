@@ -26,9 +26,11 @@ class Game {
 	// Pokemon, GoGoGo!
 	start() {
 		$("#divAiDeck-p").html("Deck:" + this.ai.deck.length);
+		$("#divAiActive-p").html("HandCard:" + this.ai.cardInHand.length)
 		$("#divAiDiscard-p").html("Discard:" + this.ai.cardDiscard.length)
 
 		$("#divCardDeck-p").html("Deck:" + this.player.deck.length);
+		$("#divCardActive-p").html("HandCard:" + this.player.cardInHand.length)
 		$("#divCardDiscard-p").html("Discard:" + this.player.cardDiscard.length)
 
 		// show user's cards
@@ -55,14 +57,34 @@ class Game {
 			this.player.ismyTurn =true;
 			this.playerEndTurnButton();
 			$("#svgCardMat-turn").html("Player's Turn");
-			$(".pokemonallcard").draggable({ disabled: false });
+			this.userPlayTurn();
 		} else {//AI's turn
 			//try disable player 
 			$("#svgCardMat-turn").html("AI's Turn");
-			$(".pokemonallcard").draggable({ disabled: true });
+			this.aiPlayTurn();
 		}
 	}
-
+	
+	aiPlayTurn(){
+		console.log("ai playing");
+		$("#svgCardMat-turn").html("AI's Turn");
+		$(".pokemonallcard").draggable({ disabled: true });
+		let temp = this;
+		//to test each time get one cardDiscard
+		 setTimeout(function() {
+			temp.ai.dealCardAi();
+			temp.userPlayTurn();
+			}, 3000);
+		
+		
+		//TodoAistatemachine
+	}
+	userPlayTurn(){
+		$("#svgCardMat-turn").html("Player's Turn");
+		$(".pokemonallcard").draggable({ disabled: false });
+		console.log("p playing");
+		this.player.dealCard();
+	}
 	flipCoin(n) {
 		this.coinHead = 0;
 		this.coinTail = 0;
