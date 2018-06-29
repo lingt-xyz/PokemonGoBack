@@ -86,7 +86,7 @@ return;
 				// not a pokemon, cannot put here
 				let source = $(ui.draggable)[0];
 				let sourceCard = game.player.monitorDeck[source.attributes["data-deckId"].value];
-				$("#battle-info").html("Non-pokemon: " + sourceCard.cardName + " cannot be moved here. ");
+				//$("#battle-info").html("Non-pokemon: " + sourceCard.cardName + " cannot be moved here. ");
 			}
 		}
 	});

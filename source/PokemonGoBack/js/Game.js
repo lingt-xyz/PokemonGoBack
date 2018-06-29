@@ -11,6 +11,7 @@ class Game {
 		$("#divAiActive").html("");
 		$("#svgCardMat").html("");
 		$("#svgCardMatAi").html("");
+$("#battle-info").html("");
 	}
     playerEndTurnButton()
 	{
@@ -25,32 +26,21 @@ class Game {
 	
 	// Pokemon, GoGoGo!
 	start() {
-		$("#divAiDeck-p").html("Deck:" + this.ai.deck.length);
-		$("#divAiActive-p").html("HandCard:" + this.ai.cardInHand.length)
-		$("#divAiDiscard-p").html("Discard:" + this.ai.cardDiscard.length)
-
-		$("#divCardDeck-p").html("Deck:" + this.player.deck.length);
-		$("#divCardActive-p").html("HandCard:" + this.player.cardInHand.length)
-		$("#divCardDiscard-p").html("Discard:" + this.player.cardDiscard.length)
+		
 
 		// show user's cards
 		this.player.cardInHand.forEach((element) => {
 			$("#divCardInHand").append(element.toHtml());
 		});
-		$("#divCardDeck-p").html("Deck:" + this.player.deck.length);
 
 		// show AI's cards
 		this.ai.cardInHand.forEach(element => {
 			$("#divAiHand").append(element.toHtmlAi());
 		});
-		$("#divAiDeck-p").html("Deck:" + this.ai.deck.length);
-		//Test look at discard
-		this.player.putToDiscard();
-		this.player.putToDiscard();
-		this.player.putToDiscard();
-		this.player.putToDiscard();
-		
-		this.ai.putToDiscardAi();
+
+
+
+this.showGameInfo();
 		// decide who is first
 		this.flipCoin(1);
 		if (this.coinHead == 1) {//player's turn
@@ -95,6 +85,16 @@ class Game {
 				this.coinTail++;
 			n--;
 		}
+	}
+
+showGameInfo(){
+			$("#divAiDeck-p").html("Deck:" + this.ai.deck.length);
+		$("#divAiActive-p").html("HandCard:" + this.ai.cardInHand.length);
+		$("#divAiDiscard-p").html("Discard:" + this.ai.cardDiscard.length);
+		$("#divCardDeck-p").html("Deck:" + this.player.deck.length);
+		$("#divCardActive-p").html("HandCard:" + this.player.cardInHand.length);
+		$("#divCardDiscard-p").html("Discard:" + this.player.cardDiscard.length);
+$("#battle-info").html("");
 	}
 
 	toString() {
