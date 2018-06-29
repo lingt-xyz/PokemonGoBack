@@ -12,14 +12,10 @@ class Player {
         this.cardDiscard = [];
         this.buildDeck();
         
-        // to update deckId, so we can track cards' information from monitorDeck
-        this.deck.forEach((element, index) => {
-            element.deckId = index;
-            this.monitorDeck.push(element);
-        });
 
         this.buildCardInHand();
 		
+        
     }
 		
     // build deck: user fixed order or randomly generate
@@ -58,7 +54,7 @@ while(Card_Collection[index] == null){
 index++;
 }
             if (Card_Collection[index].cardType == Card_Type.trainer) {
-                this.deck.push(Card_Collection[index]);
+                this.deck.push(Card_Collection[index].clone(this.isAi));
                 tempTrainerCount++;
             }
         }
@@ -72,7 +68,7 @@ while(Card_Collection[index] == null){
 index++;
 }
             if (Card_Collection[index].cardType == Card_Type.energy) {
-                this.deck.push(Card_Collection[index]);
+                this.deck.push(Card_Collection[index].clone(this.isAi));
                 tempEnergyCount++;
             }
         }
@@ -113,6 +109,12 @@ index++;
 		this.deck = shuffle(this.deck);
             this.buildCardInHand();
         } else {
+		// to update deckId, so we can track cards' information from monitorDeck
+        this.deck.forEach((element, index) => {
+            element.deckId = index;
+            this.monitorDeck.push(element);
+        });
+
             for (let i = 0; i < 7; i++) {
                 this.deck.shift();
             }

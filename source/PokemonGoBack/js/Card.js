@@ -45,6 +45,7 @@ class Pokemon extends Card {
         this.attacks = attacks;
         this.currentHp = hp;
         this.currentEnergy = 0;
+	this.currentColorLessEnergy = 0;
     }
 
     attack(target, abilityIndex) {
@@ -367,7 +368,7 @@ class Pokemon extends Card {
             }
         });
         s = s.substr(0, s.length -1);
-        return super.toString() + ", stage:" + this.cardStage + ", currenyEnergy:" + this.currentEnergy + ", currenyHP:" + this.currentHp + ", Max HP:" + this.hp + ", attacks:" + s;
+        return super.toString() + ", stage:" + this.cardStage + ", currenyEnergy:" + this.currentEnergy + ", currenyColorLessEnergy:" + this.currentColorLessEnergy + ", currenyHP:" + this.currentHp + ", Max HP:" + this.hp + ", attacks:" + s;
     }
 
     clone(isAi) {
