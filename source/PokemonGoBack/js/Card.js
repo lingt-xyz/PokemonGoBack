@@ -22,7 +22,6 @@ class Card {
         return "<div id='" + this.id + "' data-deckId='" + this.deckId + "' data-role='" + this.role + "' class='pokemonallcard ui-widget-header'>" + this.cardName + "<img height='90px' width='60px' src='image/" + this.cardName + ".png'></div>";
     }
 
-
     toHtmlAi() {
         return "<div id='" + this.id + "' class='pokemonCardAiHand ui-widget-header'>Card?<img height='90px' width='60px' src='image/DeckCard.png'></div>";
     }
@@ -35,9 +34,13 @@ class Card {
 class Pokemon extends Card {
     constructor(id, cardName, cardStage, cardBasic, property, hp, retreat, attacks, isAi) {
         super(id, cardName, Card_Type.pokemon, isAi);
+        // basic or stage-one
         this.cardStage = cardStage;
+        // whether it's basic pokemon (if this is a stage-one pokemon)
         this.cardBasic = cardBasic;
+        // the energy type of this pokemon
         this.property = property;
+        // max hp
         this.hp = hp;
         //[retreatEnergyPoint, retreatEnergyType]
         this.retreat = retreat;
@@ -45,8 +48,11 @@ class Pokemon extends Card {
         this.attacks = attacks;
         this.currentHp = hp;
         this.currentEnergy = 0;
+        // other energy except its property energy
         this.currentColorLessEnergy = 0;
+        //
         this.attackInfo = "";
+        //
         this.attackResult = false;
     }
 
