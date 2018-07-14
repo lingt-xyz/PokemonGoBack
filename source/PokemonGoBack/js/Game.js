@@ -16,6 +16,7 @@ class Game {
 
 	// Pokemon, GoGoGo!
 	start() {
+		$("#scrollerconsle").html(this.outConsleBattle("Game Start!"));
 		// show user's cards
 		this.player.cardInHand.forEach((element) => {
 			$("#divCardInHand").append(element.toHtml());
@@ -25,10 +26,11 @@ class Game {
 		this.ai.cardInHand.forEach(element => {
 			$("#divAiHand").append(element.toHtmlAi());
 		});
-
+		$("#scrollerconsle").append(this.outConsleBattle("Deal cards to both player."));
 		this.showGameInfo();
 		// decide who is first
-		this.flipCoin(1);
+		$("#scrollerconsle").append(this.outConsleBattle("filp a coin, decide play order"));
+		$("#scrollerconsle").append(this.outConsleBattle(this.flipCoin(1)));
 		if (this.coinHead == 1) {//player's turn
 			this.userPlayTurn();
 		} else {//AI's turn
@@ -38,6 +40,7 @@ class Game {
 
 	aiPlayTurn() {
 		document.getElementById("endTurn").disabled = true;
+		$("#scrollerconsle").append(this.outConsleBattle("AI's Turn."));
 		console.log("ai playing");
 		$("#svgCardMat-turn").html("AI's Turn");
 		$(".pokemonallcard").draggable({ disabled: true });
@@ -55,6 +58,7 @@ class Game {
 	}
 	userPlayTurn() {
 		document.getElementById("endTurn").disabled = false;
+		$("#scrollerconsle").append(this.outConsleBattle("Player's Turn."));
 		$("#svgCardMat-turn").html("Player's Turn");
 		$(".pokemonallcard").draggable({ disabled: false });
 		console.log("p playing");
@@ -62,6 +66,7 @@ class Game {
 		this.showGameInfo();
 		$("#battle-info").html("");
 		applyDrag();
+		applyScrollerconsle();
 	}
 	flipCoin(n) {
 		this.coinHead = 0;
@@ -73,6 +78,7 @@ class Game {
 				this.coinTail++;
 			n--;
 		}
+		return "result: " + this.coinHead +" heads, and "+this.coinTail +"tails";
 	}
 
 	showGameInfo() {
@@ -91,5 +97,26 @@ class Game {
 
 	toString() {
 		return "PokemonGoBack";
+	}
+	outConsleGeneral(text)
+	{
+		
+		applyScrollerconsle();
+		return "<div  class='scrollertext' name = 'generaltext' id='scrollerGeneral'>"+ text +"</div>";
+	}
+	outConsleBattle(text)
+	{
+		applyScrollerconsle();
+		return "<div class='scrollertext' name = 'battletext' id='scrollerBattle'>"+ text +"</div>";
+	}
+	outConsleWarning(text)
+	{
+		applyScrollerconsle();
+		return "<div  class='scrollertext' name = 'warningtext' id='scrollerWarning'>"+ text +"</div>";
+	}
+	outConsleInfor(text)
+	{
+		applyScrollerconsle();
+		return "<div class='scrollertext' name = 'inforltext' id='scrollerInformation'>"+ text +"</div>";
 	}
 }

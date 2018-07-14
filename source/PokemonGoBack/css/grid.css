@@ -20,7 +20,14 @@ h3 {
   background-color: rgba(86, 61, 124, .15);
   border: 1px solid rgba(86, 61, 124, .2);
 }
-
+.conslebutton{
+	padding:10px 20px;
+	background-color:black;
+	font-size:20px;
+	color:white;
+	display: inline;
+	border:0.5px solid gray;
+}
 hr {
   margin-top: 2rem;
   margin-bottom: 2rem;
@@ -45,3 +52,48 @@ hr {
 	 height:160px;}
 #divAiDiscard{
 	 height:160px;}
+#scrollerconsle{
+	background-color:black;
+	
+	overflow: scroll;
+	overflow-x:hidden;
+	overflow-y:auto;
+	height:100px;
+	border:0.5px solid gray;
+	text-align: left;
+	
+}
+.scrollertext{
+	
+}
+#scrollerGeneral{
+	color:green;
+	font-size:20px;
+	text-align:left;
+	display:block;
+	float:none;
+}
+#scrollerBattle{
+	color:yellow;
+	font-size:20px;
+	text-align:left;
+	
+	float:none;
+	display:block;
+		
+}
+#scrollerWarning{
+	color:red;
+	font-size:25px;
+	text-align:left;
+	display:block;
+	float:none;
+}
+
+#scrollerInformation{
+	color:white;
+	font-size:20px;
+	float:none;
+	text-align:left;
+	display:block;
+}

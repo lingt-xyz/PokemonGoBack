@@ -33,14 +33,43 @@ function startNewGame(userOrder, aiOrder) {
     game = new Game(player, ai);
     game.start();
     applyDrag();
+	applyScrollerconsle();
 }
 
 function testAttack(target, abilityIndex){
 
 }
-
+//can not find x and y , null reference
+function filterBattle()
+{
+	var x = document.getElementById("scrollerGeneral");
+	var y = document.getElementById("scrollerInformation");
+	if(x = null )
+	{
+		//do nothing
+	}else
+		{ 
+			x.style.display ==="none"
+		}
+	if(y.style.display ==="none")
+	{
+		//do nothing
+	}else
+		{
+			y.style.display ==="none"
+		}	
+}
+function applyScrollerconsle()
+{
+	var height = 0;
+	$(".scrollertext").each(function(i,value){
+		height += parseInt($(this).height());
+	});
+	height +='';
+	$("#scrollerconsle").animate({scrollTop: height});
+}
 function applyDrag() {
-
+	
     // set all cards draggable
     $(".pokemonallcard").draggable({
         appendTo: "body",
@@ -61,6 +90,8 @@ function applyDrag() {
             let source = $(ui.draggable)[0];
             if (target.parentElement.attributes["id"].value == "divCardInHand") {
                 $("#battle-info").html("Cannot apply abilities on cards in hands.");
+				
+				$("#scrollerconsle").append(game.outConsleWarning("Cannot apply abilities on cards in hands."));
                 return;
             }
             let targetCard = game.player.monitorDeck[target.attributes["data-deckId"].value];
@@ -68,9 +99,11 @@ function applyDrag() {
             // TODO check parent class
             if (sourceCard.cardType == Card_Type.trainer) {
                 $("#battle-info").html("Apply trainer " + sourceCard.cardName + " to " + targetCard.cardName);
+				$("#scrollerconsle").append(game.outConsleBattle("Apply trainer " + sourceCard.cardName + " to " + targetCard.cardName));
                 //$(this).append($(ui.draggable));
             } else if (sourceCard.cardType == Card_Type.energy) {
                 $("#battle-info").html("Apply energy " + sourceCard.cardName + " to " + targetCard.cardName);
+				$("#scrollerconsle").append(game.outConsleBattle("Apply energy " + sourceCard.cardName + " to " + targetCard.cardName));
                 if (sourceCard.cardName == targetCard.property) {
                     targetCard.currentEnergy += 1;
                 } else {
@@ -98,6 +131,7 @@ function applyDrag() {
                 }else{
                     if (sourceCard.cardBasic == targetCard.cardName) {
                         $("#battle-info").html("Evolve card " + targetCard.cardName + " to " + sourceCard.cardName);
+						$("#scrollerconsle").append(game.outConsleBattle("Evolve card " + targetCard.cardName + " to " + sourceCard.cardName));
                         game.player.cardDiscard.push(targetCard);
                         //TODO remove targetCard
                         $("'#" + targetCard.id + "'").remove();
@@ -125,9 +159,11 @@ function applyDrag() {
                         sourceCard.currentEnergy -= sourceCard.retreat[0];
                         if (sourceCard.currentEnergy >= 0) {
                             $("#battle-info").html("Retreat pokemon: " + sourceCard.cardName + ".");
+							$("#scrollerconsle").append(this.outConsleBattle("Retreat pokemon: " + sourceCard.cardName + "."));
                             $(this).append($(ui.draggable));
                         } else {
                             $("#battle-info").html("Retreat pokemon: " + sourceCard.cardName + " failed, insufficient energy.");
+							$("#scrollerconsle").append(game.outConsleWarning("Retreat pokemon: " + sourceCard.cardName + " failed, insufficient energy."));
                         }
                     }
                 } else {
@@ -157,6 +193,7 @@ function applyDrag() {
                 // check whether we already have one
                 if ($(this).children().length > 0) {
                     $("#battle-info").html("One pokemon is already in the battle.");
+					$("#scrollerconsle").append(this.outConsleWarning("One pokemon is already in the battle."));
                 } else {
                     $(this).append($(ui.draggable));
                 }
@@ -167,6 +204,7 @@ function applyDrag() {
 
     $(".pokemonallcard").dblclick(function () {
         $("#battle-info").html(game.player.monitorDeck[$(this).attr("data-deckId")].toString());
+		$("#scrollerconsle").append(game.outConsleInfor(game.player.monitorDeck[$(this).attr("data-deckId")].toString()));
     });
 
     //lookatdiscard//TODO:MAKE THE CARD SHOW IN THE BATTLE-INFO AUTO-SIZING TO FIT THE DIV OR MAKE A SCROLLER AREA
@@ -174,6 +212,7 @@ function applyDrag() {
         $("#battle-info").empty();
         game.player.cardDiscard.forEach((element) => {
             $("#battle-info").append(element.toHtml());
+			$("#scrollerconsle").append(game.outConsleInfor(element.toString()));
         });
     });
 
@@ -182,6 +221,7 @@ function applyDrag() {
         $("#battle-info").empty();
         game.ai.cardDiscard.forEach((element) => {
             $("#battle-info").append(element.toHtml());
+			$("#scrollerconsle").append(game.outConsleInfor(element.toString()));
         });
 
     });
