@@ -8,6 +8,7 @@
 </head>
 
 <body>
+    <h1 id="testa">{{ a }}</h1>
     <ul id="example-1">
         <li v-for="item in items">
             {{ item.message }}
@@ -40,6 +41,13 @@
         </ul>
 
     <script>
+        new Vue({
+        el: '#testa',
+        data: {
+            a: 'Hello Vue.js!'
+        }
+        })
+        var a = "123";
         class Test{
             constructor(){
                 this.a = 1;
