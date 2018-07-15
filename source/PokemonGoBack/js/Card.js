@@ -17,7 +17,6 @@ class Card {
         // e.g.: a b c =>abcCard.png
     }
 
-
     toHtml() {
         return "<div id='" + this.id + "' data-deckId='" + this.deckId + "' data-role='" + this.role + "' class='pokemonallcard ui-widget-header'>" + this.cardName + "<img height='90px' width='60px' src='image/" + this.cardName + ".png'></div>";
     }

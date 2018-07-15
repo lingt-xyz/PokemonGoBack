@@ -34,35 +34,7 @@ function shuffle(array) {
 function testAttack(target, abilityIndex){
 
 }
-//can not find x and y , null reference
-function filterBattle()
-{
-	var x = document.getElementById("scrollerGeneral");
-	var y = document.getElementById("scrollerInformation");
-	if(x = null )
-	{
-		//do nothing
-	}else
-		{ 
-			x.style.display ==="none"
-		}
-	if(y.style.display ==="none")
-	{
-		//do nothing
-	}else
-		{
-			y.style.display ==="none"
-		}	
-}
-function applyScrollerconsle()
-{
-	var height = 0;
-	$(".scrollertext").each(function(i,value){
-		height += parseInt($(this).height());
-	});
-	height +='';
-	$("#scrollerconsle").animate({scrollTop: height});
-}
+
 function applyDrag() {
 	
     // set all cards draggable

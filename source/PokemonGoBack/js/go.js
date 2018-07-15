@@ -1,22 +1,31 @@
 $(function () {
-	initAbility();
-	initCardCollection();
+	
 
-	startNewGame(userOrder, aiOrder);
-
-	var example1 = new Vue({
-		el: '#example-1',
-		data: {
-			items: player.cardCollection
-		}
-	})
 });
 
+initAbility();
+initCardCollection();
+
+startNewGame(userOrder, aiOrder);
+
+new Vue({
+	el: '#divAi',
+	data: {
+		player: ai
+	}
+})
+
+new Vue({
+	el: '#divUser',
+	data: {
+		player: user
+	}
+})
+
 function startNewGame(userOrder, aiOrder) {
-    player = new Player(userOrder, false);
+    user = new Player(userOrder, false);
     ai = new Player(aiOrder, true);
-    game = new Game(player, ai);
+    game = new Game(user, ai);
     game.start();
     applyDrag();
-	applyScrollerconsle();
 }

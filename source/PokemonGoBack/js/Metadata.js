@@ -367,7 +367,7 @@ function initAbility() {
     }
 }
 
-let player = null;
+let user = null;
 let ai = null;
 let game = null;
 let userOrder = null;
