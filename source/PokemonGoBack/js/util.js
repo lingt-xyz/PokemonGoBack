@@ -5,6 +5,11 @@ var Ability_Type = { dam: "dam", deenergize: "deenergize", redamage: "redamage",
 var Target_Pokemon = { your_active: "your-active", opponet_active: "opponent-active", choice_opponet: "choice:opponet", choice_your: "choice:your", choice_opponet_bench: "choice:opponet-bench", choice_your_banch: "choice:your-bench" };
 var Target_Player = { you: "you", them: "them" };
 
+let uuid = 0;
+function getUUID(){
+    return ++uuid;
+}
+
 // use Fisher-Yates Shuffle 
 function shuffle(array) {
     let counter = array.length;
@@ -24,16 +29,6 @@ function shuffle(array) {
     }
 
     return array;
-}
-
-
-function startNewGame(userOrder, aiOrder) {
-    player = new Player(userOrder, false);
-    ai = new Player(aiOrder, true);
-    game = new Game(player, ai);
-    game.start();
-    applyDrag();
-	applyScrollerconsle();
 }
 
 function testAttack(target, abilityIndex){

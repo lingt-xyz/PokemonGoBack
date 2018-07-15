@@ -20,6 +20,11 @@ function splitByNewLine($data){
 	return explode("\n", $data);
 }
 
+// TODO parse string to Card
+function parseCards($str){
+
+}
+
 function getCards($str){
 	$card_collection = array();
 	$data = explode("\n", $str);

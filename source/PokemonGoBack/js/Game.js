@@ -19,12 +19,12 @@ class Game {
 	start() {
 		$("#scrollerconsle").html(this.outConsleBattle("Game Start!"));
 		// show user's cards
-		this.player.cardInHand.forEach((element) => {
+		this.player.handCollection.forEach((element) => {
 			$("#divCardInHand").append(element.toHtml());
 		});
 
 		// show AI's cards
-		this.ai.cardInHand.forEach(element => {
+		this.ai.handCollection.forEach(element => {
 			$("#divAiHand").append(element.toHtmlAi());
 		});
 		$("#scrollerconsle").append(this.outConsleBattle("Deal cards to both player."));
@@ -83,22 +83,23 @@ class Game {
 	}
 
 	showGameInfo() {
-		$("#divAiDeck-p").html("Deck:" + this.ai.deck.length);
+		$("#divAiDeck-p").html("Deck:" + this.ai.deckCollection.length);
 		// iterate div
 
 		//$("#divSizeOfHandAi").html("HandCard:" + this.ai.cardInHand.length);
 		$("#divSizeOfHandAi").html("HandCard:" + $("#divAiHand").children().length);
-		$("#divAiDiscard-p").html("Discard:" + this.ai.cardDiscard.length);
-		$("#divCardDeck-p").html("Deck:" + this.player.deck.length);
+		$("#divAiDiscard-p").html("Discard:" + this.ai.discardCollection.length);
+		$("#divCardDeck-p").html("Deck:" + this.player.deckCollection.length);
 
 		//$("#divSizeOfHand").html("HandCard:" + this.player.cardInHand.length);
 		$("#divSizeOfHand").html("HandCard:" + $("#divCardInHand").children().length);
-		$("#divCardDiscard-p").html("Discard:" + this.player.cardDiscard.length);
+		$("#divCardDiscard-p").html("Discard:" + this.player.discardCollection.length);
 	}
 
 	toString() {
 		return "PokemonGoBack";
 	}
+	
 	outConsleGeneral(text)
 	{
 		

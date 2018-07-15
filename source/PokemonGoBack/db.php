@@ -90,6 +90,38 @@ class pokemongoback_db
         return $this->db_execute_result;
     }
 
+    // TODO insert a list of cards into database
+    /**
+     * @param $card_list
+     */
+    public function card_insert($card_list){
+
+    }
+
+    // TODO delete all cards from database
+    public function card_delete(){
+
+    }
+
+    // TODO get a list of card from database by there ids
+    /**
+     * @param $deck a list of numbers which are the line numbers of cards
+     * @return list the list of cards
+     */
+    public function card_list_query($deck){
+
+    }
+
+    // TODO get a json string of cards from database by there ids
+    /**
+     * @param $deck a list of numbers which are the line numbers of cards
+     * @return string a json string of cards list
+     */
+    public function card_json_query($deck){
+        $card_list = this.card_list_query($deck);
+        // TODO convert to json
+    }
+
     public function insert()
     {
         $this->db_connect();

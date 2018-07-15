@@ -90,9 +90,9 @@ class Player {
 
     // TODO it's possible that always Mulligan
     buildCardInHand() {
-        let tmpCollection = [];
+        this.handCollection = [];
         for (let i = 0; i < 7; i++) {
-            tmpCollection.push(this.deckCollection[i]);
+            this.handCollection.push(this.deckCollection[i]);
         }
         if (this.isMulligan()) {
             this.deckCollection = shuffle(this.deckCollection);
@@ -100,7 +100,6 @@ class Player {
         } else {
             for (let i = 0; i < 7; i++) {
                 this.deckCollection.shift();
-                this.handCollection = tmpCollection;
             }
         }
     }

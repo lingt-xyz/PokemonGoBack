@@ -19,6 +19,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
         crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
 
     <script src="js/util.js"></script>
     <script src="js/Ability.js"></script>
@@ -97,17 +98,26 @@
                         <div class="" id="hiddenCards" style="display:none;"></div>
                     </div>
                 </div>
-				<div class = "col-md-6 offset-md-1"  style = "background-color: black">
-				<a onclick = "" class = "conslebutton">General</a>
-				<button onclick = "filterBattle();" class = "conslebutton">Battle</button>
-				<a onclick = "" class = "conslebutton">Information </a>
-				<div  id = "scrollerconsle"> consle output<div>
-				</div>
-		   </div>
+            </div>
         </div>
         <div class="row">
             <div class="col-md-1 offset-md-2" id="divSizeOfHand"></div>
             <div class="col-md-7 draggable ui-widget-content dragPlayer" id="divCardInHand"></div>
+        </div>
+    </div>
+    <ul id="example-1">
+        <li v-for="item in items">
+            {{ item.cardName }}
+        </li>
+    </ul>
+
+    <div class="col-md-6 offset-md-1" style="background-color: black">
+        <a onclick="" class="conslebutton">General</a>
+        <button onclick="filterBattle();" class="conslebutton">Battle</button>
+        <a onclick="" class="conslebutton">Information </a>
+        <div id="scrollerconsle"> consle output
+            <div>
+            </div>
         </div>
     </div>
 </body>
