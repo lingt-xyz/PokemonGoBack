@@ -37,6 +37,15 @@ function startNewGame(userOrder, aiOrder) {
 	game.start();
 }
 
+function showCardInfo(id, isAi){
+	if(isAi){
+		let card = findFromArray(ai.cardCollection, id);
+		logger.logGeneral(card.toConsole());
+	}else{
+		let card = findFromArray(user.cardCollection, id);
+		logger.logGeneral(card.toConsole());
+	}
+}
 
 function dragstart_handler(ev) {
 	ev.dataTransfer.setData("id", ev.target.id);
@@ -54,29 +63,75 @@ function drop_handler(ev) {
 	let id = ev.dataTransfer.getData("id");
 	let role = ev.dataTransfer.getData("role");
 	let sourceName = ev.dataTransfer.getData("container");
-	let targetName = ev.target.id;
+	let targetId = ev.target.id;
+	let targetContainer = ev.target.parentElement.parentElement.id;
 
-	if(role == "user"){// this card is from user
-		if(Number.isInteger(targetName)){// move to a pokemon
-			// TODO
-		}else if(sourceName == "divHandCollection"){
-			let card = findFromArray(user.handCollection, id);
-			if(targetName == "divBenchCollection"){
-				if(card.cardType == Card_Type.pokemon){
-					removeFromArray(user.handCollection, card);
-					user.benchCollection.push(card);
-				}else if(card.cardType == Card_Type.energy){
-					logger.logGeneral("Energy cannot be moved to bench!");
-				}else{
+	if (role == "user") {// this card is from user
+		if (sourceName == "divHandCollection") {
+			let sourceCard = findFromArray(user.handCollection, id);
+			if (isNaN(targetId)) {// move to a div
+				if (sourceCard.cardType == Card_Type.energy) {
+					logger.logWarning("Energy cannot be moved to here!");
+				} else if (sourceCard.cardType == Card_Type.trainer) {
 					logger.logGeneral("TODO: Trainer!");
+				} else {// this is a pokemon
+					if (targetId == "divBenchCollection") {
+						removeFromArray(user.handCollection, sourceCard);
+						user.benchCollection.push(sourceCard);
+					} else if (targetId == "divMatCollection") {
+						// TODO validate
+						removeFromArray(user.handCollection, sourceCard);
+						user.matCollection.push(sourceCard);
+					} else if (targetId == "divHandCollection") {
+
+					} else {
+						logger.logWarning("Pokemon cannot be moved to here!");
+					}
 				}
-			}else if(targetName == "divMatCollection"){
-				let card = findAndRemoveFromArray(user.handCollection, id);
-				user.matCollection.push(card);
+			} else {// move to a pokemon
+				// TODO
+				if (targetContainer == "divBenchCollection") {
+					let targetCard = findFromArray(user.benchCollection, targetId);
+					if (targetCard.cardType == Card_Type.energy) {
+						logger.logError("Unexpected logic error!");
+					} else if (sourceCard.cardType == Card_Type.trainer) {
+						logger.logGeneral("TODO: Trainer!");
+					} else {// this is a pokemon
+						if (sourceCard.cardType == Card_Type.energy) {
+							logger.logBattle("Apply Energy to Pokemon " + targetCard.cardName);
+							if (sourceCard.cardName.toLowerCase() == targetCard.property) {
+								targetCard.currentEnergy += 1;
+							} else {
+								targetCard.currentColorLessEnergy += 1;
+							}
+							removeFromArray(user.handCollection, sourceCard);
+							user.discardCollection.push(sourceCard);
+						} else if (sourceCard.cardType == Card_Type.trainer) {
+							logger.logGeneral("TODO: Trainer!");
+						} else {// this is a pokemon
+							if (targetId == "divBenchCollection") {
+								removeFromArray(user.handCollection, sourceCard);
+								user.benchCollection.push(sourceCard);
+							} else if (targetId == "divMatCollection") {
+								// TODO validate
+								removeFromArray(user.handCollection, sourceCard);
+								user.matCollection.push(sourceCard);
+							} else if (targetId == "divHandCollection") {
+
+							} else {
+								logger.logWarning("Pokemon cannot be moved to here!");
+							}
+						}
+					}
+				} else if (targetContainer == "divMatCollection") {
+					let targetCard = findFromArray(user.matCollection, targetId);
+				} else {
+					//TODO
+				}
+				ev.stopPropagation();
 			}
 		}
-		
-	}else{// this card is from AI
+	} else {// this card is from AI
 
 	}
 }

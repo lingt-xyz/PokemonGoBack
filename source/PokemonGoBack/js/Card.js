@@ -1,7 +1,7 @@
 class Card {
     constructor(lineNumber, cardName, cardType, isAi) {
         this.id = getUUID();
-        this.lineNumber = lineNumber; 
+        this.lineNumber = lineNumber;
         this.cardName = cardName;
         this.cardType = cardType;
         this.isAi = isAi;
@@ -29,6 +29,7 @@ class Card {
                 + " ondragstart='dragstart_handler(event)'"
                 + " ondrop='drop_handler(event)'"
                 + " ondragover='dragover_handler(event)'"
+                + " ondblclick='showCardInfo(" + this.id + ", " + this.isAi + ")'"
                 + " height='90px' width='60px' src='image/" + this.cardName + ".png'>";
         }
     }
@@ -374,27 +375,6 @@ class Pokemon extends Card {
         }
     }
 
-    updateAttackInfo(hp1, hp2) {
-        logger.logGeneral("HP:" + hp1 + "=>" + hp2);
-        this.attackResult = hp2 <= 0;
-
-        //TODO
-        if (this.attackResult) {
-            if (this.role == "ai") {
-                game.ai.cardDiscard.push(this);
-                $("#svgCardMatAi").html("");
-            } else {
-                game.player.cardDiscard.push(this);
-                $("#svgCardMat").html("");
-            }
-        }
-    }
-
-    /*
-    toHtml() {
-        return "<div id='" + this.id + "' class='pokemonallcard ui-widget-header'>" + this.cardName + "<br>Energy:" + this.currentEnergy + "<br>Hp:" + this.currentHp + "/" + this.hp + "<img height='90px' width='60px' src='image/" + this.cardName + ".png'></div>";
-    }
-    */
     toString() {
         let s = "";
         this.attacks.forEach(element => {
@@ -406,6 +386,28 @@ class Pokemon extends Card {
         });
         s = s.substr(0, s.length - 1);
         return super.toString() + ", stage:" + this.cardStage + ", currenyEnergy:" + this.currentEnergy + ", currenyColorLessEnergy:" + this.currentColorLessEnergy + ", currenyHP:" + this.currentHp + ", Max HP:" + this.hp + ", attacks:" + s;
+    }
+
+    toConsole() {//"<div class='gamelog text-light'>[Info]: " + text + "</div>
+        let s = "";
+        this.attacks.forEach(element => {
+            if (element.length == 3) {
+                s += ("<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AttackType:" + element[0] + ", AttackEnergy:" + element[1] + ", Ability:" + Ability_Collection[element[2]].abilityName + ",");
+            } else if (element.length == 5) {
+                s += ("<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AttackType1:" + element[0] + ", AttackEnergy1:" + element[1] + ", AttackType2:" + element[2] + ", AttackEnergy2:" + element[3] + ", Ability:" + Ability_Collection[element[4]].abilityName + ",");
+            }
+        });
+        s = s.substr(0, s.length - 1);
+        return "Card Detail</div>"
+            + "<div>&nbsp;&nbsp;&nbsp;&nbsp;Name: " + this.cardName + "</div>"
+            + "<div>&nbsp;&nbsp;&nbsp;&nbsp;Type: " + this.cardType + "</div>"
+            + "<div>&nbsp;&nbsp;&nbsp;&nbsp;stage: " + this.cardStage + "</div>"
+            + "<div>&nbsp;&nbsp;&nbsp;&nbsp;Max HP: " + this.hp + "</div>"
+            + "<div>&nbsp;&nbsp;&nbsp;&nbsp;currenyHP: " + this.currentHp + "</div>"
+            + "<div>&nbsp;&nbsp;&nbsp;&nbsp;currenyEnergy: " + this.currentEnergy + "</div>"
+            + "<div>&nbsp;&nbsp;&nbsp;&nbsp;currenyColorLessEnergy: " + this.currentColorLessEnergy + "</div>"
+            + "<div>&nbsp;&nbsp;&nbsp;&nbsp;attacks: " + s + "</div>"
+            + "<div>";
     }
 
     clone(isAi) {
@@ -428,6 +430,15 @@ class Trainer extends Card {
         return super.toString() + ", ability:" + Ability_Collection[this.ability].abilityName;
     }
 
+    toConsole() {//"<div class='gamelog text-light'>[Info]: " + text + "</div>
+        return "Card Detail</div>"
+            + "<div>&nbsp;&nbsp;&nbsp;&nbsp;Name: " + this.cardName + "</div>"
+            + "<div>&nbsp;&nbsp;&nbsp;&nbsp;Type: " + this.cardType + "</div>"
+            + "<div>&nbsp;&nbsp;&nbsp;&nbsp;TrainerType: " + this.trainerType + "</div>"
+            + "<div>&nbsp;&nbsp;&nbsp;&nbsp;Ability: " + this.ability + "</div>"
+            + "<div>";
+    }
+
     clone(isAi) {
         return new Trainer(this.id, this.cardName, this.trainerType, this.ability, isAi);
     }
@@ -445,6 +456,14 @@ class Energy extends Card {
      */
     toString() {
         return super.toString() + ", energy: " + this.energy;
+    }
+
+    toConsole() {//"<div class='gamelog text-light'>[Info]: " + text + "</div>
+        return "Card Detail</div>"
+            + "<div>&nbsp;&nbsp;&nbsp;&nbsp;Name: " + this.cardName + "</div>"
+            + "<div>&nbsp;&nbsp;&nbsp;&nbsp;Type: " + this.cardType + "</div>"
+            + "<div>&nbsp;&nbsp;&nbsp;&nbsp;Energy: " + this.energy + "</div>"
+            + "<div>";
     }
 
     clone(isAi) {

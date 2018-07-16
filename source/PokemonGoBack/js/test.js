@@ -20,7 +20,7 @@ QUnit.test("Card Class", function( assert ) {
     assert.equal(card.cardName, "PP");
     assert.equal(card.cardType, "pokemon");
     assert.equal(card.isAi, undefined);
-    assert.equal(card.role, "player");
+    assert.equal(card.role, "user");
 });
 
 QUnit.test("Player Class", function( assert ) {

@@ -38,13 +38,13 @@
             <!-- playing area -->
             <div class="col-7 offset-md-1 bg-warning">
                 <!-- ai playing area -->
-                <div id="divAi">
-                    <div class="row">
+                <div id="divAi" class="h-50 my-0">
+                    <div class="row my-0">
                         <div class="col-12 bg-light" id="divHandCollectionAi" ondrop="drop_handler(event)" ondragover="dragover_handler(event)">
                             <span v-for="card in player.handCollection" v-html="card.toHtml()"></span>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row my-0">
                         <div class="col-1 bg-light">
                             <span>Deck: {{ player.deckCollection.length }} </span>
                             <img src="image/DeckCard.png" height="90" width="63">
@@ -61,20 +61,20 @@
                             <img src="image/DeckCard.png" height="90" width="63">
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row my-1">
                         <div class="col-1 bg-light">
                             <span>Prize: {{ player.prizeCollection.length }} </span>
                             <img src="image/DeckCard.png" height="90" width="63">
                         </div>
-                        <div class="col-10 bg-secondary" id="divMatCollectionAi"  ondrop="drop_handler(event)" ondragover="dragover_handler(event)">
+                        <div class="col-10 bg-secondary" id="divMatCollectionAi" ondrop="drop_handler(event)" ondragover="dragover_handler(event)">
                             <span v-for="card in player.matCollection" v-html="card.toHtml()"></span>
                         </div>
                         <div class="col-1 bg-light"></div>
                     </div>
                 </div>
                 <!-- user playing area -->
-                <div id="divUser">
-                    <div class="row">
+                <div id="divUser" class="h-50 my-0">
+                    <div class="row my-1">
                         <div class="col-1 bg-light">
                             <button type="button" id="endTurn" onclick="game.aiPlayTurn()">End My Turn</button>
                         </div>
@@ -86,7 +86,7 @@
                             <img height='90px' width='60px' src="image/DeckCard.png">
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row my-0">
                         <div class="col-2 bg-light">
                             <span>Discard: {{ player.discardCollection.length }} </span>
                             <img src="image/DeckCard.png" height="90" width="63">
@@ -103,7 +103,7 @@
                             <img src="image/DeckCard.png" height="90" width="63">
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row my-0">
                         <div class="col-12 bg-light" id="divHandCollection" ondrop="drop_handler(event)" ondragover="dragover_handler(event)">
                             <span v-for="card in player.handCollection" v-html="card.toHtml()"></span>
                         </div>
@@ -113,10 +113,12 @@
 
             <!-- console area -->
             <div class="col-3 bg-dark">
+                <!--
                 <button onclick="filterLog();" class="conslebutton">General</button>
                 <button onclick="filterLog();" class="conslebutton">Battle</button>
                 <button onclick="filterLog();" class="conslebutton">Information</button>
-                <div class="col-12 bg-success text-left" id="divGameConsole" style="height: 95%;"></div>
+                -->
+                <div class="col-12 bg-success text-left" id="divGameConsole" style="height: 100%; overflow: auto;"></div>
             </div>
         </div>
     </div>

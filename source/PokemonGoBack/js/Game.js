@@ -1,6 +1,6 @@
 class Game {
-	constructor(player, ai) {
-		this.user = player;
+	constructor(user, ai) {
+		this.user = user;
 		this.ai = ai;
 
 		this.coinHead = 0;
@@ -12,12 +12,12 @@ class Game {
 	// Pokemon, GoGoGo!
 	start() {
 		logger.logGeneral("Game Start!");
-		logger.logGeneral("Deal cards to both player.");
+		logger.logGeneral("Deal cards to both players.");
 		// decide who is first
 		logger.logGeneral("Filp a coin to decide play order");
 		logger.logGeneral(this.flipCoin(1));
 
-		if (this.coinHead == 1) {//player's turn
+		if (this.coinHead == 1) {//user's turn
 			this.userPlayTurn();
 		} else {//AI's turn
 			this.aiPlayTurn();
@@ -41,7 +41,7 @@ class Game {
 
 	userPlayTurn() {
 		$( "#endTurn" ).prop( "disabled", false );
-		logger.logGeneral("Player's Turn.");
+		logger.logGeneral("User's Turn.");
 		$(".pokemonallcard").draggable({ disabled: false });
 		this.user.dealCard();
 		applyDrag();

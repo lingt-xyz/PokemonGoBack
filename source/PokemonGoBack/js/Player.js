@@ -33,8 +33,6 @@ class Player {
         } else {// generate deck
             this.generateDeck();
         }
-        // store all the cards would be used by this player
-        this.cardCollection = this.deckCollection;
     }
 
     // randomly generate deck
@@ -48,7 +46,9 @@ class Player {
                 index++;
             }
             if (Card_Collection[index].cardType == Card_Type.pokemon) {
-                this.deckCollection.push(Card_Collection[index].clone(this.isAi));
+                let card = Card_Collection[index].clone(this.isAi);
+                this.deckCollection.push(card);
+                this.cardCollection.push(card);
                 tempPokemonCount++;
             }
         }
@@ -62,7 +62,9 @@ class Player {
                 index++;
             }
             if (Card_Collection[index].cardType == Card_Type.trainer) {
-                this.deckCollection.push(Card_Collection[index].clone(this.isAi));
+                let card = Card_Collection[index].clone(this.isAi);
+                this.deckCollection.push(card);
+                this.cardCollection.push(card);
                 tempTrainerCount++;
             }
         }
@@ -76,7 +78,9 @@ class Player {
                 index++;
             }
             if (Card_Collection[index].cardType == Card_Type.energy) {
-                this.deckCollection.push(Card_Collection[index].clone(this.isAi));
+                let card = Card_Collection[index].clone(this.isAi);
+                this.deckCollection.push(card);
+                this.cardCollection.push(card);
                 tempEnergyCount++;
             }
         }
@@ -116,7 +120,7 @@ class Player {
         if (this.deckCollection.length < 1)
             alert("empty deck");
         else {
-            logger.logGeneral("deal 1 --player ");
+            logger.logGeneral("deal 1 --user ");
             this.handCollection.unshift(this.deckCollection[0]);
             this.deckCollection.shift();
             // TODO validate

@@ -4,20 +4,20 @@ class GameConsole {
     }
 
     logGeneral(text) {
+        $("#divGameConsole").append("<div class='gamelog text-light'>[Info]: " + text + "</div>");
         this.scrollConsle();
-        $("#divGameConsole").append("<div class='gamelog'>" + text + "</div>");
     }
     logBattle(text) {
+        $("#divGameConsole").append("<div class='gamelog text-light bg-dark'>[Battle]: " + text + "</div>");
         this.scrollConsle();
-        $("#divGameBattle").append("<div class='gamelog'>" + text + "</div>");
     }
     logWarning(text) {
+        $("#divGameConsole").append("<div class='gamelog text-warning'>[Warning]: " + text + "</div>");
         this.scrollConsle();
-        $("#divGameWarning").append("<div class='gamelog'>" + text + "</div>");
     }
-    logInfo(text) {
+    logError(text) {
+        $("#divGameConsole").append("<div class='gamelog text-danger'>[Warning]: " + text + "</div>");
         this.scrollConsle();
-        $("#divGameInfo").append("<div class='gamelog'>" + text + "</div>");
     }
 
     //can not find x and y , null reference
@@ -35,12 +35,8 @@ class GameConsole {
             y.style.display === "none"
         }
     }
+
     scrollConsle() {
-        var height = 0;
-        $(".gamelog").each(function (i, value) {
-            height += parseInt($(this).height());
-        });
-        height += '';
-        $("#divGameConsole").animate({ scrollTop: height });
+        $("#divGameConsole").scrollTop(function () { return this.scrollHeight; });
     }
 }
