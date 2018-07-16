@@ -16,10 +16,12 @@ class Player {
         this.matCollection = [];
         // store current cards been discarded
         this.discardCollection = [];
+        // store prize card
+        this.prizeCollection = [];
 
         this.buildDeck();
         this.buildCardInHand();
-        this.currenPokemon = null;
+        this.currentPokemon = null;
     }
 
     // build deck: use fixed order or randomly generate
@@ -114,12 +116,10 @@ class Player {
         if (this.deckCollection.length < 1)
             alert("empty deck");
         else {
-            console.log("deal 1 --player ");
+            logger.logGeneral("deal 1 --player ");
             this.handCollection.unshift(this.deckCollection[0]);
             this.deckCollection.shift();
             // TODO validate
-            // TODO use vue
-            //$("#divCardInHand").append(this.handCollection[0].toHtml());
         }
     }
 
@@ -128,22 +128,20 @@ class Player {
         if (this.deckCollection.length < 1)
             alert("empty deck");
         else {
-            console.log("deal 1 --ai");
+            logger.logGeneral("deal 1 --ai");
 
-            if(this.currenPokemon == null){
+            if(this.currentPokemon == null){
                 let pokemonIndex = -1;
                 this.handCollection.forEach((element, index)=>{
                     if(element.cardType == Card_Type.pokemon){
-                        this.currenPokemon = element;
+                        this.currentPokemon = element;
                         pokemonIndex = index;
                     }
                 });
                 this.handCollection.splice(pokemonIndex, 1);
-                $("#svgCardMatAi").html(this.currenPokemon.toHtml());
             }
             this.handCollection.unshift(this.deckCollection[0]);
             this.deckCollection.shift();
-            $("#divAiHand").append(this.handCollection[0].toHtmlAi());
         }
     }
 

@@ -21,14 +21,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
 
-    <script src="js/util.js"></script>
-    <script src="js/Ability.js"></script>
-    <script src="js/Card.js"></script>
-    <script src="js/Player.js"></script>
-    <script src="js/Game.js"></script>
-    <script src="js/Metadata.js"></script>
-    <title>PokemonGoBack</title>
-    <script src="js/go.js"></script>
 </head>
 
 <body class="text-center">
@@ -41,85 +33,104 @@
         </nav>
     </div>
 
-    <div class="container-fluid" id="divPlayMat">
+    <div class="container-fluid">
         <div class="row">
-            <div class="col-md-1 offset-md-2" id="divSizeOfHandAi"></div>
-            <div class="col-md-7" id="divAiHand"></div>
-        </div>
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-10 offset-md-1" style="background-color: honeydew">
+            <!-- playing area -->
+            <div class="col-7 offset-md-1 bg-warning">
+                <!-- ai playing area -->
+                <div id="divAi">
                     <div class="row">
-                        <div class="col-md-1 offset-md-2" id="divAiDeck">
-                            <p id="divAiDeck-p">Deck</p>
-                            <img src="image/DeckCard.png" height="90" width="63">
-                        </div>
-                        <div class="col-md-1" id="divAiDiscard">
-                            <p id="divAiDiscard-p">Discard</p>
-                            <img src="image/DeckCard.png" height="90" width="63">
-                        </div>
-                        <div class="col-md-6" id="divAiActive">
-                            <p id="divAiActive-p">hand card</p>
+                        <div class="col-12 bg-light" id="divHandCollectionAi" ondrop="drop_handler(event)" ondragover="dragover_handler(event)">
+                            <span v-for="card in player.handCollection" v-html="card.toHtml()"></span>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-1 offset-md-2" id="svgCardMat-turn"></div>
-                        <div class="col-md-1" id="divPrizeCards">
-                            <div id="divPrizeCardAi" style="height:120px;width:100px;margin:auto">
-                                <img height='90px' width='60px' src="image/DeckCard.png">
-                            </div>
-                            <div id="divPrizeCardPlayer" style="height:120px;width:100px;margin:auto">
-                                <img height='90px' width='60px' src="image/DeckCard.png">
-                            </div>
+                        <div class="col-1 bg-light">
+                            <span>Deck: {{ player.deckCollection.length }} </span>
+                            <img src="image/DeckCard.png" height="90" width="63">
                         </div>
-                        <div class="col-md-4">
-                            <div id="svgCardMatAi" style="height:120px;width:100px;margin:auto"></div>
-                            <svg height="280" style="position:absolute;top:0%;left:20%" width="320">
-                                <ellipse rx="150" ry="120" style="fill:lightslategray;opacity:0.4;stroke:purple;stroke-width: 2px" cy="140" cx="160"></ellipse>
-                            </svg>
-                            <div id="svgCardMat" style="height:120px;width:100px;margin:auto"></div>
+                        <div class="col-1 bg-light">
+                            <span>Hand: {{ player.handCollection.length }} </span>
+                            <img src="image/DeckCard.png" height="90" width="63">
                         </div>
-                        <div class="col-md-2" id="battle-info"></div>
+                        <div class="col-8 bg-secondary" id="divBenchCollectionAi" ondrop="drop_handler(event)" ondragover="dragover_handler(event)">
+                            <span v-for="card in player.benchCollection" v-html="card.toHtml()"></span>
+                        </div>
+                        <div class="col-2 bg-light">
+                            <span>Discard: {{ player.discardCollection.length }} </span>
+                            <img src="image/DeckCard.png" height="90" width="63">
+                        </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-1 offset-md-2">
+                        <div class="col-1 bg-light">
+                            <span>Prize: {{ player.prizeCollection.length }} </span>
+                            <img src="image/DeckCard.png" height="90" width="63">
+                        </div>
+                        <div class="col-10 bg-secondary" id="divMatCollectionAi"  ondrop="drop_handler(event)" ondragover="dragover_handler(event)">
+                            <span v-for="card in player.matCollection" v-html="card.toHtml()"></span>
+                        </div>
+                        <div class="col-1 bg-light"></div>
+                    </div>
+                </div>
+                <!-- user playing area -->
+                <div id="divUser">
+                    <div class="row">
+                        <div class="col-1 bg-light">
                             <button type="button" id="endTurn" onclick="game.aiPlayTurn()">End My Turn</button>
                         </div>
-                        <div class="col-md-5" id="divCardActive">
+                        <div class="col-10 bg-secondary" id="divMatCollection" ondrop="drop_handler(event)" ondragover="dragover_handler(event)">
+                            <span v-for="card in player.matCollection" v-html="card.toHtml()"></span>
                         </div>
-                        <div class="col-md-1" id="divCardDiscard">
-                            <p id="divCardDiscard-p">Discard</p>
+                        <div class="col-1 bg-light">
+                            <span>Prize: {{ player.prizeCollection.length }}</span>
+                            <img height='90px' width='60px' src="image/DeckCard.png">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-2 bg-light">
+                            <span>Discard: {{ player.discardCollection.length }} </span>
                             <img src="image/DeckCard.png" height="90" width="63">
                         </div>
-                        <div class="col-md-1 dragPlayer" id="divCardDeck">
-                            <p id="divCardDeck-p">Deck</p>
+                        <div class="col-8 bg-secondary" id="divBenchCollection" ondrop="drop_handler(event)" ondragover="dragover_handler(event)">
+                            <span v-for="card in player.benchCollection" v-html="card.toHtml()"></span>
+                        </div>
+                        <div class="col-1 bg-light">
+                            <span>Hand: {{ player.handCollection.length }} </span>
                             <img src="image/DeckCard.png" height="90" width="63">
                         </div>
-                        <div class="" id="hiddenCards" style="display:none;"></div>
+                        <div class="col-1 bg-light">
+                            <span>Deck: {{ player.deckCollection.length }} </span>
+                            <img src="image/DeckCard.png" height="90" width="63">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 bg-light" id="divHandCollection" ondrop="drop_handler(event)" ondragover="dragover_handler(event)">
+                            <span v-for="card in player.handCollection" v-html="card.toHtml()"></span>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-1 offset-md-2" id="divSizeOfHand"></div>
-            <div class="col-md-7 draggable ui-widget-content dragPlayer" id="divCardInHand"></div>
-        </div>
-    </div>
-    <ul id="example-1">
-        <li v-for="item in items">
-            {{ item.cardName }}
-        </li>
-    </ul>
 
-    <div class="col-md-6 offset-md-1" style="background-color: black">
-        <a onclick="" class="conslebutton">General</a>
-        <button onclick="filterBattle();" class="conslebutton">Battle</button>
-        <a onclick="" class="conslebutton">Information </a>
-        <div id="scrollerconsle"> consle output
-            <div>
+            <!-- console area -->
+            <div class="col-3 bg-dark">
+                <button onclick="filterLog();" class="conslebutton">General</button>
+                <button onclick="filterLog();" class="conslebutton">Battle</button>
+                <button onclick="filterLog();" class="conslebutton">Information</button>
+                <div class="col-12 bg-success text-left" id="divGameConsole" style="height: 95%;"></div>
             </div>
         </div>
     </div>
+
+    <script src="js/util.js"></script>
+    <script src="js/Ability.js"></script>
+    <script src="js/GameConsole.js"></script>
+    <script src="js/Card.js"></script>
+    <script src="js/Player.js"></script>
+    <script src="js/Game.js"></script>
+    <script src="js/Metadata.js"></script>
+    <title>PokemonGoBack</title>
+    <script src="js/go.js"></script>
+
 </body>
 
 </html>

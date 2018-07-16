@@ -31,38 +31,20 @@ function shuffle(array) {
     return array;
 }
 
-function testAttack(target, abilityIndex){
+function findFromArray(array, id){
+    return array.find(element => element.id == id);
+}
 
+function findAndRemoveFromArray(array, id){
+    let element = findFromArray(array, id);
+    array.splice(array.indexOf(element), 1);
+    return element;
 }
-//can not find x and y , null reference
-function filterBattle()
-{
-	var x = document.getElementById("scrollerGeneral");
-	var y = document.getElementById("scrollerInformation");
-	if(x = null )
-	{
-		//do nothing
-	}else
-		{ 
-			x.style.display ==="none"
-		}
-	if(y.style.display ==="none")
-	{
-		//do nothing
-	}else
-		{
-			y.style.display ==="none"
-		}	
+
+function removeFromArray(array, element){
+    array.splice(array.indexOf(element), 1);
 }
-function applyScrollerconsle()
-{
-	var height = 0;
-	$(".scrollertext").each(function(i,value){
-		height += parseInt($(this).height());
-	});
-	height +='';
-	$("#scrollerconsle").animate({scrollTop: height});
-}
+
 function applyDrag() {
 	
     // set all cards draggable

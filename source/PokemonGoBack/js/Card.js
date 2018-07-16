@@ -1,13 +1,14 @@
 class Card {
-    constructor(id, cardName, cardType, isAi) {
-        this.id = id;
-        this.deckId = 0;
+    constructor(lineNumber, cardName, cardType, isAi) {
+        this.id = getUUID();
+        this.lineNumber = lineNumber; 
         this.cardName = cardName;
         this.cardType = cardType;
+        this.isAi = isAi;
         if (isAi) {
             this.role = "ai";
         } else {
-            this.role = "player";
+            this.role = "user";
         }
     }
 
@@ -17,13 +18,19 @@ class Card {
         // e.g.: a b c =>abcCard.png
     }
 
-
     toHtml() {
-        return "<div id='" + this.id + "' data-deckId='" + this.deckId + "' data-role='" + this.role + "' class='pokemonallcard ui-widget-header'>" + this.cardName + "<img height='90px' width='60px' src='image/" + this.cardName + ".png'></div>";
-    }
-
-    toHtmlAi() {
-        return "<div id='" + this.id + "' class='pokemonCardAiHand ui-widget-header'>Card?<img height='90px' width='60px' src='image/DeckCard.png'></div>";
+        if (this.isAi) {
+            return "<img id='" + this.id + "' height='90px' width='60px' src='image/DeckCard.png'>";
+        } else {
+            return "<img"
+                + " id='" + this.id + "'"
+                + " data-role='" + this.role + "'"
+                + " draggable='true'"
+                + " ondragstart='dragstart_handler(event)'"
+                + " ondrop='drop_handler(event)'"
+                + " ondragover='dragover_handler(event)'"
+                + " height='90px' width='60px' src='image/" + this.cardName + ".png'>";
+        }
     }
 
     toString() {
@@ -367,16 +374,16 @@ class Pokemon extends Card {
         }
     }
 
-    updateAttackInfo(hp1, hp2){
-        $("#battle-info").html("HP:" + hp1 + "=>" + hp2);
+    updateAttackInfo(hp1, hp2) {
+        logger.logGeneral("HP:" + hp1 + "=>" + hp2);
         this.attackResult = hp2 <= 0;
 
         //TODO
-        if(this.attackResult){
-            if(this.role == "ai"){
+        if (this.attackResult) {
+            if (this.role == "ai") {
                 game.ai.cardDiscard.push(this);
                 $("#svgCardMatAi").html("");
-            }else{
+            } else {
                 game.player.cardDiscard.push(this);
                 $("#svgCardMat").html("");
             }

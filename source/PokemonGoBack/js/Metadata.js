@@ -366,9 +366,3 @@ function initAbility() {
         }
     }
 }
-
-let player = null;
-let ai = null;
-let game = null;
-let userOrder = null;
-let aiOrder = null;
