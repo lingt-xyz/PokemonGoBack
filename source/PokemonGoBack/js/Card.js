@@ -29,6 +29,7 @@ class Card {
                 + " ondragstart='dragstart_handler(event)'"
                 + " ondrop='drop_handler(event)'"
                 + " ondragover='dragover_handler(event)'"
+                + " onerror='loadDefaultImg(" + this.id + ")'"
                 + " ondblclick='showCardInfo(" + this.id + ", " + this.isAi + ")'"
                 + " height='90px' width='60px' src='image/" + this.cardName + ".png'>";
         }

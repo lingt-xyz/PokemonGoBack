@@ -34,18 +34,22 @@ function startNewGame(userOrder, aiOrder) {
 	user = new Player(userOrder, false);
 	ai = new Player(aiOrder, true);
 	game = new Game(user, ai);
-	
+
 	game.start();
 }
 
-function showCardInfo(id, isAi){
-	if(isAi){
+function showCardInfo(id, isAi) {
+	if (isAi) {
 		let card = findFromArray(ai.cardCollection, id);
 		logger.logGeneral(card.toConsole());
-	}else{
+	} else {
 		let card = findFromArray(user.cardCollection, id);
 		logger.logGeneral(card.toConsole());
 	}
+}
+
+function loadDefaultImg(id) {
+	$("#" + id + "").attr("src", "image/Default.png");
 }
 
 function dragstart_handler(ev) {
