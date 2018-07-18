@@ -65,6 +65,15 @@ class Pokemon extends Card {
         this.attackResult = false;
     }
 
+    // TODO some cards only have colorless energy
+    addEnergy(energy){
+        if (energy.cardName.toLowerCase() == this.property) {
+            this.currentEnergy += 1;
+        } else {
+            this.currentColorLessEnergy += 1;
+        }
+    }
+
     attack(target, abilityIndex) {
         let hp1 = 0;
         let hp2 = 0;

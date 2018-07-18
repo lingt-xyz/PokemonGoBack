@@ -129,11 +129,7 @@ function drop_handler(ev) {
 					if (sourceCard.cardType == Card_Type.energy) {
 						logger.logBattle("Apply Energy to Pokemon " + targetCard.cardName);
 						// TODO some cards only have colorless energy
-						if (sourceCard.cardName.toLowerCase() == targetCard.property) {
-							targetCard.currentEnergy += 1;
-						} else {
-							targetCard.currentColorLessEnergy += 1;
-						}
+						targetCard.addEnergy(sourceCard);
 						removeFromArray(user.handCollection, sourceCard);
 						user.discardCollection.push(sourceCard);
 					} else if (sourceCard.cardType == Card_Type.trainer) {
@@ -159,12 +155,7 @@ function drop_handler(ev) {
 				} else {// this is a pokemon
 					if (sourceCard.cardType == Card_Type.energy) {
 						logger.logBattle("Apply Energy to Pokemon " + targetCard.cardName);
-						// TODO some cards only have colorless energy
-						if (sourceCard.cardName.toLowerCase() == targetCard.property) {
-							targetCard.currentEnergy += 1;
-						} else {
-							targetCard.currentColorLessEnergy += 1;
-						}
+						targetCard.addEnergy(sourceCard);
 						removeFromArray(user.handCollection, sourceCard);
 						user.discardCollection.push(sourceCard);
 					} else if (sourceCard.cardType == Card_Type.trainer) {
