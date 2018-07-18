@@ -27,7 +27,7 @@ class Game {
 		setTimeout(function () {
 			ai.play();
 			temp.userPlayTurn();
-		}, 3000);
+		}, 1000);
 	}
 
 	userPlayTurn() {

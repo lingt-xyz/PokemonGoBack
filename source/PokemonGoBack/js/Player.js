@@ -151,12 +151,14 @@ class Player {
             let pokemon = this.matCollection.find(item => item.cardType == Card_Type.pokemon);
             if (pokemon) {// there is a pokemon on mat
                 let energy = null;
-                while(energy = this.handCollection.find(item => item.cardType == Card_Type.energy)){
+                if (energy = this.handCollection.find(item => item.cardType == Card_Type.energy)) {
                     removeFromArray(this.handCollection, energy);
                     this.matCollection.push(energy);
-                    logger.logBattle("(AI) Apply Energy to Pokemon.");
-                    pokemon.addEnergy(energy);
-                    removeFromArray(this.matCollection, energy);
+                    setTimeout(function () {
+                        pokemon.addEnergy(energy);
+                        logger.logBattle("(AI) Apply Energy to Pokemon.");
+                        removeFromArray(ai.matCollection, energy);
+                    }, 500);
                 }
             } else {// pick a pokemon, put it on the mat
                 pokemon = this.handCollection.find(item => item.cardType == Card_Type.pokemon);
