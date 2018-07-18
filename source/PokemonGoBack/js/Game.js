@@ -14,7 +14,7 @@ class Game {
 		logger.logGeneral("Game Start!");
 		logger.logGeneral("Deal cards to both players.");
 		// decide who is first
-		logger.logGeneral("Filp a coin to decide play order");
+		logger.logGeneral("Filp a coin to decide play order.");
 		logger.logGeneral(this.flipCoin(1));
 
 		if (this.coinHead == 1) {//user's turn
@@ -25,13 +25,13 @@ class Game {
 	}
 
 	aiPlayTurn() {
-		$( "#endTurn" ).prop( "disabled", true );
+		$("#endTurn").prop("disabled", true);
 		logger.logGeneral("AI's Turn.");
 		$(".pokemonallcard").draggable({ disabled: true });
 		let temp = this;
 		//to test each time get one cardDiscard
 		setTimeout(function () {
-			temp.ai.dealCardAi();
+			temp.ai.dealCard();
 			applyDrag();
 			temp.userPlayTurn();
 		}, 3000);
@@ -40,7 +40,7 @@ class Game {
 	}
 
 	userPlayTurn() {
-		$( "#endTurn" ).prop( "disabled", false );
+		$("#endTurn").prop("disabled", false);
 		logger.logGeneral("User's Turn.");
 		$(".pokemonallcard").draggable({ disabled: false });
 		this.user.dealCard();
