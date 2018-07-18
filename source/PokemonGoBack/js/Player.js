@@ -93,39 +93,86 @@ class Player {
         //TODO validate
         return true;
     }
-
+	// for.
     // TODO it's possible that always Mulligan
     buildCardInHand() {
-        this.handCollection = [];
+        while(true){
+			this.handCollection = [];
+			for (let i = 0; i < 7; i++) {
+				this.handCollection.push(this.deckCollection[i]);
+			}
+			
+			if(this.isMulligan()){
+				logger.logWarning("Mulligan! Shuffle deck.");
+				this.deckCollection = shuffle(this.deckCollection);
+			}else{
+				break;
+			}
+		}
         for (let i = 0; i < 7; i++) {
-            this.handCollection.push(this.deckCollection[i]);
-        }
-        if (this.isMulligan()) {
-            this.deckCollection = shuffle(this.deckCollection);
-            this.buildCardInHand();
-        } else {
-            for (let i = 0; i < 7; i++) {
-                this.deckCollection.shift();
-            }
-        }
+			this.deckCollection.shift();
+		}
     }
 
     // check Mulligan by looking into cards in hands
     isMulligan() {
         return !(this.handCollection.find(item => item.cardType == Card_Type.pokemon));
     }
-
+	//random get card if has pokemon, if not get exactly 1 pokemon
+	hasPokemon()
+	{
+		if(!(this.matCollection.find(item => item.cardType == Card_Type.pokemon)))
+		{
+			//logger.logGeneral("No pokemon in play mat, check bench & hand...");
+			if(!(this.benchCollection.find(item => item.cardType == Card_Type.pokemon)))
+			{
+				//logger.logGeneral("No pokemon in play mat & bench, check  hand...");
+				if(!(this.handCollection.find(item => item.cardType == Card_Type.pokemon)))
+				{
+					logger.logGeneral("No pokemon in play mat, bench, and hand...");
+					return false;
+				}
+				else{
+					//logger.logGeneral("find pokemon in hand...");
+					return true;
+				}
+			}else{
+				//logger.logGeneral("find pokemon in bench...");
+				return true;
+			}
+		}else{
+				//logger.logGeneral("find pokemon in mat...");
+				return true;
+			}
+			
+	}
     // for each new round, get a new card from deck
     dealCard() {
         if (this.deckCollection.length < 1)
             alert("empty deck");
         else {
-            logger.logGeneral("deal 1 --user ");
-            this.handCollection.unshift(this.deckCollection[0]);
-            this.deckCollection.shift();
-            // TODO validate
+            // before deal card, validate,if player has a pokemon, if is random get a card from deck
+			if(this.hasPokemon())
+			{
+				logger.logGeneral("deal 1 --user ");
+				this.handCollection.unshift(this.deckCollection[0]);
+				this.deckCollection.shift();
+			}else{//if not, get 1 pokemon, 
+				//if no pokemon card in deck , game end
+				if(!(this.deckCollection.find(item => item.cardType == Card_Type.pokemon)))
+				{
+					logger.logGeneral("No more pokemon card, you lose the Game ");
+					//TODO game end
+					
+				}else{//if there is pokemon card in your deck, get it
+						let temp = this.deckCollection.find(item => item.cardType == Card_Type.pokemon);
+						this.handCollection.unshift(temp[0]);
+						removeFromArray(this.deckCollection,temp[0]);
+					}
+				}
+			}
         }
-    }
+    
 
     // TODO this method should be removed
     dealCardAi() {
