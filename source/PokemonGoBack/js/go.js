@@ -1,6 +1,7 @@
 let user = null;
 let ai = null;
 let game = null;
+let currentPlayer = null;
 let logger = null;
 let userOrder = null;
 let aiOrder = null;
@@ -10,7 +11,7 @@ $(function () {
 	initAbility();
 	initCardCollection();
 
-	startNewGame(userOrder, aiOrder);
+	startNewGame();
 
 	new Vue({
 		el: '#divAi',
@@ -28,11 +29,11 @@ $(function () {
 
 });
 
-function startNewGame(userOrder, aiOrder) {
+function startNewGame() {
 	logger = new GameConsole();
 	user = new Player(userOrder, false);
 	ai = new Player(aiOrder, true);
-	game = new Game(user, ai);
+	game = new Game();
 
 	game.start();
 }

@@ -1,12 +1,7 @@
 class Game {
-	constructor(user, ai) {
-		this.user = user;
-		this.ai = ai;
-
+	constructor() {
 		this.coinHead = 0;
 		this.coinTail = 0;
-
-		this.currentPlayer = null;
 	}
 
 	// Pokemon, GoGoGo!
@@ -25,22 +20,21 @@ class Game {
 	}
 
 	aiPlayTurn() {
-		this.currentPlayer = this.ai;
+		currentPlayer = ai;
 		$("#endTurn").prop("disabled", true);
 		logger.logGeneral("AI's Turn.");
 		let temp = this;
 		setTimeout(function () {
-			temp.ai.dealCard();
-			// TODO 
+			ai.play();
 			temp.userPlayTurn();
 		}, 3000);
 	}
 
 	userPlayTurn() {
-		this.currentPlayer = this.user;
+		currentPlayer = user;
 		$("#endTurn").prop("disabled", false);
 		logger.logGeneral("User's Turn.");
-		this.user.dealCard();
+		user.play();
 	}
 
 	flipCoin(n) {

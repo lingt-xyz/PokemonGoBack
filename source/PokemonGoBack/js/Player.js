@@ -4,8 +4,6 @@ class Player {
         this.order = order;
         this.isAi = isAi;
 
-        this.role = isAi ? "AI" : "User";
-
         // store all cards being used by this player, this collection should never be modified after deck is initialized
         this.cardCollection = [];
         // store current cards in deck
@@ -121,7 +119,7 @@ class Player {
             alert("empty deck");
         else {
             if (this.hasPokemon()) {// if player has a pokemon, get a card from deck
-                logger.logGeneral("Deal on card to " + this.role + ".");
+                logger.logGeneral("Deal on card to " + (this == ai ? "AI" : "User") + ".");
                 this.handCollection.push(this.deckCollection[0]);
                 this.deckCollection.shift();
             } else {//if not, get 1 pokemon
@@ -144,6 +142,15 @@ class Player {
             return true;
         } else {
             return false;
+        }
+    }
+
+    play() {
+        this.dealCard();
+        if (this == ai) {
+            // do more
+        }else{
+            // do nothing
         }
     }
 
