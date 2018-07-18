@@ -119,7 +119,7 @@ class Player {
             alert("empty deck");
         else {
             if (this.hasPokemon()) {// if player has a pokemon, get a card from deck
-                logger.logGeneral("Deal on card to " + (this == ai ? "AI" : "User") + ".");
+                logger.logGeneral("Deal one card to " + (this == ai ? "AI" : "User") + ".");
                 this.handCollection.push(this.deckCollection[0]);
                 this.deckCollection.shift();
             } else {//if not, get 1 pokemon
@@ -148,8 +148,16 @@ class Player {
     play() {
         this.dealCard();
         if (this == ai) {
+            let pokemon = this.matCollection.find(item => item.cardType == Card_Type.pokemon);
+            if (pokemon) {// there is a pokemon on mat
+
+            } else {// pick a pokemon, put it on the mat
+                pokemon = this.handCollection.find(item => item.cardType == Card_Type.pokemon);
+                removeFromArray(this.handCollection, pokemon);
+                this.matCollection.push(pokemon);
+            }
             // do more
-        }else{
+        } else {
             // do nothing
         }
     }
