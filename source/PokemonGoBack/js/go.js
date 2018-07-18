@@ -47,6 +47,16 @@ function showCardInfo(id, isAi) {
 	}
 }
 
+//TODO
+/**
+ * Popup a div, show the abilities the card has 
+ * @param {card id} id 
+ * @returns the chosed ability id, or "" if no ability is chosed.
+ */
+function chooseAbility(id){
+
+}
+
 function loadDefaultImg(id) {
 	$("#" + id + "").attr("src", "image/Default.png");
 }
@@ -227,7 +237,7 @@ function drop_handler(ev) {
 
 			}
 		}
-	} else if (sourceName == "divMatCollection") {// this card is from matCollection, retreat only
+	} else if (sourceName == "divMatCollection") {// this card is from matCollection
 		let sourceCard = findFromArray(user.matCollection, id);
 		if (isNaN(targetId)) {// moving to a div
 			if (sourceCard.cardType == Card_Type.energy) {// moving an energy
@@ -267,7 +277,23 @@ function drop_handler(ev) {
 		} else {// moving to a card
 			// TODO hardest part to be implemented
 			if (targetContainer == "divMatCollectionAi") {
-				// TODO battle
+				let targetCard = findFromArray(user.benchCollection, targetId);
+				if (targetCard.cardType == Card_Type.energy) {
+					logger.logError("Unexpected logic error!");
+				} else if (targetCard.cardType == Card_Type.trainer) {
+					logger.logGeneral("TODO: Trainer!");
+				} else {// targetCard is a pokemon
+					if (sourceCard.cardType == Card_Type.energy) {
+						logger.logError("Unexpected logic error!");
+					} else if (sourceCard.cardType == Card_Type.trainer) {
+						logger.logGeneral("TODO: Trainer!");
+					} else {// moving a pokemon to a pokemon: battle
+						// TODO battle
+						// 1. list abilites
+						// 2. choose an ability
+						// 3. apply ability
+					}
+				}
 			} else {// moving to other div, do nothing
 
 			}
