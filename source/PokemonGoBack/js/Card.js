@@ -390,24 +390,25 @@ class Pokemon extends Card {
     }
 
     toConsole() {//"<div class='gamelog text-light'>[Info]: " + text + "</div>
-        let s = "";
+        let attacks = "";
         this.attacks.forEach(element => {
             if (element.length == 3) {
-                s += ("<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AttackType:" + element[0] + ", AttackEnergy:" + element[1] + ", Ability:" + Ability_Collection[element[2]].abilityName + ",");
+                attacks += ("<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AttackType:" + element[0] + ", AttackEnergy:" + element[1] + ", Ability:" + Ability_Collection[element[2]].abilityName + ",");
             } else if (element.length == 5) {
-                s += ("<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AttackType1:" + element[0] + ", AttackEnergy1:" + element[1] + ", AttackType2:" + element[2] + ", AttackEnergy2:" + element[3] + ", Ability:" + Ability_Collection[element[4]].abilityName + ",");
+                attacks += ("<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AttackType1:" + element[0] + ", AttackEnergy1:" + element[1] + ", AttackType2:" + element[2] + ", AttackEnergy2:" + element[3] + ", Ability:" + Ability_Collection[element[4]].abilityName + ",");
             }
         });
-        s = s.substr(0, s.length - 1);
+        attacks = attacks.substr(0, attacks.length - 1);
         return "Card Detail</div>"
             + "<div>&nbsp;&nbsp;&nbsp;&nbsp;Name: " + this.cardName + "</div>"
             + "<div>&nbsp;&nbsp;&nbsp;&nbsp;Type: " + this.cardType + "</div>"
-            + "<div>&nbsp;&nbsp;&nbsp;&nbsp;stage: " + this.cardStage + "</div>"
+            + "<div>&nbsp;&nbsp;&nbsp;&nbsp;Stage: " + this.cardStage + "</div>"
             + "<div>&nbsp;&nbsp;&nbsp;&nbsp;Max HP: " + this.hp + "</div>"
-            + "<div>&nbsp;&nbsp;&nbsp;&nbsp;currenyHP: " + this.currentHp + "</div>"
-            + "<div>&nbsp;&nbsp;&nbsp;&nbsp;currenyEnergy: " + this.currentEnergy + "</div>"
-            + "<div>&nbsp;&nbsp;&nbsp;&nbsp;currenyColorLessEnergy: " + this.currentColorLessEnergy + "</div>"
-            + "<div>&nbsp;&nbsp;&nbsp;&nbsp;attacks: " + s + "</div>"
+            + "<div>&nbsp;&nbsp;&nbsp;&nbsp;CurrenyHP: " + this.currentHp + "</div>"
+            + "<div>&nbsp;&nbsp;&nbsp;&nbsp;CurrenyEnergy: " + this.currentEnergy + "</div>"
+            + "<div>&nbsp;&nbsp;&nbsp;&nbsp;Retreat: " + this.retreat + "</div>"
+            + "<div>&nbsp;&nbsp;&nbsp;&nbsp;CurrenyColorLessEnergy: " + this.currentColorLessEnergy + "</div>"
+            + "<div>&nbsp;&nbsp;&nbsp;&nbsp;Attacks: " + attacks + "</div>"
             + "<div>";
     }
 

@@ -16,7 +16,7 @@ class GameConsole {
         this.scrollConsle();
     }
     logError(text) {
-        $("#divGameConsole").append("<div class='gamelog text-danger'>[Warning]: " + text + "</div>");
+        $("#divGameConsole").append("<div class='gamelog text-danger'>[Error]: " + text + "</div>");
         this.scrollConsle();
     }
 

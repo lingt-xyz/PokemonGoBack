@@ -121,7 +121,7 @@ class Player {
             alert("empty deck");
         else {
             if (this.hasPokemon()) {// if player has a pokemon, get a card from deck
-                logger.logGeneral("Deal 1 to " + this.role);
+                logger.logGeneral("Deal on card to " + this.role + ".");
                 this.handCollection.push(this.deckCollection[0]);
                 this.deckCollection.shift();
             } else {//if not, get 1 pokemon

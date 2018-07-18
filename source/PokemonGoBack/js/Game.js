@@ -25,26 +25,22 @@ class Game {
 	}
 
 	aiPlayTurn() {
+		this.currentPlayer = this.ai;
 		$("#endTurn").prop("disabled", true);
 		logger.logGeneral("AI's Turn.");
-		$(".pokemonallcard").draggable({ disabled: true });
 		let temp = this;
 		//to test each time get one cardDiscard
 		setTimeout(function () {
 			temp.ai.dealCard();
-			applyDrag();
 			temp.userPlayTurn();
 		}, 3000);
-
-		//TODO Aistatemachine
 	}
 
 	userPlayTurn() {
+		this.currentPlayer = this.user;
 		$("#endTurn").prop("disabled", false);
 		logger.logGeneral("User's Turn.");
-		$(".pokemonallcard").draggable({ disabled: false });
 		this.user.dealCard();
-		applyDrag();
 	}
 
 	flipCoin(n) {
@@ -57,7 +53,7 @@ class Game {
 				this.coinTail++;
 			n--;
 		}
-		return "result: " + this.coinHead + " heads, and " + this.coinTail + " tails";
+		return "Result: " + this.coinHead + " head(s), and " + this.coinTail + " tail(s)";
 	}
 
 	toString() {
