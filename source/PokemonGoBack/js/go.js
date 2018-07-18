@@ -30,10 +30,11 @@ $(function () {
 });
 
 function startNewGame(userOrder, aiOrder) {
+	logger = new GameConsole();
 	user = new Player(userOrder, false);
 	ai = new Player(aiOrder, true);
 	game = new Game(user, ai);
-	logger = new GameConsole();
+	
 	game.start();
 }
 
