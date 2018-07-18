@@ -29,9 +29,9 @@ class Game {
 		$("#endTurn").prop("disabled", true);
 		logger.logGeneral("AI's Turn.");
 		let temp = this;
-		//to test each time get one cardDiscard
 		setTimeout(function () {
 			temp.ai.dealCard();
+			// TODO 
 			temp.userPlayTurn();
 		}, 3000);
 	}

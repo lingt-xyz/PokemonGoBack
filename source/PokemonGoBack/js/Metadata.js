@@ -198,7 +198,7 @@ function initCardCollection() {
                             retreatEnergyPoint = retreatInfos[2];
                             attackString = retreatInfos[3];
                         } else {
-                            retreatEnergyType = property;
+                            retreatEnergyType = "colorless";
                             attackString = abilityString;
                         }
 
@@ -366,3 +366,10 @@ function initAbility() {
         }
     }
 }
+
+var Card_Type = { pokemon: "pokemon", trainer: "trainer", energy: "energy" };
+var Energy_Type = { colorless: "colorless", water: "water", lightning: "lightning", psychic: "psychic", fighting: "fighting" };
+var Trainer_Type = { stadium: "stadium", supporter: "supporter", item: "item" };
+var Ability_Type = { dam: "dam", deenergize: "deenergize", redamage: "redamage", heal: "heal", deck: "deck", cond: "cond", search: "search", draw: "draw", applystat: "applystat", swap: "swap", reenergize: "reenergize", add: "add", shuffle: "shuffle", destat: "destat" };
+var Target_Pokemon = { your_active: "your-active", opponet_active: "opponent-active", choice_opponet: "choice:opponet", choice_your: "choice:your", choice_opponet_bench: "choice:opponet-bench", choice_your_banch: "choice:your-bench" };
+var Target_Player = { you: "you", them: "them" };
