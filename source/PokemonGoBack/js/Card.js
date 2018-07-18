@@ -406,8 +406,8 @@ class Pokemon extends Card {
             + "<div>&nbsp;&nbsp;&nbsp;&nbsp;Max HP: " + this.hp + "</div>"
             + "<div>&nbsp;&nbsp;&nbsp;&nbsp;CurrenyHP: " + this.currentHp + "</div>"
             + "<div>&nbsp;&nbsp;&nbsp;&nbsp;CurrenyEnergy: " + this.currentEnergy + "</div>"
-            + "<div>&nbsp;&nbsp;&nbsp;&nbsp;Retreat: " + this.retreat + "</div>"
             + "<div>&nbsp;&nbsp;&nbsp;&nbsp;CurrenyColorLessEnergy: " + this.currentColorLessEnergy + "</div>"
+            + "<div>&nbsp;&nbsp;&nbsp;&nbsp;Retreat: " + this.retreat + "</div>"
             + "<div>&nbsp;&nbsp;&nbsp;&nbsp;Attacks: " + attacks + "</div>"
             + "<div>";
     }
