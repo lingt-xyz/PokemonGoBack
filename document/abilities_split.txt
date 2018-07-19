@@ -1,0 +1,113 @@
+Skill Dive:                 dam:target:opponent:10
+Bite:                       dam:target:opponent-active:40
+Circle Circuit:             dam:target:opponent-active:20*count(target:your-bench)
+Flail:                      dam:target:opponent-active:count(target:your-active:damage)*10
+Random Spark:               dam:target:choice:opponent:30
+Stretch Kick:               dam:target:choice:opponent-bench:30
+
+Brave Bird:                 dam:target:opponent-active:80,      dam:target:your-active:20
+Earthquake:                 dam:target:opponent-active:60,      dam:target:your-bench:10
+Psychic:                    dam:target:opponent-active:60,      dam:target:opponent-active:count(target:opponent-active:energy)*10
+Spiral Drain:               dam:target:opponent-active:20,      heal:target:your-active:20
+Hug:                        dam:target:opponent-active:30,      applystat:status:stuck:opponent-active
+Thunderbolt:                dam:target:opponent-active:100,     deenergize:target:your-active:count(target:your-active:energy)
+
+Quick Attack:               dam:target:opponent-active:10,  cond:flip:  dam:target:opponent-active:30
+Fake Out:                   dam:target:opponent-active:30,  cond:flip:  applystat:status:paralyzed:opponent-active
+Bullet Punch:               dam:target:opponent-active:20,  cond:flip:  dam:target:opponent-active:20,
+                                                            cond:flip:  dam:target:opponent-active:20
+
+Nyan Press:                 dam:target:opponent-active:40,  cond:flip:  dam:target:opponent-active:40:
+                                                            else:       applystat:status:paralyzed:opponent-active
+
+Clamp Crush:                dam:target:opponent-active:30,  cond:flip:  deenergize:target:opponent-active:1,
+                                                            applystat:status:paralyzed:opponent-active
+
+Fury Attack:                dam:target:opponent-active:40,  cond:flip:  dam:target:opponent-active:40,
+                                                            cond:flip:  dam:target:opponent-active:40,
+                                                            cond:flip:  dam:target:opponent-active:40
+                            // flip three coins: each coin does 40 damage
+
+Spike Cannon:               dam:target:opponent-active:30,  cond:flip:  dam:target:opponent-active:30,
+                                                            cond:flip:  dam:target:opponent-active:30,
+                                                            cond:flip:  dam:target:opponent-active:30,
+                                                            cond:flip:  dam:target:opponent-active:30,
+                                                            cond:flip:  dam:target:opponent-active:30
+
+Soaking Horn:               dam:target:opponent-active:10,  cond:healed:    target:your-active:dam:target:opponent-active:80
+
+Act Tough:                  dam:target:opponent-active:10,  cond:count(target:your-active:energy:psychic)>0:    dam:target:opponent-active:20
+                            // if this pokemon has any phychic energy attached to it, this attack does 20 more damage
+
+Lunge:                      cond:flip:      dam:target:opponent-active:20
+Exhausted Tackle:           cond:flip:      dam:target:opponent-active:30:else:dam:target:your-active:30
+Double Stab:                cond:flip:      dam:target:opponent-active:10,cond:flip:dam:target:opponent-active:10
+Spacing Out:                cond:flip:      heal:target:your-active:10
+Nuzzle:                     cond:flip:      applystat:status:paralyzed:opponent-active
+Sleep Poison:               cond:flip:      (applystat:status:asleep:opponent-active,applystat:status:poisoned:opponent-active)
+Misty's Determination:      cond:ability:   deck:target:your:destination:discard:choice:you:1:(search:target:your:source:deck:filter:top:8:1,shuffle:target:your)
+                            // discard a card from your hand. If you do, look at the top 8 cards of your deck and put 1 of them into your hand. Shuffle the other cards back into your deck.
+
+Scavenge:                   cond:ability:   deenergize:target:your-active:1:(search:target:your:source:discard:filter:cat:item:1)
+                            // discard a energy attached to this pokemon. if you do, put an item crd from your discard pile into your hand
+
+Destructive Beam:           cond:flip:      deenergize:target:opponent-active:1
+Poké Ball:                  cond:flip:      search:target:your:source:deck:filter:pokemon:1
+                            // fliip a coin. if heads, search your deck for a basic pokemon or evolultion card, show ito to your opponent and put it into your hand. shuffle your deck afterward
+
+                            // cond:flip = filp a coin, if heads, do
+                            // cond:healed = if this pokemon was healed during this turn, do
+
+Potion:                     heal:target:choice:your:30
+Pokémon Center Lady:        heal:target:choice:your:60, destat:target:last
+
+Shauna:                     deck:target:your:destination:deck:count(your-hand),             shuffle:target:your,draw:5
+                            // Shuffle your hand into your deck. Then, draw 5 card
+
+Red Card:                   deck:target:opponent:destination:deck:count(opponent-hand),     shuffle:target:opponent,draw:opponent:4
+                            // your opponent shuffles his or her hand into his or her deck and draws 4 cards
+
+Act Cute:                   deck:target:opponent:destination:deck:bottom:choice:them:1
+                            // deck = 对手把一张手牌放到deck底部
+                            
+Poison Ring:                applystat:status:stuck:opponent-active,   applystat:status:poisoned:opponent-active
+Twinkle:                    applystat:status:asleep:opponent-active
+                            // stuck = That pokemon can't retreat during your opponent's next turn
+
+Wish:                       search:target:your:source:deck:1
+                            // search your deck for a card and put it into your hand. Shuffle your deck afterward?
+
+Mine:                       search:target:opponent:source:deck:filter:top:1:0,  cond:choice:shuffle:target:opponent
+                            // look at the top card of your opponent's deck. Then, you may have your opponent shuffle his or her deck
+
+Pokémon Fan Club:           search:target:your:source:deck:filter:pokemon:cat:basic:2,  shuffle:target:your
+                            // search your deck for up to 2 basic pokemon, reveal them, and put them ito uour hand. Shuffle your deck afterward
+
+Wally:                      search:target:choice:your-pokemon:cat:basic:source:deck:filter:evolves-from:target:last:1,  shuffle:target:your
+                            // search your deck for a card that evolves from your active pokemon (coose 1 if there are 2) and put it one your active pokemon(count as evolving that pokemon) Shuffle your deck afterward
+
+Clemont:                    search:target:your:source:deck:filter:energy:4
+                            // Search your dick for u tp 4 lighting? cards, reveal them, and put them into your hand. Shuffle your deck afterward
+
+Tierno:                     draw:3
+                            // draw 3 dards
+
+Switch:                     swap:source:your-active:destination:choice:your-bench
+                            // switch your active pokemon with 1 of your benched pokemon
+
+Floral Crown:               add:target:your:trigger:opponent:turn-end:(heal:target:self:20)
+
+Ear Influence:              redamage:source:choice:opponent:destination:opponent:count(target:last:source:damage)
+                            // Move as many damage counters on your opponent's pokemon as you like to any of your opponent's other pokemon in any way you like
+
+Energy Switch:              reenergize:target:choice:your:1:target:choice:your:1
+                            // move a basic energy from 1 of your pokemon to another of your pokemon
+
+// deenergize = discard all energy attached to this pokemon
+
+
+special condition
+1.paralyzed： 被麻痹后一局不能攻击或撤退。一轮后解除
+2.asleep: 不能攻击或撤退，每一轮有一半机会取消效果
+3.stuck:不能撤退。一轮后可解除
+4.poisoned:被效果玩家自己论攻击后收到一点伤害

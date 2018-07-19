@@ -50,12 +50,13 @@ function showCardInfo(id, isAi) {
 
 //TODO
 /**
- * Popup a div, showing the abilities the card has 
- * @param {pokemon card} pokemon 
- * @returns the chosed ability id, or "" if no ability is chosed.
+ * Popup a div, showing the abilities (list all the abilities, index them from 1) the card has.
+ * Pokemon only has one or two abilities. 
+ * @param {Pokemon} pokemon 
+ * @returns the chosed ability index (should only be 1 or 2), or 0 if no ability is chosen.
  */
-function chooseAbility(pokemon){
-
+function chooseAbility(pokemon) {
+	return 1;
 }
 
 function loadDefaultImg(id) {
@@ -83,7 +84,7 @@ function drop_handler(ev) {
 
 	ev.stopPropagation();
 
-	if(game.currentPlayer == ai){
+	if (game.currentPlayer == ai) {
 		logger.logWarning("Relax, it's Ai's turn now.");
 		return;
 	}
@@ -282,9 +283,15 @@ function drop_handler(ev) {
 					} else {// moving a pokemon to a pokemon: battle
 						// TODO battle
 						// 1. list abilites
-						let abilityIndex = chooseAbility(sourceCard);
 						// 2. choose an ability
 						// 3. apply ability
+						let abilityIndex = chooseAbility(sourceCard);
+						if (abilityIndex == 1 || abilityIndex == 2) {
+							sourceCard.attack(targetCard, abilityIndex);
+						} else{ 
+							// do nothing
+						}
+						
 					}
 				}
 			} else {// moving to other div, do nothing

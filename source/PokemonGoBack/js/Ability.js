@@ -1,109 +1,131 @@
 class Ability {
-    constructor(id, abilityName) {
-        this.id = id;
+    constructor(lineNumber, abilityName) {
+        this.lineNumber = lineNumber;
         this.abilityName = abilityName;
+        this.abilities = [];
     }
 }
 
-class Dam extends Ability {
-    constructor(id, target, damHp) {
-        super(id, Ability_Type.dam);
+// dam:target:opponent:10
+class Dam {
+    constructor(target, damHp) {
+        this.condition = null;
         this.target = target;
         this.damHp = damHp;
+        // 10
+        // 20*count(target:your-bench)
+        // count(target:your-active:damage)*10
+        // count(target:opponent-active:energy)*10
     }
 }
 
-class Heal extends Ability {
-    constructor(id, number) {
-        super(id, Ability_Type.heal);
+// heal:target:choice:your:30
+// heal:target:choice:your:60
+// heal:target:self:20
+class Heal {
+    constructor(target, number) {
+        this.target = target;
+        //your-active, choice:your, self
         this.number = number;
     }
 }
 
-class Deenergize extends Ability {
+// discard all energy attached to this pokemon
+class Deenergize {
     constructor() {
-        super(id, Ability_Type.deenergize);
-        //TODO
+
     }
 }
 
-class Reenergize extends Ability {
-    constructor(id, from, to, amount) {
-        super(id, Ability_Type.reenergize);
-        this.source = from;
-        this.target = to;
-        this.amount = amount;
+// reenergize:target:choice:your:1:target:choice:your:1
+// move a basic energy from 1 of your pokemon to another of your pokemon
+class Reenergize {
+    constructor(id, fromPokemon, fromAmout, toPokemon, toAmount) {
+        this.source = fromPokemon;
+        this.target = toPokemon;
+        this.fromAmout = fromAmout;
+        this.toAmount = toAmount;
     }
 }
 
-class Swap extends Ability {
-    constructor(id, source, destination) {
-        super(id, Ability_Type.swap);
+// swap:source:your-active:destination:choice:your-bench
+// switch your active pokemon with 1 of your benched pokemon
+class Swap {
+    constructor(source, destination) {
         this.source = source;
         this.destination = destination;
     }
 }
 
-class Destat extends Ability {
-    constructor(id, target) {
-        super(id, Ability_Type.destat);
-        this.target = target;
+
+// destat:target:last
+class Destat {
+    constructor() {
+        // TODO
     }
 }
 
-class ApplyStat extends Ability {
-    constructor(id, type, target) {
-        super(id, Ability_Type.applystat);
+// applystat:status:stuck:opponent-active
+// opponent-active ?
+// stuck = That pokemon can't retreat during your opponent's next turn
+class ApplyStat {
+    constructor(type, target) {
         this.type = type;
         this.target = target;
     }
 }
 
-class Draw extends Ability {
-    constructor(id, number) {
-        super(id, Ability_Type.draw);
+// draw:3
+// draw 3 dards
+class Draw {
+    constructor(number) {
         this.number = number;
     }
 }
 
-class Redamage extends Ability {
-    constructor(id) {
-        super(id, Ability_Type.redamage);
+// redamage:source:choice:opponent:destination:opponent:count(target:last:source:damage)
+// Move as many damage counters on your opponent's pokemon as you like to any of your opponent's other pokemon in any way you like
+class Redamage {
+    constructor() {
         //TODO
     }
 }
 
-class Search extends Ability {
-    constructor(id) {
-        super(id, Ability_Type.search);
+//
+class Search {
+    constructor() {
         //TODO
     }
 }
 
-class Deck extends Ability {
-    constructor(id) {
-        super(id, Ability_Type.deck);
+
+// deck:target:your:destination:deck:count(your-hand)
+// deck:target:opponent:destination:deck:count(opponent-hand)
+// deck:target:opponent:destination:deck:bottom:choice:them:1
+class Deck {
+    constructor() {
         //TODO
     }
 }
 
-class Shuffle extends Ability {
-    constructor(id, target) {
-        super(id, Ability_Type.shuffle);
+// shuffle:target:your
+// shuffle:target:opponent
+class Shuffle {
+    constructor(target) {
         this.target = target;
     }
 }
 
-class Cond extends Ability {
-    constructor(id) {
-        super(id, Ability_Type.cond);
-        //TODO
+// flip, ability, healed
+class Cond {
+    constructor(type) {
+        this.type = type;
     }
 }
 
-class Add extends Ability {
-    constructor(id) {
-        super(id, Ability_Type.add);
+// add:target:your:trigger:opponent:turn-end:(heal:target:self:20)
+class Add {
+    constructor() {
         //TODO
     }
 }

@@ -65,16 +65,28 @@ class Pokemon extends Card {
         this.attackResult = false;
     }
 
-    // TODO some cards only have colorless energy
-    addEnergy(energy){
-        if (energy.cardName.toLowerCase() == this.property) {
+    addEnergy(energy) {
+        if (this.property != "colorless" && energy.cardName.toLowerCase() == this.property) {
             this.currentEnergy += 1;
         } else {
             this.currentColorLessEnergy += 1;
         }
     }
 
+    /**
+     * 
+     * @param {Pokemon} target the pokemon to be attacked
+     * @param {Number} abilityIndex the index of the abilities it has
+     */
     attack(target, abilityIndex) {
+
+        this.attacks.forEach(element => {
+            if (element.length == 3) {
+                attacks += ("<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + Ability_Collection[element[2]].abilityName + ": Require " + element[1] + " " + element[0] + ",");
+            } else if (element.length == 5) {
+                attacks += ("<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + Ability_Collection[element[4]].abilityName + ": Require " + element[1] + " " + element[0] + ", " + element[3] + " " + element[2] + ",");
+            }
+        });
         let hp1 = 0;
         let hp2 = 0;
         let ability = Ability_Collection[abilityIndex];
@@ -402,9 +414,9 @@ class Pokemon extends Card {
         let attacks = "";
         this.attacks.forEach(element => {
             if (element.length == 3) {
-                attacks += ("<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AttackType:" + element[0] + ", AttackEnergy:" + element[1] + ", Ability:" + Ability_Collection[element[2]].abilityName + ",");
+                attacks += ("<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + Ability_Collection[element[2]].abilityName + ": Needs " + element[1] + " " + element[0] + ",");
             } else if (element.length == 5) {
-                attacks += ("<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AttackType1:" + element[0] + ", AttackEnergy1:" + element[1] + ", AttackType2:" + element[2] + ", AttackEnergy2:" + element[3] + ", Ability:" + Ability_Collection[element[4]].abilityName + ",");
+                attacks += ("<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + Ability_Collection[element[4]].abilityName + ": Needs " + element[1] + " " + element[0] + ", " + element[3] + " " + element[2] + ",");
             }
         });
         attacks = attacks.substr(0, attacks.length - 1);
