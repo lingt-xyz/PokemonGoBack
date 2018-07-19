@@ -17,8 +17,8 @@ Fake Out:                   dam:target:opponent-active:30,  cond:flip:  applysta
 Bullet Punch:               dam:target:opponent-active:20,  cond:flip:  dam:target:opponent-active:20,
                                                             cond:flip:  dam:target:opponent-active:20
 
-Nyan Press:                 dam:target:opponent-active:40,  cond:flip:  dam:target:opponent-active:40:
-                                                            else:       applystat:status:paralyzed:opponent-active
+Nyan Press:                 dam:target:opponent-active:40,  cond:flip:  dam:target:opponent-active:40:  
+                                                                else: applystat:status:paralyzed:opponent-active
 
 Clamp Crush:                dam:target:opponent-active:30,  cond:flip:  deenergize:target:opponent-active:1,
                                                             applystat:status:paralyzed:opponent-active

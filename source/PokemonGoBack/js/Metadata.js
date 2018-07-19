@@ -255,230 +255,129 @@ function initCardCollection() {
 
 var Ability_Collection = new Array();
 function initAbility() {
-    let abilityStrings = abilityString.split('\n');// array of lines
+    let lines = abilityString.split('\n');// array of lines
     let abilityRegex = /^([a-zA-ZÀ-ÿ-' ]+):(.*)$/;// match ability name
-    let abilityTypeRegex = /^([a-zA-Z]+):(.*)$/;
+    let condRegex = /^cond:(.*):(.*)$/;
     let abilityIndex = 0;
 
     Ability_Collection.push(null);
-    for (let item of abilityStrings) {
-        if (item) {// ignore empty string
+    for (let line of lines) {
+        if (line) {// ignore empty string
             abilityIndex++;
-            let items = item.match(abilityRegex);
+            let items = line.match(abilityRegex);
             let abilityName = items[1];
-            Ability_Collection.push(new Ability(abilityIndex, abilityName));
-            continue;
-            items[2].split(",").forEach((value) => {
-                let typeInfos = value.match(abilityTypeRegex);
-                switch (typeInfos[1]) {
-                    case Ability_Type.dam:
-                        let damInfos = typeInfos[2].split(":");
-                        if (damInfos.length == 3) {
-                            let damTarget = damInfos[1];
-                            // 10; 20*count(target:your-bench); 
-                            let damHp = damInfos[2];
-                            Ability_Collection.push(new Dam(abilityIndex, damTarget, damHp));
-                        } else {//target:choice:opponent-bench:30
-                            let damTarget = damInfos[1] + ":" + damInfos[2];
-                            let damHp = damInfos[3];
-                            Ability_Collection.push(new Dam(abilityIndex, damTarget, damHp));
-                        }
-                        break;
-                    case Ability_Type.heal:
-                        let healInfos = typeInfos[2].split(":");
-                        //target:choice:your:60,
-                        let healHp = healInfos[3];
-                        Ability_Collection.push(new Heal(abilityIndex, healHp));
-                        break;
-                    case Ability_Type.deenergize:
-                        //target:your-active:1:(search:target:your:source:discard:filter:cat:item:1)
-                        //target:opponent-active:1
-                        //target:your-active:count(target:your-active:energy)
-                        //TODO
-                        let deenInfos = typeInfos[2].split(":");
-                        Ability_Collection.push(new Reenergize(abilityIndex));
-                        break;
-                    case Ability_Type.reenergize:
-                        //target:choice:your:1:target:choice:your:1
-                        let reenInfos = typeInfos[2].split(":");
-                        Ability_Collection.push(new Reenergize(abilityIndex, reenInfos[1] + ":" + reenInfos[2], reenInfos[4] + ":" + reenInfos[5], reenInfos[6]));
-                        break;
-                    case Ability_Type.redamage:
-                        //source:choice:opponent:destination:opponent:count(target:last:source:damage)
-                        //TODO
-                        Ability_Collection.push(new Redamage(abilityIndex, ));
-                        break;
-                    case Ability_Type.swap:
-                        //source:your-active:destination:choice:your-bench
-                        let swapInfos = typeInfos[2].split(":");
-                        let swapSource = swapInfos[1];
-                        let swapDestination = swapInfos[3] + ":" + swapInfos[4];
-                        Ability_Collection.push(new Swap(abilityIndex, swapSource, swapDestination));
-                        break;
-                    case Ability_Type.destat:
-                        //target:last
-                        let destatTarget = typeInfos[2].split(":")[1];
-                        Ability_Collection.push(new Destat(abilityIndex, destatTarget));
-                        break;
-                    case Ability_Type.applystat:
-                        let statInfos = typeInfos[2].split(":");
-                        let statusType = statInfos[1];
-                        let statusTarget = statInfos[2];
-                        Ability_Collection.push(new ApplyStat(abilityIndex, statusType, statusTarget));
-                        break;
-                    case Ability_Type.draw:
-                        let drawNumber = typeInfos[2].split(":")[1];
-                        Ability_Collection.push(new Draw(abilityIndex, drawNumber));
-                        break;
-                    case Ability_Type.search:
-                        //target:your:source:deck:filter:pokemon:cat:basic:2
-                        //target:your:source:deck:1
-                        //target:opponent:source:deck:filter:top:1:0
-                        //target:your:source:deck:filter:energy:4
-                        //target:choice:your-pokemon:cat:basic:source:deck:filter:evolves-from:target:last:1
-                        //TODO
-                        Ability_Collection.push(new Search(abilityIndex, ));
-                        break;
-                    case Ability_Type.deck:
-                        //target:opponent:destination:deck:bottom:choice:them:1
-                        //target:your:destination:deck:count(your-hand)
-                        //TODO
-                        let deckInfos = typeInfos[2].split(":");
-                        Ability_Collection.push(new Deck(abilityIndex, ));
-                        break;
-                    case Ability_Type.shuffle:
-                        //target:your
-                        let shuffleTarget = typeInfos[2].split(":")[1];
-                        Ability_Collection.push(new Shuffle(abilityIndex, shuffleTarget));
-                        break;
-                    case Ability_Type.cond:
-                        //TODO
-                        Ability_Collection.push(new Cond(abilityIndex, ));
-                        break;
-                    case Ability_Type.add:
-                        //target:your:trigger:opponent:turn-end:(heal:target:self:20)
-                        //TODO
-                        Ability_Collection.push(new Add(abilityIndex, ));
-                        break;
-                    default:
-                        break;
+            let ability = new Ability(abilityIndex, abilityName);
+            let ss = items[2].split(",");
+            for(let s of ss){// for each sub-ability
+                if(s.startsWith(Ability_Type.cond)){
+                    //cond:flip: dam:target:opponent-active:20
+                    let conds = s.match(condRegex);
+                    let condName = conds[1];
+                    let condAbility = conds[2];
+                    s = condAbility;
                 }
-            });
+                ability.abilities.push(getSubAbility(s));
+            }
 
+            Ability_Collection.push(ability);
         }
     }
 }
 
-function initAbility1() {
-    let abilityStrings = abilityString.split('\n');// array of lines
-    let abilityRegex = /^([a-zA-ZÀ-ÿ-' ]+):(.*)$/;// match ability name
-    let abilityTypeRegex = /^([a-zA-Z]+):(.*)$/;
-    let abilityIndex = 0;
-
-    Ability_Collection.push(null);
-    for (let item of abilityStrings) {
-        if (item) {// ignore empty string
-            abilityIndex++;
-            let items = item.match(abilityRegex);
-            let abilityName = items[1];
-            items[2].split(",").forEach((value) => {
-                let typeInfos = value.match(abilityTypeRegex);
-                switch (typeInfos[1]) {
-                    case Ability_Type.dam:
-                        let damInfos = typeInfos[2].split(":");
-                        if (damInfos.length == 3) {
-                            let damTarget = damInfos[1];
-                            // 10; 20*count(target:your-bench); 
-                            let damHp = damInfos[2];
-                            Ability_Collection.push(new Dam(abilityIndex, damTarget, damHp));
-                        } else {//target:choice:opponent-bench:30
-                            let damTarget = damInfos[1] + ":" + damInfos[2];
-                            let damHp = damInfos[3];
-                            Ability_Collection.push(new Dam(abilityIndex, damTarget, damHp));
-                        }
-                        break;
-                    case Ability_Type.heal:
-                        let healInfos = typeInfos[2].split(":");
-                        //target:choice:your:60,
-                        let healHp = healInfos[3];
-                        Ability_Collection.push(new Heal(abilityIndex, healHp));
-                        break;
-                    case Ability_Type.deenergize:
-                        //target:your-active:1:(search:target:your:source:discard:filter:cat:item:1)
-                        //target:opponent-active:1
-                        //target:your-active:count(target:your-active:energy)
-                        //TODO
-                        let deenInfos = typeInfos[2].split(":");
-                        Ability_Collection.push(new Reenergize(abilityIndex));
-                        break;
-                    case Ability_Type.reenergize:
-                        //target:choice:your:1:target:choice:your:1
-                        let reenInfos = typeInfos[2].split(":");
-                        Ability_Collection.push(new Reenergize(abilityIndex, reenInfos[1] + ":" + reenInfos[2], reenInfos[4] + ":" + reenInfos[5], reenInfos[6]));
-                        break;
-                    case Ability_Type.redamage:
-                        //source:choice:opponent:destination:opponent:count(target:last:source:damage)
-                        //TODO
-                        Ability_Collection.push(new Redamage(abilityIndex, ));
-                        break;
-                    case Ability_Type.swap:
-                        //source:your-active:destination:choice:your-bench
-                        let swapInfos = typeInfos[2].split(":");
-                        let swapSource = swapInfos[1];
-                        let swapDestination = swapInfos[3] + ":" + swapInfos[4];
-                        Ability_Collection.push(new Swap(abilityIndex, swapSource, swapDestination));
-                        break;
-                    case Ability_Type.destat:
-                        //target:last
-                        let destatTarget = typeInfos[2].split(":")[1];
-                        Ability_Collection.push(new Destat(abilityIndex, destatTarget));
-                        break;
-                    case Ability_Type.applystat:
-                        let statInfos = typeInfos[2].split(":");
-                        let statusType = statInfos[1];
-                        let statusTarget = statInfos[2];
-                        Ability_Collection.push(new ApplyStat(abilityIndex, statusType, statusTarget));
-                        break;
-                    case Ability_Type.draw:
-                        let drawNumber = typeInfos[2].split(":")[1];
-                        Ability_Collection.push(new Draw(abilityIndex, drawNumber));
-                        break;
-                    case Ability_Type.search:
-                        //target:your:source:deck:filter:pokemon:cat:basic:2
-                        //target:your:source:deck:1
-                        //target:opponent:source:deck:filter:top:1:0
-                        //target:your:source:deck:filter:energy:4
-                        //target:choice:your-pokemon:cat:basic:source:deck:filter:evolves-from:target:last:1
-                        //TODO
-                        Ability_Collection.push(new Search(abilityIndex, ));
-                        break;
-                    case Ability_Type.deck:
-                        //target:opponent:destination:deck:bottom:choice:them:1
-                        //target:your:destination:deck:count(your-hand)
-                        //TODO
-                        let deckInfos = typeInfos[2].split(":");
-                        Ability_Collection.push(new Deck(abilityIndex, ));
-                        break;
-                    case Ability_Type.shuffle:
-                        //target:your
-                        let shuffleTarget = typeInfos[2].split(":")[1];
-                        Ability_Collection.push(new Shuffle(abilityIndex, shuffleTarget));
-                        break;
-                    case Ability_Type.cond:
-                        //TODO
-                        Ability_Collection.push(new Cond(abilityIndex, ));
-                        break;
-                    case Ability_Type.add:
-                        //target:your:trigger:opponent:turn-end:(heal:target:self:20)
-                        //TODO
-                        Ability_Collection.push(new Add(abilityIndex, ));
-                        break;
-                    default:
-                        break;
-                }
-            });
-
-        }
+function getSubAbility(s){
+    let ss = s.split(":");
+    return null;
+    switch (ss[0]) {
+        case Ability_Type.dam:
+            let damInfos = typeInfos[2].split(":");
+            if (damInfos.length == 3) {
+                let damTarget = damInfos[1];
+                // 10; 20*count(target:your-bench); 
+                let damHp = damInfos[2];
+                Ability_Collection.push(new Dam(abilityIndex, damTarget, damHp));
+            } else {//target:choice:opponent-bench:30
+                let damTarget = damInfos[1] + ":" + damInfos[2];
+                let damHp = damInfos[3];
+                Ability_Collection.push(new Dam(abilityIndex, damTarget, damHp));
+            }
+            break;
+        case Ability_Type.heal:
+            let healInfos = typeInfos[2].split(":");
+            //target:choice:your:60,
+            let healHp = healInfos[3];
+            Ability_Collection.push(new Heal(abilityIndex, healHp));
+            break;
+        case Ability_Type.deenergize:
+            //target:your-active:1:(search:target:your:source:discard:filter:cat:item:1)
+            //target:opponent-active:1
+            //target:your-active:count(target:your-active:energy)
+            //TODO
+            let deenInfos = typeInfos[2].split(":");
+            Ability_Collection.push(new Reenergize(abilityIndex));
+            break;
+        case Ability_Type.reenergize:
+            //target:choice:your:1:target:choice:your:1
+            let reenInfos = typeInfos[2].split(":");
+            Ability_Collection.push(new Reenergize(abilityIndex, reenInfos[1] + ":" + reenInfos[2], reenInfos[4] + ":" + reenInfos[5], reenInfos[6]));
+            break;
+        case Ability_Type.redamage:
+            //source:choice:opponent:destination:opponent:count(target:last:source:damage)
+            //TODO
+            Ability_Collection.push(new Redamage(abilityIndex, ));
+            break;
+        case Ability_Type.swap:
+            //source:your-active:destination:choice:your-bench
+            let swapInfos = typeInfos[2].split(":");
+            let swapSource = swapInfos[1];
+            let swapDestination = swapInfos[3] + ":" + swapInfos[4];
+            Ability_Collection.push(new Swap(abilityIndex, swapSource, swapDestination));
+            break;
+        case Ability_Type.destat:
+            //target:last
+            let destatTarget = typeInfos[2].split(":")[1];
+            Ability_Collection.push(new Destat(abilityIndex, destatTarget));
+            break;
+        case Ability_Type.applystat:
+            let statInfos = typeInfos[2].split(":");
+            let statusType = statInfos[1];
+            let statusTarget = statInfos[2];
+            Ability_Collection.push(new ApplyStat(abilityIndex, statusType, statusTarget));
+            break;
+        case Ability_Type.draw:
+            let drawNumber = typeInfos[2].split(":")[1];
+            Ability_Collection.push(new Draw(abilityIndex, drawNumber));
+            break;
+        case Ability_Type.search:
+            //target:your:source:deck:filter:pokemon:cat:basic:2
+            //target:your:source:deck:1
+            //target:opponent:source:deck:filter:top:1:0
+            //target:your:source:deck:filter:energy:4
+            //target:choice:your-pokemon:cat:basic:source:deck:filter:evolves-from:target:last:1
+            //TODO
+            Ability_Collection.push(new Search(abilityIndex, ));
+            break;
+        case Ability_Type.deck:
+            //target:opponent:destination:deck:bottom:choice:them:1
+            //target:your:destination:deck:count(your-hand)
+            //TODO
+            let deckInfos = typeInfos[2].split(":");
+            Ability_Collection.push(new Deck(abilityIndex, ));
+            break;
+        case Ability_Type.shuffle:
+            //target:your
+            let shuffleTarget = typeInfos[2].split(":")[1];
+            Ability_Collection.push(new Shuffle(abilityIndex, shuffleTarget));
+            break;
+        case Ability_Type.cond:
+            // error
+            break;
+        case Ability_Type.add:
+            //target:your:trigger:opponent:turn-end:(heal:target:self:20)
+            //TODO
+            Ability_Collection.push(new Add(abilityIndex, ));
+            break;
+        default:
+            break;
     }
 }
 
