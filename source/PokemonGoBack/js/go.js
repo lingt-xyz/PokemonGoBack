@@ -50,11 +50,11 @@ function showCardInfo(id, isAi) {
 
 //TODO
 /**
- * Popup a div, show the abilities the card has 
- * @param {card id} id 
+ * Popup a div, showing the abilities the card has 
+ * @param {pokemon card} pokemon 
  * @returns the chosed ability id, or "" if no ability is chosed.
  */
-function chooseAbility(id){
+function chooseAbility(pokemon){
 
 }
 
@@ -282,6 +282,7 @@ function drop_handler(ev) {
 					} else {// moving a pokemon to a pokemon: battle
 						// TODO battle
 						// 1. list abilites
+						let abilityIndex = chooseAbility(sourceCard);
 						// 2. choose an ability
 						// 3. apply ability
 					}
