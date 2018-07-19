@@ -24,8 +24,8 @@ class Game {
 		$("#endTurn").prop("disabled", true);
 		logger.logGeneral("AI's Turn.");
 		let temp = this;
+		ai.play();
 		setTimeout(function () {
-			ai.play();
 			temp.userPlayTurn();
 		}, 1000);
 	}
