@@ -268,15 +268,21 @@ function initAbility() {
             let abilityName = items[1];
             let ability = new Ability(abilityIndex, abilityName);
             let ss = items[2].split(",");
-            for(let s of ss){// for each sub-ability
-                if(s.startsWith(Ability_Type.cond)){
+            for (let s of ss) {// for each sub-ability
+                let condName = "";
+                if (s.startsWith(Ability_Type.cond)) {
                     //cond:flip: dam:target:opponent-active:20
                     let conds = s.match(condRegex);
-                    let condName = conds[1];
+                    condName = conds[1];
                     let condAbility = conds[2];
                     s = condAbility;
                 }
-                ability.abilities.push(getSubAbility(s));
+                let subAbility = getSubAbility(s);
+                if (condName != "") {
+                    subAbility.condition = condName;
+                    condName = "";
+                }
+                ability.subAbilities.push(subAbility);
             }
 
             Ability_Collection.push(ability);
@@ -284,13 +290,18 @@ function initAbility() {
     }
 }
 
-function getSubAbility(s){
+function getSubAbility(s) {
     let ss = s.split(":");
-    return null;
+    return new Object();
     switch (ss[0]) {
         case Ability_Type.dam:
-            let damInfos = typeInfos[2].split(":");
-            if (damInfos.length == 3) {
+            // dam:target:opponent:10
+            // dam:target:opponent-active:40
+            // dam:target:opponent-active:20*count(target:your-bench)
+            // dam:target:opponent-active:count(target:your-active:damage)*10
+            // dam:target:choice:opponent:30
+            // dam:target:choice:opponent-bench:30
+            if (damInfos.length == 4) {
                 let damTarget = damInfos[1];
                 // 10; 20*count(target:your-bench); 
                 let damHp = damInfos[2];
