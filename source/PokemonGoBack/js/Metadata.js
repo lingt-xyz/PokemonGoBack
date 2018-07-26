@@ -325,15 +325,20 @@ function getSubAbility(s) {
         case Ability_Type.heal:
             // heal:target:your-active:20
             // heal:target:choice:your:30
-            // heal:target:choice:your:60, destat:target:last // remove all special conditions on your pokemon
-            // cond:healed:    target:your-active:dam:target:opponent-active:80
-            let healInfos = typeInfos[2].split(":");
-            //target:choice:your:60,
-            let healHp = healInfos[3];
-            Ability_Collection.push(new Heal(abilityIndex, healHp));
+            // heal:target:choice:your:60
+            let healInfos = items[2].split(":");
+            let healHp = healInfos[healInfos.length - 1];
+            if (healInfos.length == 4) {
+                Ability_Collection.push(new Heal(healInfos[1] + ":" + healInfos[2], healHp));
+            }
+            else {
+                Ability_Collection.push(new Heal(healInfos[1], healHp));
+            }
+            break; break;
             break;
         case Ability_Type.deenergize:
             //deenergize:target:opponent-active:1,
+            //deenergize:target:your-active:count(target:your-active:energy)
             //deenergize:target:your-active:1:(search:target:your:source:discard:filter:cat:item:1)
             let deenInfos = typeInfos[2].split(":");
             Ability_Collection.push(new Reenergize(abilityIndex));
@@ -426,5 +431,5 @@ var Card_Type = { pokemon: "pokemon", trainer: "trainer", energy: "energy" };
 var Energy_Type = { colorless: "colorless", water: "water", lightning: "lightning", psychic: "psychic", fighting: "fighting" };
 var Trainer_Type = { stadium: "stadium", supporter: "supporter", item: "item" };
 var Ability_Type = { dam: "dam", deenergize: "deenergize", redamage: "redamage", heal: "heal", deck: "deck", cond: "cond", search: "search", draw: "draw", applystat: "applystat", swap: "swap", reenergize: "reenergize", add: "add", shuffle: "shuffle", destat: "destat" };
-var Target_Pokemon = { your_active: "your-active", opponet_active: "opponent-active", choice_opponet: "choice:opponet", choice_your: "choice:your", choice_opponet_bench: "choice:opponet-bench", choice_your_banch: "choice:your-bench" };
+var Target_Pokemon = { opponent: "opponent", your_active: "your-active", opponet_active: "opponent-active", choice_opponet: "choice:opponet", choice_your: "choice:your", choice_opponet_bench: "choice:opponet-bench", choice_your_banch: "choice:your-bench" };
 var Target_Player = { you: "you", them: "them" };
