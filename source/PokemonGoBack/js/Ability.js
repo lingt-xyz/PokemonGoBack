@@ -47,7 +47,7 @@ class Deenergize extends SubAbility {
 // reenergize:target:choice:your:1:target:choice:your:1
 // move a basic energy from 1 of your pokemon to another of your pokemon
 class Reenergize extends SubAbility {
-    constructor(id, fromPokemon, fromAmout, toPokemon, toAmount) {
+    constructor(fromPokemon, fromAmout, toPokemon, toAmount) {
         this.source = fromPokemon;
         this.target = toPokemon;
         this.fromAmout = fromAmout;

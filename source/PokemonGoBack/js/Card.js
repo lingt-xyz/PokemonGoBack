@@ -133,6 +133,9 @@ class Pokemon extends Card {
                 damHp = ability.damHp;
             }
             switch (ability.target) {
+                case Target_Pokemon.opponent:
+                    //TODO
+                    break;
                 case Target_Pokemon.opponet_active:
                     your.currentPokemon.currentHp -= damHp;
                     break;
@@ -156,6 +159,28 @@ class Pokemon extends Card {
             }
         } else if (ability instanceof Heal) {
             target.hp += ability.number;
+            switch (ability.target) {
+                case Target_Pokemon.opponet_active:
+                    //
+                    break;
+                case Target_Pokemon.your_active:
+                    me.currentPokemon.currentHp += ability.number;
+                    break;
+                case Target_Pokemon.choice_opponet:
+                    // 
+                    break;
+                case Target_Pokemon.choice_your:
+                    // TODO choose one card
+                    break;
+                case Target_Pokemon.choice_opponet_bench:
+                    // 
+                    break;
+                case Target_Pokemon.choice_your_banch:
+                    // 
+                    break;
+                default:
+                    break;
+            }
         } else if (ability instanceof Deenergize) {
             switch (ability.target) {
                 case Target_Pokemon.opponet_active:
