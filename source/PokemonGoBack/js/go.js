@@ -108,10 +108,11 @@ function drop_handler(ev) {
 					user.benchCollection.push(sourceCard);
 				} else if (targetId == "divMatCollection") {// moving to mat
 					if (user.matCollection.find(item => item.cardType == Card_Type.pokemon)) {
-						user.logWarning("A pokemon is already battling!");
+						logger.logWarning("A pokemon is already battling!");
 					} else {
 						removeFromArray(user.handCollection, sourceCard);
 						user.matCollection.push(sourceCard);
+						user.currentPokemon = sourceCard;
 					}
 				} else if (targetId == "divHandCollection") {// moving in the same div, do nothing
 
@@ -189,10 +190,11 @@ function drop_handler(ev) {
 
 				} else if (targetId == "divMatCollection") {// moving to mat
 					if (user.matCollection.find(item => item.cardType == Card_Type.pokemon)) {
-						user.logWarning("A pokemon is already battling!");
+						logger.logWarning("A pokemon is already battling!");
 					} else {
 						removeFromArray(user.benchCollection, sourceCard);
 						user.matCollection.push(sourceCard);
+						user.currentPokemon = sourceCard;
 					}
 				} else if (targetId == "divHandCollection") {// moving back to handCollection
 					logger.logWarning("Pokemon cannot be moved back to here!");
@@ -263,6 +265,8 @@ function drop_handler(ev) {
 
 				} else if (targetId == "divHandCollection") {// moving back to handCollection
 					logger.logWarning("Pokemon cannot be moved back to here!");
+				} else if (targetId == "divMatCollectionAi") {// moving to ai mat: battle
+					logger.logAbility(sourceCard);
 				} else {// moving to other div
 					logger.logWarning("Pokemon cannot be moved to here!");
 				}
@@ -270,6 +274,8 @@ function drop_handler(ev) {
 		} else {// moving to a card
 			// TODO hardest part to be implemented
 			if (targetContainer == "divMatCollectionAi") {
+				logger.logWarning("Please move to your oppent's mat to battle.");
+				/*
 				let targetCard = findFromArray(ai.matCollection, targetId);
 				if (targetCard.cardType == Card_Type.energy) {
 					logger.logError("Unexpected logic error!");
@@ -294,6 +300,7 @@ function drop_handler(ev) {
 						
 					}
 				}
+				*/
 			} else {// moving to other div, do nothing
 
 			}
@@ -303,4 +310,189 @@ function drop_handler(ev) {
 	}
 
 	ev.stopPropagation();
+}
+
+/**
+ * 
+ * @param {Number} id 
+ * @param {boolean} isAi 
+ * @param {Number} abilityIndex 
+ */
+function applyAbility(id, isAi, abilityIndex) {
+	$('#divGameConsole :button').prop('disabled', true);
+	let sourceCard = null;
+	if (isAi) {
+		sourceCard = ai.currentPokemon;
+	} else {
+		sourceCard = user.currentPokemon;
+	}
+	if (sourceCard.consumeEnergy(abilityIndex)) {
+		useAbility(sourceCard, abilityIndex);
+	} else {
+		logger.logBattle("Failed, insufficient energy.");
+	}
+}
+
+/**
+* 
+* @param {Pokemon} sourceCard 
+* @param {Number} abilityIndex the index of the abilities it has
+*/
+function useAbility(sourceCard, abilityIndex){
+	let ability = Ability_Collection[abilityIndex];
+	for (let sub of ability.subAbilities) {
+		attack(sourceCard, sub);
+	}
+}
+
+/**
+* 
+* @param {Pokemon} sourceCard 
+* @param {SubAbility} sub the SubAbility
+*/
+function attack(sourceCard, sub) {
+	let me = null;
+	let you = null;
+	if (sourceCard.isAi) {
+		me = ai;
+		you = user;
+	} else {
+		me = user;
+		you = ai;
+	}
+
+	if (sub instanceof Dam) {
+		logger.logBattle("!!!Dam!!!");
+		let damHp = 0;
+		if (sub.damHp.contains("count")) {
+			let ss = sub.damHp.split("*");
+			let num1 = 0;
+			let num2 = 0;
+			let string2 = "";
+			if (ss[0].contains("count")) {
+				num1 = ss[1];
+				string2 = ss[0];
+			} else {
+				num1 = ss[0];
+				string2 = ss[1];
+			}
+			// TODO remove strings
+			switch (string2) {
+				case "your-bench":
+					num2 = me.benchCollection.length;
+					break;
+				case "your-active:damage":
+					if (me.currentPokemon) {
+						num2 = me.currentPokemon.damage;
+					} else {
+						num2 = 0;
+					}
+					break;
+				case "opponent-active:energy":
+					if (you.currentPokemon) {
+						num2 = you.currentPokemon.energy + you.currentPokemon.currentColorLessEnergy;
+					} else {
+						num2 = 0;
+					}
+					break;
+				default:
+					break;
+			}
+			damHp = num1 * num2;
+		} else {
+			damHp = sub.damHp;
+		}
+		switch (sub.target) {
+			case Target_Pokemon.opponent:
+				//TODO
+				break;
+			case Target_Pokemon.opponet_active:
+				your.currentPokemon.currentHp -= damHp;
+				break;
+			case Target_Pokemon.your_active:
+				me.currentPokemon.currentHp -= damHp;
+				break;
+			case Target_Pokemon.choice_opponet:
+				// TODO choose one card
+				break;
+			case Target_Pokemon.choice_your:
+				// TODO choose one card
+				break;
+			case Target_Pokemon.choice_opponet_bench:
+				// TODO choose one card
+				break;
+			case Target_Pokemon.choice_your_banch:
+				// TODO choose one card
+				break;
+			default:
+				break;
+		}
+	} else if (sub instanceof Heal) {
+		target.hp += sub.number;
+		switch (sub.target) {
+			case Target_Pokemon.opponet_active:
+				//
+				break;
+			case Target_Pokemon.your_active:
+				me.currentPokemon.currentHp += sub.number;
+				break;
+			case Target_Pokemon.choice_opponet:
+				// 
+				break;
+			case Target_Pokemon.choice_your:
+				// TODO choose one card
+				break;
+			case Target_Pokemon.choice_opponet_bench:
+				// 
+				break;
+			case Target_Pokemon.choice_your_banch:
+				// 
+				break;
+			default:
+				break;
+		}
+	} else if (sub instanceof Deenergize) {
+		switch (sub.target) {
+			case Target_Pokemon.opponet_active:
+				
+				break;
+			case Target_Pokemon.your_active:
+				
+				break;
+			case Target_Pokemon.choice_opponet:
+				// TODO choose one card
+				break;
+			case Target_Pokemon.choice_your:
+				// TODO choose one card
+				break;
+			case Target_Pokemon.choice_opponet_bench:
+				// TODO choose one card
+				break;
+			case Target_Pokemon.choice_your_banch:
+				// TODO choose one card
+				break;
+			default:
+				break;
+		}
+	} else if (sub instanceof Reenergize) {
+		
+	} else if (sub instanceof Swap) {
+		
+	} else if (sub instanceof Destat) {
+		
+	} else if (sub instanceof ApplyStat) {
+		
+	} else if (sub instanceof Draw) {
+		
+	} else if (sub instanceof Redamage) {
+		
+	} else if (sub instanceof Search) {
+		
+	} else if (sub instanceof Deck) {
+		
+	} else if (sub instanceof Shuffle) {
+		
+	} else if (sub instanceof Add) {
+		
+	}
 }

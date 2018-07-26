@@ -16,24 +16,31 @@ class GameConsole {
         this.scrollConsle();
     }
     logError(text) {
-        $("#divGameConsole").append("<div class='gamelog text-danger'>[Error]: " + text + "</div>");
+        $("#divGameConsole").append("<div class='gamelog bg-danger'>[Error]: " + text + "</div>");
         this.scrollConsle();
     }
 
-    //can not find x and y , null reference
-    filterLog() {
-        var x = document.getElementById("divGameConsole");
-        var y = document.getElementById("divGameInfo");
-        if (x = null) {
-            //do nothing
-        } else {
-            x.style.display === "none"
-        }
-        if (y.style.display === "none") {
-            //do nothing
-        } else {
-            y.style.display === "none"
-        }
+    /**
+     * 
+     * @param {Pokemon} sourceCard 
+     */
+    logAbility(sourceCard) {
+        $('#divGameConsole :button').prop('disabled', true);
+        $("#divGameConsole").append("<div class='gamelog text-light bg-dark'>Choose the ability:</div>");
+        sourceCard.attacks.forEach(element => {
+            let abilityIndex = 0;
+            if (element.length == 3) {
+                abilityIndex = element[2];
+            } else if (element.length == 5) {
+                abilityIndex = element[4];
+            }
+
+            $("#divGameConsole").append("<button type='button' class='btn btn-outline-dark'"
+                    + " onclick='applyAbility(" + sourceCard.id + ", " + sourceCard.isAi + ", " + abilityIndex + ")'"
+                    + ">" + Ability_Collection[abilityIndex].abilityName 
+                    + "</button>");
+        });
+        this.scrollConsle();
     }
 
     scrollConsle() {

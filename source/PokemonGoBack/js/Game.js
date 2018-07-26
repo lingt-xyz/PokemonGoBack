@@ -50,7 +50,4 @@ class Game {
 		return "Result: " + this.coinHead + " head(s), and " + this.coinTail + " tail(s)";
 	}
 
-	toString() {
-		return "PokemonGoBack";
-	}
 }

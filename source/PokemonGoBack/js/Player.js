@@ -164,6 +164,7 @@ class Player {
                 pokemon = this.handCollection.find(item => item.cardType == Card_Type.pokemon);
                 removeFromArray(this.handCollection, pokemon);
                 this.matCollection.push(pokemon);
+                this.currentPokemon = pokemon;
             }
             // do more
         } else {
@@ -171,7 +172,4 @@ class Player {
         }
     }
 
-    toString() {
-        return "Player";
-    }
 }
