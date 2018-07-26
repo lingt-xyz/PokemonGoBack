@@ -291,38 +291,42 @@ function initAbility() {
 }
 
 function getSubAbility(s) {
-    let ss = s.split(":");
+    let items = s.match(/^([a-zA-ZÀ-ÿ-' ]+):(.*)$/);
     return new Object();
-	//cond:flip
-	//cond:healed
-    switch (ss[0]) {
+    switch (items[1]) {
         case Ability_Type.dam:
             // dam:target:opponent:10
             // dam:target:opponent-active:40
-			// dam:target:your-active:20
-			// dam:target:your-bench:10
+            // dam:target:your-active:20
+            // dam:target:your-bench:10
             // dam:target:opponent-active:20*count(target:your-bench)
             // dam:target:opponent-active:count(target:your-active:damage)*10
             // dam:target:choice:opponent:30
             // dam:target:choice:opponent-bench:30
-            if (damInfos.length == 4) {
-                let damTarget = damInfos[1];
-                // 10; 20*count(target:your-bench); 
-                let damHp = damInfos[2];
-                Ability_Collection.push(new Dam(abilityIndex, damTarget, damHp));
-            } else {//target:choice:opponent-bench:30
-                let damTarget = damInfos[1] + ":" + damInfos[2];
-                let damHp = damInfos[3];
-                Ability_Collection.push(new Dam(abilityIndex, damTarget, damHp));
+            if (items[2].contains("count")) {
+                let subItems = items[2].match(/^(.*):(count\(.*\)\*[0-9]*)$/);
+                let damHp = subItems[2];
+                let ss = subItems[1].split(":");
+                if (ss.length == 3) {//target:choice:opponent
+                    Ability_Collection.push(new Dam(ss[1] + ":" + ss[2], damHp));
+                } else {
+                    Ability_Collection.push(new Dam(ss[1], damHp));
+                }
+
+            } else {
+                let ss = items[2].split(":");
+                if (ss.length == 4) {//target:choice:opponent
+                    Ability_Collection.push(new Dam(ss[1] + ":" + ss[2], ss[3]));
+                } else {
+                    Ability_Collection.push(new Dam(ss[1], ss[2]));
+                }
             }
             break;
-			
-		
         case Ability_Type.heal:
-			// heal:target:your-active:20
-			// heal:target:choice:your:30
-			// heal:target:choice:your:60, destat:target:last // remove all special conditions on your pokemon
-			// cond:healed:    target:your-active:dam:target:opponent-active:80
+            // heal:target:your-active:20
+            // heal:target:choice:your:30
+            // heal:target:choice:your:60, destat:target:last // remove all special conditions on your pokemon
+            // cond:healed:    target:your-active:dam:target:opponent-active:80
             let healInfos = typeInfos[2].split(":");
             //target:choice:your:60,
             let healHp = healInfos[3];
@@ -330,7 +334,7 @@ function getSubAbility(s) {
             break;
         case Ability_Type.deenergize:
             //deenergize:target:opponent-active:1,
-			//deenergize:target:your-active:1:(search:target:your:source:discard:filter:cat:item:1)
+            //deenergize:target:your-active:1:(search:target:your:source:discard:filter:cat:item:1)
             let deenInfos = typeInfos[2].split(":");
             Ability_Collection.push(new Reenergize(abilityIndex));
             break;
@@ -356,21 +360,21 @@ function getSubAbility(s) {
             let destatTarget = typeInfos[2].split(":")[1];
             Ability_Collection.push(new Destat(abilityIndex, destatTarget));
             break;
-			
+
         case Ability_Type.applystat:
-			//applystat:status:stuck:opponent-active
-			//applystat:status:poisoned:opponent-active
-			//applystat:status:paralyzed:opponent-active
-			//applystat:status:asleep:opponent-active,
-			//(applystat:status:asleep:opponent-active,applystat:status:poisoned:opponent-active)
+            //applystat:status:stuck:opponent-active
+            //applystat:status:poisoned:opponent-active
+            //applystat:status:paralyzed:opponent-active
+            //applystat:status:asleep:opponent-active,
+            //(applystat:status:asleep:opponent-active,applystat:status:poisoned:opponent-active)
             let statInfos = typeInfos[2].split(":");
             let statusType = statInfos[1];
             let statusTarget = statInfos[2];
             Ability_Collection.push(new ApplyStat(abilityIndex, statusType, statusTarget));
             break;
         case Ability_Type.draw:
-			//draw:5
-			//draw:opponent:4
+            //draw:5
+            //draw:opponent:4
             let drawNumber = typeInfos[2].split(":")[1];
             Ability_Collection.push(new Draw(abilityIndex, drawNumber));
             break;
@@ -386,33 +390,33 @@ function getSubAbility(s) {
         case Ability_Type.deck:
             //deck:target:opponent:destination:deck:bottom:choice:them:1
             //deck:target:your:destination:deck:count(your-hand),
-			//deck:target:opponent:destination:deck:count(opponent-hand),
+            //deck:target:opponent:destination:deck:count(opponent-hand),
             //TODO
             let deckInfos = typeInfos[2].split(":");
             Ability_Collection.push(new Deck(abilityIndex, ));
             break;
         case Ability_Type.shuffle:
             //shuffle:target:your,
-			//shuffle:target:opponent,
+            //shuffle:target:opponent,
             let shuffleTarget = typeInfos[2].split(":")[1];
             Ability_Collection.push(new Shuffle(abilityIndex, shuffleTarget));
             break;
         case Ability_Type.cond:
-			// cond:flip
-			// cond:healed:    target:your-active:dam:target:opponent-active:80
-			// cond:count(target:your-active:energy:psychic)>0:
-			// cond:ability:	deenergize:target:your-active:1:(search:target:your:source:discard:filter:cat:item:1)
+            // cond:flip
+            // cond:healed:    target:your-active:dam:target:opponent-active:80
+            // cond:count(target:your-active:energy:psychic)>0:
+            // cond:ability:	deenergize:target:your-active:1:(search:target:your:source:discard:filter:cat:item:1)
             // cond:flip:      search:target:your:source:deck:filter:pokemon:1
-			// cond:choice: //shuffle:target:opponent
-			// error
+            // cond:choice: //shuffle:target:opponent
+            // error
             break;
         case Ability_Type.add:
             //target:your:trigger:opponent:turn-end:(heal:target:self:20)
             //TODO
             Ability_Collection.push(new Add(abilityIndex, ));
             break;
-		
-		
+
+
         default:
             break;
     }
