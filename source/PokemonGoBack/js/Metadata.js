@@ -226,8 +226,6 @@ function initCardCollection() {
                                 }
                             }
                         }
-                        Card_Map.set(cardName, new Pokemon(cardIndex, cardName, cardStage, basicPokemon, property, hp,
-                            [retreatEnergyPoint, retreatEnergyType], attackArray));
                         Card_Collection.push(new Pokemon(cardIndex, cardName, cardStage, basicPokemon, property, hp,
                             [retreatEnergyPoint, retreatEnergyType], attackArray));
                         break;
@@ -235,13 +233,11 @@ function initCardCollection() {
                         let infos = subString.split(":");
                         let trainerType = infos[1];
                         let ability = infos[2];
-                        Card_Map.set(cardName, new Trainer(cardIndex, cardName, trainerType, ability));
                         Card_Collection.push(new Trainer(cardIndex, cardName, trainerType, ability));
                         break;
                     case Card_Type.energy:
                         let energyInfos = subString.split(":");
                         let energyType = energyInfos[1];
-                        Card_Map.set(cardName, new Energy(cardIndex, cardName, energyType));
                         Card_Collection.push(new Energy(cardIndex, cardName, energyType));
                         break;
                     default:
