@@ -270,7 +270,7 @@ function drop_handler(ev) {
 		} else {// moving to a card
 			// TODO hardest part to be implemented
 			if (targetContainer == "divMatCollectionAi") {
-				let targetCard = findFromArray(user.benchCollection, targetId);
+				let targetCard = findFromArray(ai.matCollection, targetId);
 				if (targetCard.cardType == Card_Type.energy) {
 					logger.logError("Unexpected logic error!");
 				} else if (targetCard.cardType == Card_Type.trainer) {
