@@ -63,6 +63,8 @@ class Pokemon extends Card {
         this.attackInfo = "";
         //
         this.attackResult = false;
+        // 
+        this.damage = 0;
     }
 
     addEnergy(energy) {
@@ -79,26 +81,63 @@ class Pokemon extends Card {
      * @param {Number} abilityIndex the index of the abilities it has
      */
     attack(target, abilityIndex) {
-
-        this.attacks.forEach(element => {
-            if (element.length == 3) {
-                attacks += ("<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + Ability_Collection[element[2]].abilityName + ": Require " + element[1] + " " + element[0] + ",");
-            } else if (element.length == 5) {
-                attacks += ("<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + Ability_Collection[element[4]].abilityName + ": Require " + element[1] + " " + element[0] + ", " + element[3] + " " + element[2] + ",");
-            }
-        });
-        let hp1 = 0;
-        let hp2 = 0;
+        // TODO consume energy
+        let me = null;
+        let you = null;
+        if (currentPlayer.isAi) {
+            me = ai;
+            you = user;
+        } else {
+            me = user;
+            you = ai;
+        }
         let ability = Ability_Collection[abilityIndex];
         if (ability instanceof Dam) {
+            let damHp = 0;
+            if (ability.damHp.contains("count")) {
+                let ss = ability.damHp.split("*");
+                let num1 = 0;
+                let num2 = 0;
+                let string2 = "";
+                if (ss[0].contains("count")) {
+                    num1 = ss[1];
+                    string2 = ss[0];
+                } else {
+                    num1 = ss[0];
+                    string2 = ss[1];
+                }
+                // TODO
+                switch (string2) {
+                    case "your-bench":
+                        num2 = me.benchCollection.length;
+                        break;
+                    case "your-active:damage":
+                        if (me.currentPokemon) {
+                            num2 = me.currentPokemon.damage;
+                        } else {
+                            num2 = 0;
+                        }
+                        break;
+                    case "opponent-active:energy":
+                        if (you.currentPokemon) {
+                            num2 = you.currentPokemon.energy + you.currentPokemon.currentColorLessEnergy;
+                        } else {
+                            num2 = 0;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                damHp = num1 * num2;
+            } else {
+                damHp = ability.damHp;
+            }
             switch (ability.target) {
                 case Target_Pokemon.opponet_active:
-                    hp1 = target.currentHp;
-                    target.currentHp -= ability.damHp;
-                    hp2 = target.currentHp;
+                    your.currentPokemon.currentHp -= damHp;
                     break;
                 case Target_Pokemon.your_active:
-                    this.currentHp -= ability.damHp;
+                    me.currentPokemon.currentHp -= damHp;
                     break;
                 case Target_Pokemon.choice_opponet:
                     // TODO choose one card
@@ -115,7 +154,6 @@ class Pokemon extends Card {
                 default:
                     break;
             }
-            this.updateAttackInfo(hp1, hp2);
         } else if (ability instanceof Heal) {
             target.hp += ability.number;
         } else if (ability instanceof Deenergize) {
@@ -395,6 +433,8 @@ class Pokemon extends Card {
                     break;
             }
         }
+
+        return result;
     }
 
     toString() {

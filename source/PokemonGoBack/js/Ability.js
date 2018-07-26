@@ -12,15 +12,17 @@ class SubAbility {
     }
 }
 
-// dam:target:opponent:10
+// target:opponent:10
+// target:opponent-active:40
+// target:opponent-active:20*count(target:your-bench)
+// target:opponent-active:count(target:your-active:damage)*10
+// target:opponent-active:count(target:opponent-active:energy)*10
+// target:choice:opponent:30
+// target:choice:opponent-bench:30
 class Dam extends SubAbility {
     constructor(target, damHp) {
         this.target = target;
         this.damHp = damHp;
-        // 10
-        // 20*count(target:your-bench)
-        // count(target:your-active:damage)*10
-        // count(target:opponent-active:energy)*10
     }
 }
 
