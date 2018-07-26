@@ -36,9 +36,41 @@ class GameConsole {
             }
 
             $("#divGameConsole").append("<button type='button' class='btn btn-outline-dark'"
-                    + " onclick='applyAbility(" + sourceCard.id + ", " + sourceCard.isAi + ", " + abilityIndex + ")'"
-                    + ">" + Ability_Collection[abilityIndex].abilityName 
+                + " onclick='applyAbility(" + sourceCard.id + ", " + sourceCard.isAi + ", " + abilityIndex + ")'"
+                + ">" + Ability_Collection[abilityIndex].abilityName
+                + "</button>");
+        });
+        this.scrollConsle();
+    }
+
+    logChooseBenchCard(player) {
+        this.logBattle("Choose ");
+        this.logChooseCard(player.benchCollection);
+    }
+
+    logChooseDiscardCard(player) {
+        this.logBattle("Choose ");
+        this.logChooseCard(player.discardCollection);
+    }
+
+    logChooseDeckCard(player) {
+        this.logBattle("Choose ");
+        this.logChooseCard(player.deckCollection);
+    }
+
+    logChooseAllCard(player) {
+        this.logBattle("Choose ");
+        //this.logChooseCard(player.benchCollection);
+    }
+
+    logChooseCard(collection) {
+        collection.forEach(element => {
+            if (element.cardType == Card_Type.pokemon) {
+                $("#divGameConsole").append("<button type='button' class='btn btn-outline-dark'"
+                    + " onclick='applyAbility(" + 1 + ", " + 2 + ", " + 3 + ")'"
+                    + ">" + element.cardName
                     + "</button>");
+            }
         });
         this.scrollConsle();
     }
