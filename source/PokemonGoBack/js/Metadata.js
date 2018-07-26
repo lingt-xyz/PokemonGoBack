@@ -136,7 +136,22 @@ Red Card:deck:target:opponent:destination:deck:count(opponent-hand),shuffle:targ
 Wally:search:target:choice:your-pokemon:cat:basic:source:deck:filter:evolves-from:target:last:1,shuffle:target:your
 `;
 
-var Card_Collection = new Array();
+let Card_Collection = new Array();
+
+let Card_Type = { pokemon: "pokemon", trainer: "trainer", energy: "energy" };
+let Energy_Type = { colorless: "colorless", water: "water", lightning: "lightning", psychic: "psychic", fighting: "fighting" };
+let Trainer_Type = { stadium: "stadium", supporter: "supporter", item: "item" };
+let Ability_Type = { dam: "dam", deenergize: "deenergize", redamage: "redamage", heal: "heal", deck: "deck", cond: "cond", search: "search", draw: "draw", applystat: "applystat", swap: "swap", reenergize: "reenergize", add: "add", shuffle: "shuffle", destat: "destat" };
+let Target_Pokemon = { opponent: "opponent", your_active: "your-active", opponent_active: "opponent-active", choice_opponent: "choice:opponent", choice_your: "choice:your", choice_opponent_bench: "choice:opponent-bench", choice_your_banch: "choice:your-bench" };
+let Target_Player = { you: "you", them: "them" };
+
+let user = null;
+let ai = null;
+let game = null;
+let currentPlayer = null;
+let logger = null;
+let userOrder = null;
+let aiOrder = null;
 
 function initCardCollection() {
     /**
@@ -421,18 +436,3 @@ function getSubAbility(s) {
             break;
     }
 }
-
-let Card_Type = { pokemon: "pokemon", trainer: "trainer", energy: "energy" };
-let Energy_Type = { colorless: "colorless", water: "water", lightning: "lightning", psychic: "psychic", fighting: "fighting" };
-let Trainer_Type = { stadium: "stadium", supporter: "supporter", item: "item" };
-let Ability_Type = { dam: "dam", deenergize: "deenergize", redamage: "redamage", heal: "heal", deck: "deck", cond: "cond", search: "search", draw: "draw", applystat: "applystat", swap: "swap", reenergize: "reenergize", add: "add", shuffle: "shuffle", destat: "destat" };
-let Target_Pokemon = { opponent: "opponent", your_active: "your-active", opponet_active: "opponent-active", choice_opponet: "choice:opponet", choice_your: "choice:your", choice_opponet_bench: "choice:opponet-bench", choice_your_banch: "choice:your-bench" };
-let Target_Player = { you: "you", them: "them" };
-
-let user = null;
-let ai = null;
-let game = null;
-let currentPlayer = null;
-let logger = null;
-let userOrder = null;
-let aiOrder = null;
