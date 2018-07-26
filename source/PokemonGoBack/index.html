@@ -24,15 +24,36 @@
 </head>
 
 <body class="text-center">
-    <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
-        <h5 class="my-0 mr-md-auto font-weight-normal">PokemonGoBack</h5>
-        <nav class="my-2 my-md-0 mr-md-3">
-            <button type="button" onclick="startNewGame();">Start a New Game</button>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">PokemonGoBack</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false">
+                        Start a New Game
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#" onclick="startNewGame();return false;">Use Random Deck</a>
+                        <a class="dropdown-item" href="#" onclick="startNewGame();return false;">Use Predefined Deck</a>
+                    </div>
+                </li>
+            </ul>
             <a class="p-2 text-dark" href="collection.php?action=update">Update Collection</a>
             <a class="p-2 text-dark" href="deck.php?action=update">Update Deck</a>
-        </nav>
-    </div>
-
+        </div>
+    </nav>
+    <hr>
     <div class="container-fluid">
         <div class="row">
             <!-- playing area -->

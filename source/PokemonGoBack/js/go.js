@@ -1,9 +1,15 @@
 $(function () {
-
+	$("#divAi").hide();
+	$("#divUser").hide();
 	initAbility();
 	initCardCollection();
+});
 
-	startNewGame();
+function startNewGame() {
+	logger = new GameConsole();
+	user = new Player(userOrder, false);
+	ai = new Player(aiOrder, true);
+	game = new Game();
 
 	new Vue({
 		el: '#divAi',
@@ -19,13 +25,8 @@ $(function () {
 		}
 	})
 
-});
-
-function startNewGame() {
-	logger = new GameConsole();
-	user = new Player(userOrder, false);
-	ai = new Player(aiOrder, true);
-	game = new Game();
+	$("#divAi").show(1000);
+	$("#divUser").show(1000);
 
 	game.start();
 }
