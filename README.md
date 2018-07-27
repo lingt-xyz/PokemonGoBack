@@ -14,12 +14,14 @@ User/Password for phpmyadmin: ```pokemongoback/pokemongoback```
 
 ## Development Environment
 
+```
 VM: Debian 9.4
 Connection: ssh username@host
 Apache2 WebRoot: /var/www/html
+```
 
 ## Installation
-```
+``` shell
 # su
 # apt install mysql-server
 # apt install php libapache2-mod-php php-mysql
@@ -34,11 +36,13 @@ Add the following line to the end of the file:
 ```
 
 ## Configuration
-```
+``` shell
 # su
 # vi /etc/apache2/mods-enabled/dir.conf
 ```
-Move the PHP index file to the first position after the DirectoryIndex specification systemctl restart apache2
+Move the PHP index file to the first position after the DirectoryIndex specification 
+```
+systemctl restart apache2
 # mysql --user=root mysql
     > CREATE DATABASE pokemongoback;
     > CREATE USER 'pokemongoback'@'localhost' IDENTIFIED BY 'pokemongoback';
