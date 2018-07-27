@@ -165,6 +165,7 @@ class Player {
                 removeFromArray(this.handCollection, pokemon);
                 this.matCollection.push(pokemon);
                 this.currentPokemon = pokemon;
+                this.currentPokemon.showImage();
             }
             // do more
         } else {

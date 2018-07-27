@@ -89,9 +89,8 @@ function gatherBattleInfo(sourceCard, sub){
 	}
 
 	if (sub instanceof Dam) {
-		logger.logBattle("!!!Dam!!!");
 		let damHp = 0;
-		if (sub.damHp.contains("count")) {
+		if(isNaN(sub.damHp)){
 			let ss = sub.damHp.split("*");
 			let num1 = 0;
 			let num2 = 0;
@@ -131,18 +130,17 @@ function gatherBattleInfo(sourceCard, sub){
 		}
 		switch (sub.target) {
 			case Target_Pokemon.opponent:
-				dam(opponent.handCollection);
-				dam(opponent.matCollection);
-				dam(opponent.benchCollection);
+				// TODO get a random pokemon
+				dam(opponent.currentPokemon, damHp);
 				break;
 			case Target_Pokemon.opponent_active:
-				your.currentPokemon.currentHp -= damHp;
+				dam(opponent.currentPokemon, damHp);
 				break;
 			case Target_Pokemon.your_active:
-				me.currentPokemon.currentHp -= damHp;
+				dam(you.currentPokemon, damHp);
 				break;
 			case Target_Pokemon.choice_opponent:
-				// TODO choose one card
+				logger.logChooseAllCard(opponent, Attack_Type.dam, damHp);
 				break;
 			case Target_Pokemon.choice_your:
 				// TODO choose one card
@@ -226,9 +224,9 @@ function gatherBattleInfo(sourceCard, sub){
 	}
 }
 
-function dam(target, amount){
+function dam(target, damHp){
 	if(target instanceof Pokemon){
-
+		target.currentHp -= damHp;
 	}else{
 
 	}

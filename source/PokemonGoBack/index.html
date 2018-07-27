@@ -88,7 +88,7 @@
                             <img src="image/DeckCard.png" height="90" width="63">
                         </div>
                         <div class="col-6 offset-md-2 bg-secondary" id="divMatCollectionAi" ondrop="drop_handler(event)" ondragover="dragover_handler(event)">
-                            <span v-for="card in player.matCollection" v-html="card.toHtml()"></span>
+                            <span v-for="card in player.matCollection" v-html="card.showImage()"></span>
                         </div>
                         <div class="col-1 offset-md-2 bg-light"></div>
                     </div>

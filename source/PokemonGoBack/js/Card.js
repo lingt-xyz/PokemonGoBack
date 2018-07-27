@@ -12,6 +12,13 @@ class Card {
         }
     }
 
+    showImage(){
+        if (this.isAi) {
+            return "<img id='" + this.id + "' height='90px' width='60px' src='image/" + this.cardName + ".png'>";
+        } else {
+        }
+    }
+
     toHtml() {
         if (this.isAi) {
             return "<img id='" + this.id + "' height='90px' width='60px' src='image/DeckCard.png'>";
