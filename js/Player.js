@@ -21,6 +21,7 @@ class Player {
 
         this.buildDeck();
         this.buildCardInHand();
+        this.buildPrizeCard();
         this.currentPokemon = null;
     }
 
@@ -44,6 +45,9 @@ class Player {
             let index = Math.floor(Math.random() * Card_Collection.length);
             while (!Card_Collection[index]) {
                 index++;
+                if(index >= Card_Collection.length){
+                    index = 0;
+                }
             }
             if (Card_Collection[index].cardType == Card_Type.pokemon) {
                 let card = Card_Collection[index].clone(this.isAi);
@@ -60,6 +64,9 @@ class Player {
             let index = Math.floor(Math.random() * Card_Collection.length);
             while (Card_Collection[index] == null) {
                 index++;
+                if(index >= Card_Collection.length){
+                    index = 0;
+                }
             }
             if (Card_Collection[index].cardType == Card_Type.trainer) {
                 let card = Card_Collection[index].clone(this.isAi);
@@ -76,6 +83,9 @@ class Player {
             let index = Math.floor(Math.random() * Card_Collection.length);
             while (Card_Collection[index] == null) {
                 index++;
+                if(index >= Card_Collection.length){
+                    index = 0;
+                }
             }
             if (Card_Collection[index].cardType == Card_Type.energy) {
                 let card = Card_Collection[index].clone(this.isAi);
@@ -111,6 +121,23 @@ class Player {
     // check Mulligan by looking into cards in hands
     isMulligan() {
         return !(this.handCollection.find(item => item.cardType == Card_Type.pokemon));
+    }
+
+    // 8 prize cards
+    buildPrizeCard() {
+        let tempCount = 0;
+        while (tempCount < 8) {
+            let index = Math.floor(Math.random() * Card_Collection.length);
+            while (!Card_Collection[index]) {
+                index++;
+                if(index >= Card_Collection.length){
+                    index = 0;
+                }
+            }
+            let card = Card_Collection[index].clone(this.isAi);
+            this.prizeCollection.push(card);
+            tempCount++;
+        }
     }
 
     // for each new round, get a new card from deck
