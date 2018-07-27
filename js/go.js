@@ -45,9 +45,6 @@ function startGame() {
 		})
 	}
 
-	aiVue.$forceUpdate();
-	userVue.$forceUpdate();
-
 	$("#hideDiv").hide();
 	$("#gobackDiv").fadeIn(1000);
 
