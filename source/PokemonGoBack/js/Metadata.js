@@ -154,6 +154,9 @@ let logger = null;
 let userOrder = null;
 let aiOrder = null;
 
+let userVue = null;
+let aiVue = null;
+
 
 function initCardCollection() {
     /**

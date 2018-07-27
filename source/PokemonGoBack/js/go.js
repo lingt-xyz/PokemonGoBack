@@ -10,19 +10,30 @@ function startNewGame() {
 	ai = new Player(aiOrder, true);
 	game = new Game();
 
-	new Vue({
-		el: '#divAi',
-		data: {
-			player: ai
-		}
-	})
+	if (aiVue) {
+		aiVue.$data.player = ai;
+	} else {
+		aiVue = new Vue({
+			el: '#divAi',
+			data: {
+				player: ai
+			}
+		})
+	}
 
-	new Vue({
-		el: '#divUser',
-		data: {
-			player: user
-		}
-	})
+	if (userVue) {
+		userVue.$data.player = user;
+	} else {
+		userVue = new Vue({
+			el: '#divUser',
+			data: {
+				player: user
+			}
+		})
+	}
+
+	aiVue.$forceUpdate();
+	userVue.$forceUpdate();
 
 	$("#hideDiv").hide();
 	$("#gobackDiv").fadeIn(1000);
@@ -162,10 +173,10 @@ function useAbility(sourceCard, abilityIndex) {
 	}
 }
 
-function deckRandomCard(isAi){
-	if(isAi){
+function deckRandomCard(isAi) {
+	if (isAi) {
 		ai.handCollection;
-	}else{
+	} else {
 		user.handCollection;
 	}
 
