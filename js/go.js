@@ -8,6 +8,19 @@ function startNewGame() {
 	logger = new GameConsole();
 	user = new Player(userOrder, false);
 	ai = new Player(aiOrder, true);
+	
+	startGame();
+}
+
+function startDefinedGame() {
+	logger = new GameConsole();
+	user = new Player(userOrder, false);
+	ai = new Player(aiOrder, true);
+
+	startGame();
+}
+
+function startGame() {
 	game = new Game();
 
 	if (aiVue) {
