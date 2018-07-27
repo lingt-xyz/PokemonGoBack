@@ -1,6 +1,5 @@
 $(function () {
-	$("#divAi").hide();
-	$("#divUser").hide();
+	$("#gobackDiv").hide();
 	initAbility();
 	initCardCollection();
 });
@@ -25,8 +24,8 @@ function startNewGame() {
 		}
 	})
 
-	$("#divAi").show(1000);
-	$("#divUser").show(1000);
+	$("#hideDiv").hide();
+	$("#gobackDiv").fadeIn(1000);
 
 	game.start();
 }
