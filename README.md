@@ -21,7 +21,7 @@ Apache2 WebRoot: /var/www/html
 ```
 
 ## Installation
-``` shell
+```
 # su
 # apt install mysql-server
 # apt install php libapache2-mod-php php-mysql
@@ -42,7 +42,7 @@ Add the following line to the end of the file:
 ```
 Move the PHP index file to the first position after the DirectoryIndex specification 
 ```
-systemctl restart apache2
+# systemctl restart apache2
 # mysql --user=root mysql
     > CREATE DATABASE pokemongoback;
     > CREATE USER 'pokemongoback'@'localhost' IDENTIFIED BY 'pokemongoback';
