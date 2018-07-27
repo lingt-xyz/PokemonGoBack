@@ -21,6 +21,7 @@ class SubAbility {
 // target:choice:opponent-bench:30
 class Dam extends SubAbility {
     constructor(target, damHp) {
+        super();
         this.target = target;
         this.damHp = damHp;
     }
@@ -31,6 +32,7 @@ class Dam extends SubAbility {
 // heal:target:self:20
 class Heal extends SubAbility {
     constructor(target, number) {
+        super();
         this.target = target;
         //your-active, choice:your, self
         this.number = number;
@@ -39,7 +41,11 @@ class Heal extends SubAbility {
 
 // discard all energy attached to this pokemon
 class Deenergize extends SubAbility {
-    constructor() {
+    constructor(target,str) {
+        super();
+		this.target= target;
+		//todo: decode the str to get exact number of energy that will be remove, and other info.
+		this.str = str;
 
     }
 }
@@ -48,6 +54,7 @@ class Deenergize extends SubAbility {
 // move a basic energy from 1 of your pokemon to another of your pokemon
 class Reenergize extends SubAbility {
     constructor(fromPokemon, fromAmout, toPokemon, toAmount) {
+        super();
         this.source = fromPokemon;
         this.target = toPokemon;
         this.fromAmout = fromAmout;
@@ -59,6 +66,7 @@ class Reenergize extends SubAbility {
 // switch your active pokemon with 1 of your benched pokemon
 class Swap extends SubAbility {
     constructor(source, destination) {
+        super();
         this.source = source;
         this.destination = destination;
     }
@@ -67,8 +75,9 @@ class Swap extends SubAbility {
 
 // destat:target:last
 class Destat extends SubAbility {
-    constructor() {
-        // TODO
+    constructor(target) {
+        super();
+        this.target = target;
     }
 }
 
@@ -77,6 +86,7 @@ class Destat extends SubAbility {
 // stuck = That pokemon can't retreat during your opponent's next turn
 class ApplyStat extends SubAbility {
     constructor(type, target) {
+        super();
         this.type = type;
         this.target = target;
     }
@@ -85,7 +95,9 @@ class ApplyStat extends SubAbility {
 // draw:3
 // draw 3 dards
 class Draw extends SubAbility {
-    constructor(number) {
+    constructor(traget, number) {
+        super();
+		this.target = target;
         this.number = number;
     }
 }
@@ -93,14 +105,19 @@ class Draw extends SubAbility {
 // redamage:source:choice:opponent:destination:opponent:count(target:last:source:damage)
 // Move as many damage counters on your opponent's pokemon as you like to any of your opponent's other pokemon in any way you like
 class Redamage extends SubAbility {
-    constructor() {
-        //TODO
+    constructor(targetFrom,targetTo, damHp) {
+       super();
+       this.targetFrom = targetFrom;
+       this.targetTo = targetTo;
+       //TODO : decode damHp(str) to find the exact number of dam amount
+       this.damHp = damHp;
     }
 }
 
 //
 class Search extends SubAbility {
     constructor() {
+        super();
         //TODO
     }
 }
@@ -111,6 +128,7 @@ class Search extends SubAbility {
 // deck:target:opponent:destination:deck:bottom:choice:them:1
 class Deck extends SubAbility {
     constructor() {
+        super();
         //TODO
     }
 }
@@ -119,6 +137,7 @@ class Deck extends SubAbility {
 // shuffle:target:opponent
 class Shuffle extends SubAbility {
     constructor(target) {
+        super();
         this.target = target;
     }
 }
@@ -126,6 +145,7 @@ class Shuffle extends SubAbility {
 // flip, ability, healed
 class Cond extends SubAbility {
     constructor(type) {
+        super();
         this.type = type;
     }
 }
@@ -133,6 +153,7 @@ class Cond extends SubAbility {
 // add:target:your:trigger:opponent:turn-end:(heal:target:self:20)
 class Add extends SubAbility {
     constructor() {
+        super();
         //TODO
     }
 }

@@ -137,6 +137,7 @@ Wally:search:target:choice:your-pokemon:cat:basic:source:deck:filter:evolves-fro
 `;
 
 let Card_Collection = new Array();
+let Ability_Collection = new Array();
 
 let Card_Type = { pokemon: "pokemon", trainer: "trainer", energy: "energy" };
 let Energy_Type = { colorless: "colorless", water: "water", lightning: "lightning", psychic: "psychic", fighting: "fighting" };
@@ -152,6 +153,7 @@ let currentPlayer = null;
 let logger = null;
 let userOrder = null;
 let aiOrder = null;
+
 
 function initCardCollection() {
     /**
@@ -263,7 +265,6 @@ function initCardCollection() {
     }
 }
 
-var Ability_Collection = new Array();
 function initAbility() {
     let lines = abilityString.split('\n');// array of lines
     let abilityRegex = /^([a-zA-ZÀ-ÿ-' ]+):(.*)$/;// match ability name
@@ -344,77 +345,106 @@ function getSubAbility(s) {
             else {
                 Ability_Collection.push(new Heal(healInfos[1], healHp));
             }
-            break; break;
+           
             break;
-        case Ability_Type.deenergize:
-            //deenergize:target:opponent-active:1,
-            //deenergize:target:your-active:count(target:your-active:energy)
-            //deenergize:target:your-active:1:(search:target:your:source:discard:filter:cat:item:1)
-            let deenInfos = typeInfos[2].split(":");
-            Ability_Collection.push(new Reenergize(abilityIndex));
+        case Ability_Type.deenergize:     //?
+            //target:opponent-active:1,
+            //target:your-active:count(target:your-active:energy)
+            //target:your-active:1:(search:target:your:source:discard:filter:cat:item:1)
+            let deenInfos = items[2].split(":");
+			if(deenInfos.length == 3)
+			{
+				Ability_Collection.push(new Deenergize(deenInfos[1],deenInfos[2]));
+			}else 
+			{
+				Ability_Collection.push(new Deenergize(deenInfos[1],deenInfos.slice(2,)));
+			
+            }
             break;
-        case Ability_Type.reenergize:
+			
+			
+        case Ability_Type.reenergize:	//trainer
             //target:choice:your:1:target:choice:your:1
-            let reenInfos = typeInfos[2].split(":");
-            Ability_Collection.push(new Reenergize(abilityIndex, reenInfos[1] + ":" + reenInfos[2], reenInfos[4] + ":" + reenInfos[5], reenInfos[6]));
+            let reenInfos = items[2].split(":");
+		  Ability_Collection.push(new Reenergize(reenInfos[1] + ":" + reenInfos[2], reenInfos[3],reenInfos[4] + ":" + reenInfos[5], reenInfos[6]));
             break;
+			
         case Ability_Type.redamage:
-            //source:choice:opponent:destination:opponent:count(target:last:source:damage)
+            //source:choice:opponent: destination:opponent: count(target:last:source:damage)
             //TODO
-            Ability_Collection.push(new Redamage(abilityIndex, ));
+			let redamageInfos = items[2].split(":");
+			let redamageSource = redamageInfos[1]+":"+redamageInfos[2];
+			let redamageDestination = redamageInfos[4];
+			let redamageAmount = redamageInfos.slice(5,);
+            Ability_Collection.push(new Redamage(redamageSource,redamageDestination, redamageAmount ));
             break;
+			
         case Ability_Type.swap:
             //source:your-active:destination:choice:your-bench
-            let swapInfos = typeInfos[2].split(":");
+            let swapInfos = items[2].split(":");
             let swapSource = swapInfos[1];
             let swapDestination = swapInfos[3] + ":" + swapInfos[4];
-            Ability_Collection.push(new Swap(abilityIndex, swapSource, swapDestination));
+            Ability_Collection.push(new Swap(swapSource, swapDestination));
             break;
         case Ability_Type.destat:
             //target:last
-            let destatTarget = typeInfos[2].split(":")[1];
-            Ability_Collection.push(new Destat(abilityIndex, destatTarget));
+            let destatTarget = items[2].split(":")[1];
+            Ability_Collection.push(new Destat(destatTarget));
             break;
 
         case Ability_Type.applystat:
-            //applystat:status:stuck:opponent-active
-            //applystat:status:poisoned:opponent-active
-            //applystat:status:paralyzed:opponent-active
-            //applystat:status:asleep:opponent-active,
-            //(applystat:status:asleep:opponent-active,applystat:status:poisoned:opponent-active)
-            let statInfos = typeInfos[2].split(":");
+            //status:stuck:opponent-active
+            //status:poisoned:opponent-active
+            //status:paralyzed:opponent-active
+            //status:asleep:opponent-active,
+            ////////(applystat:status:asleep:opponent-active,applystat:status:poisoned:opponent-active)
+            let statInfos = items[2].split(":");
             let statusType = statInfos[1];
             let statusTarget = statInfos[2];
-            Ability_Collection.push(new ApplyStat(abilityIndex, statusType, statusTarget));
+            Ability_Collection.push(new ApplyStat(statusType, statusTarget));
             break;
         case Ability_Type.draw:
-            //draw:5
-            //draw:opponent:4
-            let drawNumber = typeInfos[2].split(":")[1];
-            Ability_Collection.push(new Draw(abilityIndex, drawNumber));
+            //5
+            //opponent:4
+            let drawInfos = items[2].split(":");
+			let drawNumber = drawInfos[drawInfos.length-1];
+			if(drawInfos.length ==1)
+			{
+				let drawTarget = "your";
+				Ability_Collection.push(new Draw(drawTarget, drawNumber));
+			}else{
+				let drawTarget = drawInfos[0];
+				Ability_Collection.push(new Draw(drawTarget, drawNumber));
+			}
+            
             break;
-        case Ability_Type.search:
-            //target:your:source:deck:filter:pokemon:cat:basic:2
-            //target:your:source:deck:1
-            //target:opponent:source:deck:filter:top:1:0
-            //target:your:source:deck:filter:energy:4
-            //target:choice:your-pokemon:cat:basic:source:deck:filter:evolves-from:target:last:1
-            //TODO
-            Ability_Collection.push(new Search(abilityIndex, ));
-            break;
+       
         case Ability_Type.deck:
-            //deck:target:opponent:destination:deck:bottom:choice:them:1
-            //deck:target:your:destination:deck:count(your-hand),
-            //deck:target:opponent:destination:deck:count(opponent-hand),
-            //TODO
-            let deckInfos = typeInfos[2].split(":");
-            Ability_Collection.push(new Deck(abilityIndex, ));
+            //target:opponent:destination:deck:bottom:choice:them:1
+            //target:your:destination:deck:count(your-hand),
+            //target:opponent:destination:deck:count(opponent-hand),
+            
+            let deckInfos = items[2].split(":");
+			let deckFrom = deckInfos[1];
+			if(deckInfos.length == 5)
+			{
+				let deckTo = deckInfos[3];
+				let deckAmont = deckInfos[4];
+				Ability_Collection.push(new Deck(deckFrom,deckTo,deckAmont));
+			}else{
+				let deckTo = deckInfos.slice(3,4);
+				let deckAmont = deckInfosslice(5,);
+				Ability_Collection.push(new Deck(deckFrom,deckTo,deckAmont));
+			}
+			
+            
             break;
         case Ability_Type.shuffle:
             //shuffle:target:your,
             //shuffle:target:opponent,
-            let shuffleTarget = typeInfos[2].split(":")[1];
+            let shuffleTarget = items[2].split(":")[1];
             Ability_Collection.push(new Shuffle(abilityIndex, shuffleTarget));
+			
             break;
         case Ability_Type.cond:
             // cond:flip
@@ -425,12 +455,14 @@ function getSubAbility(s) {
             // cond:choice: //shuffle:target:opponent
             // error
             break;
-        case Ability_Type.add:
+        case Ability_Type.add:	//trainer
             //target:your:trigger:opponent:turn-end:(heal:target:self:20)
             //TODO
             Ability_Collection.push(new Add(abilityIndex, ));
             break;
-
+		
+			
+		//trainer keyword trigger?
 
         default:
             break;

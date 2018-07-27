@@ -70,14 +70,108 @@ function applyAbility(id, isAi, abilityIndex) {
 * @param {Pokemon} sourceCard 
 * @param {Number} abilityIndex the index of the abilities it has
 */
-function useAbility(sourceCard, abilityIndex){
+function useAbility(sourceCard, abilityIndex) {
 	let ability = Ability_Collection[abilityIndex];
-	for (let sub of ability.subAbilities) {
-		gatherBattleInfo(sourceCard, sub);
+	switch (abilityIndex) {
+		case 1:
+			//Act Cute:deck:target:opponent:destination:deck:bottom:choice:them:1
+			deckRandomCard(sourceCard.isAi);
+			break;
+		case 2:
+			break;
+		case 3:
+			break;
+		case 4:
+			break;
+		case 5:
+			break;
+		case 6:
+			break;
+		case 7:
+			break;
+		case 8:
+			break;
+		case 9:
+			break;
+		case 10:
+			break;
+		case 11:
+			break;
+		case 12:
+			break;
+		case 13:
+			break;
+		case 14:
+			break;
+		case 15:
+			break;
+		case 16:
+			break;
+		case 17:
+			break;
+		case 18:
+			break;
+		case 19:
+			break;
+		case 20:
+			break;
+		case 21:
+			break;
+		case 22:
+			break;
+		case 23:
+			break;
+		case 24:
+			break;
+		case 25:
+			break;
+		case 26:
+			break;
+		case 27:
+			break;
+		case 28:
+			break;
+		case 29:
+			break;
+		case 30:
+			break;
+		case 31:
+			break;
+		case 32:
+			break;
+		case 33:
+			break;
+		case 34:
+			break;
+		case 35:
+			break;
+		case 36:
+			break;
+		case 37:
+			break;
+		case 38:
+			break;
+		case 39:
+			break;
+		case 40:
+			break;
+		case 41:
+			break;
+		case 22:
+			break;
 	}
 }
 
-function gatherBattleInfo(sourceCard, sub){
+function deckRandomCard(isAi){
+	if(isAi){
+		ai.handCollection;
+	}else{
+		user.handCollection;
+	}
+
+}
+
+function gatherBattleInfo(sourceCard, sub) {
 	let you = null;
 	let opponent = null;
 	if (sourceCard.isAi) {
@@ -90,7 +184,7 @@ function gatherBattleInfo(sourceCard, sub){
 
 	if (sub instanceof Dam) {
 		let damHp = 0;
-		if(isNaN(sub.damHp)){
+		if (isNaN(sub.damHp)) {
 			let ss = sub.damHp.split("*");
 			let num1 = 0;
 			let num2 = 0;
@@ -130,7 +224,6 @@ function gatherBattleInfo(sourceCard, sub){
 		}
 		switch (sub.target) {
 			case Target_Pokemon.opponent:
-				// TODO get a random pokemon
 				dam(opponent.currentPokemon, damHp);
 				break;
 			case Target_Pokemon.opponent_active:
@@ -143,13 +236,10 @@ function gatherBattleInfo(sourceCard, sub){
 				logger.logChooseAllCard(opponent, Attack_Type.dam, damHp);
 				break;
 			case Target_Pokemon.choice_your:
-				// TODO choose one card
 				break;
 			case Target_Pokemon.choice_opponent_bench:
-				// TODO choose one card
 				break;
 			case Target_Pokemon.choice_your_banch:
-				// TODO choose one card
 				break;
 			default:
 				break;
@@ -181,10 +271,10 @@ function gatherBattleInfo(sourceCard, sub){
 	} else if (sub instanceof Deenergize) {
 		switch (sub.target) {
 			case Target_Pokemon.opponent_active:
-				
+
 				break;
 			case Target_Pokemon.your_active:
-				
+
 				break;
 			case Target_Pokemon.choice_opponent:
 				// TODO choose one card
@@ -202,32 +292,24 @@ function gatherBattleInfo(sourceCard, sub){
 				break;
 		}
 	} else if (sub instanceof Reenergize) {
-		
-	} else if (sub instanceof Swap) {
-		
-	} else if (sub instanceof Destat) {
-		
-	} else if (sub instanceof ApplyStat) {
-		
-	} else if (sub instanceof Draw) {
-		
-	} else if (sub instanceof Redamage) {
-		
-	} else if (sub instanceof Search) {
-		
-	} else if (sub instanceof Deck) {
-		
-	} else if (sub instanceof Shuffle) {
-		
-	} else if (sub instanceof Add) {
-		
-	}
-}
 
-function dam(target, damHp){
-	if(target instanceof Pokemon){
-		target.currentHp -= damHp;
-	}else{
+	} else if (sub instanceof Swap) {
+
+	} else if (sub instanceof Destat) {
+
+	} else if (sub instanceof ApplyStat) {
+
+	} else if (sub instanceof Draw) {
+
+	} else if (sub instanceof Redamage) {
+
+	} else if (sub instanceof Search) {
+
+	} else if (sub instanceof Deck) {
+
+	} else if (sub instanceof Shuffle) {
+
+	} else if (sub instanceof Add) {
 
 	}
 }
@@ -340,10 +422,10 @@ function attack(sourceCard, sub) {
 	} else if (sub instanceof Deenergize) {
 		switch (sub.target) {
 			case Target_Pokemon.opponent_active:
-				
+
 				break;
 			case Target_Pokemon.your_active:
-				
+
 				break;
 			case Target_Pokemon.choice_opponent:
 				// TODO choose one card
@@ -361,25 +443,25 @@ function attack(sourceCard, sub) {
 				break;
 		}
 	} else if (sub instanceof Reenergize) {
-		
+
 	} else if (sub instanceof Swap) {
-		
+
 	} else if (sub instanceof Destat) {
-		
+
 	} else if (sub instanceof ApplyStat) {
-		
+
 	} else if (sub instanceof Draw) {
-		
+
 	} else if (sub instanceof Redamage) {
-		
+
 	} else if (sub instanceof Search) {
-		
+
 	} else if (sub instanceof Deck) {
-		
+
 	} else if (sub instanceof Shuffle) {
-		
+
 	} else if (sub instanceof Add) {
-		
+
 	}
 }
 
