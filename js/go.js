@@ -8,7 +8,7 @@ function startNewGame() {
 	logger = new GameConsole();
 	user = new Player(userOrder, false);
 	ai = new Player(aiOrder, true);
-	
+
 	startGame();
 }
 
@@ -184,11 +184,20 @@ function useAbility(sourceCard, abilityIndex) {
 }
 
 function deckRandomCard(isAi) {
+	let arrayFrom = null;
+	let arrayTo = null;
 	if (isAi) {
-		ai.handCollection;
+		arrayFrom = user.handCollection;
+		arrayTo = usre.deckCollection;
 	} else {
-		user.handCollection;
+		arrayFrom = ai.handCollection;
+		arrayTo = ai.deckCollection;
 	}
+
+	let index = Math.floor(Math.random() * arrayFrom.length);
+	let card = arrayFrom[index];
+	removeFromArrayByIndex(arrayFrom, index);
+	arrayTo.push(card);
 
 }
 

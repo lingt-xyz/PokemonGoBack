@@ -37,3 +37,7 @@ function findAndRemoveFromArray(array, id){
 function removeFromArray(array, element){
     array.splice(array.indexOf(element), 1);
 }
+
+function removeFromArrayByIndex(array, index){
+    array.splice(index, 1);
+}
