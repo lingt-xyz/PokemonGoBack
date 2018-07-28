@@ -20,6 +20,15 @@ function startDefinedGame() {
 	startGame();
 }
 
+function startEnvolveGame() {
+	logger = new GameConsole();
+	userOrder = Deck_Envolve;
+	user = new Player(userOrder, false);
+	ai = new Player(aiOrder, true);
+
+	startGame();
+}
+
 function startGame() {
 	game = new Game();
 
@@ -148,7 +157,7 @@ function useAbility(sourceCard, abilityIndex) {
 		case 8:
 			//Thunderbolt:dam:target:opponent-active:100,deenergize:target:your-active:count(target:your-active:energy)
 			if (damCard(opponent, 100)) {
-				deenergizeCard(you, amount);
+				deenergizeCard(you, (you.currentPokemon.currentEnergy + you.currentPokemon.currentColorLessEnergy));
 			}
 			break;
 		case 9:
@@ -669,7 +678,7 @@ function drop_handler(ev) {
 						logger.logGeneral("TODO: Trainer!");
 					} else {// moving a pokemon to a pokemon: evolve
 						if (sourceCard.cardBasic == targetCard.cardName) {
-							logger.logBattle("Evolve card " + targetCard.cardName + " to " + sourceCard.cardName);
+							logger.logBattle("Evolve pokemon " + targetCard.cardName + " to " + sourceCard.cardName);
 							removeFromArray(user.benchCollection, targetCard);
 							user.discardCollection.push(targetCard);
 							removeFromArray(user.handCollection, sourceCard);
@@ -695,11 +704,12 @@ function drop_handler(ev) {
 						logger.logGeneral("TODO: Trainer!");
 					} else {// moving a pokemon to a pokemon: envole
 						if (sourceCard.cardBasic == targetCard.cardName) {
-							logger.logBattle("Evolve card " + targetCard.cardName + " to " + sourceCard.cardName);
+							logger.logBattle("Evolve pokemon " + targetCard.cardName + " to " + sourceCard.cardName);
 							removeFromArray(user.matCollection, targetCard);
 							user.discardCollection.push(targetCard);
 							removeFromArray(user.handCollection, sourceCard);
 							user.matCollection.push(sourceCard);
+							user.currentPokemon = sourceCard;
 						} else {// do nothing
 
 						}
@@ -749,11 +759,12 @@ function drop_handler(ev) {
 						logger.logGeneral("TODO: Trainer!");
 					} else {// moving a pokemon to a pokemon: envole
 						if (sourceCard.cardBasic == targetCard.cardName) {
-							logger.logBattle("Evolve card " + targetCard.cardName + " to " + sourceCard.cardName);
+							logger.logBattle("Evolve pokemon " + targetCard.cardName + " to " + sourceCard.cardName);
 							removeFromArray(user.matCollection, targetCard);
 							user.discardCollection.push(targetCard);
 							removeFromArray(user.benchCollection, sourceCard);
 							user.matCollection.push(sourceCard);
+							user.currentPokemon = sourceCard;
 						} else {// do nothing
 
 						}

@@ -29,7 +29,9 @@ class Player {
     buildDeck() {
         if (this.order) {// if a order is given
             this.order.forEach((element, index) => {
-                this.deckCollection[index] = Card_Collection[element].clone(this.isAi);
+                let card = Card_Collection[element].clone(this.isAi);
+                this.deckCollection[index] = card;
+                this.cardCollection.push(card);
             });
         } else {// generate deck
             this.generateDeck();
@@ -151,11 +153,15 @@ class Player {
                 this.deckCollection.shift();
             } else {//if not, get 1 pokemon
                 let pokemonCard = this.deckCollection.find(item => item.cardType == Card_Type.pokemon);
-                if (pokemonCard) {//if there is pokemon card in your deck, get it
+                if (pokemonCard) {//if there is pokemon in your deck, get it
                     this.handCollection.push(pokemonCard);
                     removeFromArray(this.deckCollection, pokemonCard);
-                } else {//if no pokemon card in deck , game end
-                    logger.logGeneral("No more pokemon card, you lose the Game ");
+                } else {//if no pokemon in deck , game end
+                    if(this.isAi){
+                        logger.logGeneral("No more pokemon, AI lose the Game ");
+                    }else{
+                        logger.logGeneral("No more pokemon, you lose the Game ");
+                    }
                 }
             }
         }

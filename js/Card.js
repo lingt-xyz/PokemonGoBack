@@ -109,10 +109,19 @@ class Pokemon extends Card {
                 //Needs " + element[1] + " " + element[0] + ", " + element[3] + " " + element[2] + ",");
                 // TODO check only colorless
                 // TODO check: first one always colorless; second one is property
-                if (this.currentColorLessEnergy >= element[1] && this.currentEnergy >= element[3]) {
-                    this.currentColorLessEnergy -= element[1];
-                    this.currentEnergy -= element[3];
-                    return true;
+                if (this.currentEnergy >= element[3]) {
+                    if (this.currentColorLessEnergy >= element[1]) {
+                        this.currentColorLessEnergy -= element[1];
+                        this.currentEnergy -= element[3];
+                        return true;
+                    } else if ((this.currentEnergy + this.currentColorLessEnergy) >= (+element[3] + +element[1])) {
+                        this.currentColorLessEnergy = 0;
+                        this.currentEnergy = (this.currentEnergy + this.currentColorLessEnergy) - (+element[3] + +element[1]);
+                        return true;
+                    } else {
+                        return false;
+                    }
+
                 } else {
                     return false;
                 }
