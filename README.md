@@ -74,9 +74,9 @@ $MySQL_P: MySQL password
 
 ## References:
 
-https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-ubuntu-18-04
-https://www.digitalocean.com/community/tutorials/how-to-install-and-secure-phpmyadmin-on-ubuntu-16-04
-https://askubuntu.com/questions/668734/the-requested-url-phpmyadmin-was-not-found-on-this-server
-https://askubuntu.com/questions/763336/cannot-enter-phpmyadmin-as-root-mysql-5-7
-https://dev.mysql.com/doc/refman/8.0/en/create-user.html
-https://stackoverflow.com/questions/5555328/error-1396-hy000-operation-create-user-failed-for-jacklocalhost
+1. https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-ubuntu-18-04
+2. https://www.digitalocean.com/community/tutorials/how-to-install-and-secure-phpmyadmin-on-ubuntu-16-04
+3. https://askubuntu.com/questions/668734/the-requested-url-phpmyadmin-was-not-found-on-this-server
+4. https://askubuntu.com/questions/763336/cannot-enter-phpmyadmin-as-root-mysql-5-7
+5. https://dev.mysql.com/doc/refman/8.0/en/create-user.html
+6. https://stackoverflow.com/questions/5555328/error-1396-hy000-operation-create-user-failed-for-jacklocalhost
