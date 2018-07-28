@@ -66,12 +66,11 @@ PHP7.0
 MySQL
 
 ### Assumptions
-
+```
 $Web_Root: Web Document Root (e.g. /var/www/html)
-
 $MySQL_U: MySQL username
-
 $MySQL_P: MySQL password
+```
 
 ## References:
 
