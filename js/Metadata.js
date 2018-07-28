@@ -326,7 +326,6 @@ function getSubAbility(s) {
                 } else {
                     return new Dam(ss[1], damHp);
                 }
-
             } else {
                 let ss = items[2].split(":");
                 if (ss.length == 4) {//target:choice:opponent
@@ -358,7 +357,6 @@ function getSubAbility(s) {
                 return new Deenergize(deenInfos[1], deenInfos[2]);
             } else {
                 return new Deenergize(deenInfos[1], deenInfos.slice(2, ));
-
             }
             break;
         case Ability_Type.reenergize:	//trainer
@@ -409,13 +407,11 @@ function getSubAbility(s) {
                 let drawTarget = drawInfos[0];
                 return new Draw(drawTarget, drawNumber);
             }
-
             break;
         case Ability_Type.deck:
             //target:opponent:destination:deck:bottom:choice:them:1
             //target:your:destination:deck:count(your-hand),
             //target:opponent:destination:deck:count(opponent-hand),
-
             let deckInfos = items[2].split(":");
             let deckFrom = deckInfos[1];
             if (deckInfos.length == 5) {

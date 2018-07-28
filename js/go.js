@@ -224,44 +224,162 @@ function useAbility(sourceCard, abilityIndex) {
 			damCard(opponent, 30);
 			break;
 		case 23:
+			//Nyan Press:dam:target:opponent-active:40,cond:flip:dam:target:opponent-active:40:else:applystat:status:paralyzed:opponent-active
 			break;
 		case 24:
+			//Random Spark:dam:target:choice:opponent:30
 			break;
 		case 25:
+			//Bite:dam:target:opponent-active:40
 			break;
 		case 26:
+			//Bite:dam:target:opponent-active:10
 			break;
 		case 27:
+			//Knuckle Punch:dam:target:opponent-active:30
 			break;
 		case 28:
+			//Electroslug:dam:target:opponent-active:90
 			break;
 		case 29:
+			//Knuckle Punch:dam:target:opponent-active:20
 			break;
 		case 30:
+			//Destructive Beam:cond:flip:deenergize:target:opponent-active:1
 			break;
 		case 31:
+			//Tierno:draw:3
 			break;
 		case 32:
+			//Potion:heal:target:choice:your:30
 			break;
 		case 33:
+			//Misty's Determination:cond:ability:deck:target:your:destination:discard:choice:you:1:(search:target:your:source:deck:filter:top:8:1,shuffle:target:your)
 			break;
 		case 34:
+			//Pokémon Center Lady:heal:target:choice:your:60,destat:target:last
 			break;
 		case 35:
+			//Clemont:search:target:your:source:deck:filter:energy:4
 			break;
 		case 36:
+			//Ear Influence:redamage:source:choice:opponent:destination:opponent:count(target:last:source:damage)
 			break;
 		case 37:
+			//Psychic:dam:target:opponent-active:60,dam:target:opponent-active:count(target:opponent-active:energy)*10
 			break;
 		case 38:
+			//Hug:dam:target:opponent-active:30,applystat:status:stuck:opponent-active
 			break;
 		case 39:
+			//Wish:search:target:your:source:deck:1
 			break;
 		case 40:
+			//Heart Sign:dam:target:opponent-active:50
 			break;
 		case 41:
+			//Act Tough:dam:target:opponent-active:10,cond:count(target:your-active:energy:psychic)>0:dam:target:opponent-active:20
 			break;
-		case 22:
+		case 42:
+			//Exhausted Tackle:cond:flip:dam:target:opponent-active:30:else:dam:target:your-active:30
+			break;
+		case 43:
+			//Knuckle Punch:dam:target:opponent-active:10
+			break;
+		case 44:
+			//Double Stab:cond:flip:dam:target:opponent-active:10,cond:flip:dam:target:opponent-active:10
+			break;
+		case 45:
+			//Doduo Delivery:draw:2
+			break;
+		case 46:
+			//Fury Attack:dam:target:opponent-active:40,cond:flip:dam:target:opponent-active:40,cond:flip:dam:target:opponent-active:40,cond:flip:dam:target:opponent-active:40
+			break;
+		case 47:
+			//Rollout:dam:target:opponent-active:10
+			break;
+		case 48:
+			//Flail:dam:target:opponent-active:count(target:your-active:damage)*10
+			break;
+		case 49:
+			//Skill Dive:dam:target:opponent:10
+			break;
+		case 50:
+			//Poison Ring:applystat:status:stuck:opponent-active,applystat:status:poisoned:opponent-active
+			break;
+		case 51:
+			//Sleep Poison:cond:flip:(applystat:status:asleep:opponent-active,applystat:status:poisoned:opponent-active)
+			break;
+		case 52:
+			//Mine:search:target:opponent:source:deck:filter:top:1:0,cond:choice:shuffle:target:opponent
+			break;
+		case 53:
+			//Mud Slap:dam:target:opponent-active:20
+			break;
+		case 54:
+			//Earthquake:dam:target:opponent-active:60,dam:target:your-bench:10
+			break;
+		case 55:
+			//Rock Tumble:dam:target:opponent-active:60
+			break;
+		case 56:
+			//Scratch:dam:target:opponent-active:10
+			break;
+		case 57:
+			//Spacing Out:cond:flip:heal:target:your-active:10
+			break;
+		case 58:
+			//Scavenge:cond:ability:deenergize:target:your-active:1:(search:target:your:source:discard:filter:cat:item:1)
+			break;
+		case 59:
+			//Stretch Kick:dam:target:choice:opponent-bench:30
+			break;
+		case 60:
+			//Spiral Kick:dam:target:opponent-active:30
+			break;
+		case 61:
+			//Bullet Punch:dam:target:opponent-active:20,cond:flip:dam:target:opponent-active:20,cond:flip:dam:target:opponent-active:20
+			break;
+		case 62:
+			//Mach Cross:dam:target:opponent-active:60
+			break;
+		case 63:
+			//Beatdown:dam:target:opponent-active:40
+			break;
+		case 64:
+			//Twinkle:applystat:status:asleep:opponent-active
+			break;
+		case 65:
+			//Fake Out:dam:target:opponent-active:30,cond:flip:applystat:status:paralyzed:opponent-active
+			break;
+		case 66:
+			//Ambush:dam:target:opponent-active:40,cond:flip:dam:target:opponent-active:30
+			break;
+		case 67:
+			//Floral Crown:add:target:your:trigger:opponent:turn-end:(heal:target:self:20)
+			break;
+		case 68:
+			//Poké Ball:cond:flip:search:target:your:source:deck:filter:pokemon:1
+			break;
+		case 69:
+			//Shauna:deck:target:your:destination:deck:count(your-hand),shuffle:target:your,draw:5
+			break;
+		case 70:
+			//Pokémon Fan Club:search:target:your:source:deck:filter:pokemon:cat:basic:2,shuffle:target:your
+			break;
+		case 71:
+			//Switch:swap:source:your-active:destination:choice:your-bench
+			break;
+		case 72:
+			//Energy Switch:reenergize:target:choice:your:1:target:choice:your:1
+			break;
+		case 73:
+			//Red Card:deck:target:opponent:destination:deck:count(opponent-hand),shuffle:target:opponent,draw:opponent:4
+			break;
+		case 74:
+			//Wally:search:target:choice:your-pokemon:cat:basic:source:deck:filter:evolves-from:target:last:1,shuffle:target:your
+			break;
+		default:
 			break;
 	}
 }
