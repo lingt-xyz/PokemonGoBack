@@ -95,11 +95,35 @@ class pokemongoback_db
      * @param $card_list
      */
     public function card_insert($card_list){
+         $this->db_connect();
+        foreach ($card_list as $value) {
+        $sql_insert = "INSERT INTO CARD (LINE_NUMBER, CARD_NAME, CARD_TYPE) VALUES ($value['line_number'],$value['card_name'],$value['card_type'])";
+        }
+        if ($this->conn->query($sql_insert) == TRUE) {
+            $this->db_execute_result = true;
+
+        } else {
+            $this->db_execute_result = false;
+            //$result_json['Result'] = "ERROR";
+        }  
+        $this->db_close();       
+        return $this->db_execute_result;
 
     }
 
     // TODO delete all cards from database
     public function card_delete(){
+        $this->db_connect();
+        
+        $sql_delete= "DELETE * FROM CARD";
+        if ($this->conn->query($sql_delete) == TRUE) {
+            $this->db_execute_result = true;
+
+        } else {
+            $this->db_execute_result = false;
+        }  
+        $this->db_close();       
+        return $this->db_execute_result;
 
     }
 
@@ -109,7 +133,23 @@ class pokemongoback_db
      * @return list the list of cards
      */
     public function card_list_query($deck){
+        $this->db_connect();
+        
+        $card_list=array();
+        foreach ($deck as $value) { 
+            $sql_select= "SELECT card_name FROM CARD where line_number=$value";
+            $result=mysql_query($sql_select);
+            array_push($card_list,$result);
+        }
+            
+        if ($this->conn->query($sql_select) == TRUE) {
+            $this->db_execute_result = true;
 
+        } else {
+            $this->db_execute_result = false;
+        }  
+        $this->db_close();       
+        return $card_list;
     }
 
     // TODO get a json string of cards from database by there ids
@@ -120,6 +160,7 @@ class pokemongoback_db
     public function card_json_query($deck){
         $card_list = this.card_list_query($deck);
         // TODO convert to json
+        $myJSON = json_encode($card_list);
     }
 
     public function insert()
