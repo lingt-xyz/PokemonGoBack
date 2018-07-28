@@ -12,9 +12,11 @@ class Card {
         }
     }
 
-    showImage(){
+    showImage() {
         if (this.isAi) {
-            return "<img id='" + this.id + "' height='90px' width='60px' src='image/" + this.cardName + ".png'>";
+            return "<img id='" + this.id + "'"
+                + " ondblclick='showCardInfo(" + this.id + ", " + this.isAi + ")'"
+                + " height='90px' width='60px' src='image/" + this.cardName + ".png'>";
         } else {
         }
     }
@@ -85,7 +87,7 @@ class Pokemon extends Card {
                         return false;
                     }
                 } else {// only need colorless energy
-                    if(this.currentColorLessEnergy >= element[1]){
+                    if (this.currentColorLessEnergy >= element[1]) {
                         this.currentColorLessEnergy -= element[1];
                         return true;
                     } else if ((this.currentColorLessEnergy + this.currentEnergy) >= element[1]) {
@@ -94,16 +96,16 @@ class Pokemon extends Card {
                     } else {
                         return false;
                     }
-                } 
+                }
             } else if (element.length == 5 && element[4] == abilityIndex) {
                 //Needs " + element[1] + " " + element[0] + ", " + element[3] + " " + element[2] + ",");
                 // TODO check only colorless
                 // TODO check: first one always colorless; second one is property
-                if(this.currentColorLessEnergy >= element[1] && this.currentEnergy >= element[3]){
+                if (this.currentColorLessEnergy >= element[1] && this.currentEnergy >= element[3]) {
                     this.currentColorLessEnergy -= element[1];
                     this.currentEnergy -= element[3];
                     return true;
-                }else{
+                } else {
                     return false;
                 }
             }
@@ -115,21 +117,17 @@ class Pokemon extends Card {
         let attacks = "";
         this.attacks.forEach(element => {
             if (element.length == 3) {
-                attacks += ("<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + Ability_Collection[element[2]].abilityName + ": Needs " + element[1] + " " + element[0] + ",");
+                attacks += ("<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + Ability_Collection[element[2]].abilityName + ": Require " + element[1] + " " + element[0] + ",");
             } else if (element.length == 5) {
-                attacks += ("<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + Ability_Collection[element[4]].abilityName + ": Needs " + element[1] + " " + element[0] + ", " + element[3] + " " + element[2] + ",");
+                attacks += ("<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + Ability_Collection[element[4]].abilityName + ": Require " + element[1] + " " + element[0] + ", " + element[3] + " " + element[2] + ",");
             }
         });
         attacks = attacks.substr(0, attacks.length - 1);
         return "Card Detail</div>"
-            + "<div>&nbsp;&nbsp;&nbsp;&nbsp;Name: " + this.cardName + "</div>"
-            + "<div>&nbsp;&nbsp;&nbsp;&nbsp;Type: " + this.cardType + "</div>"
-            + "<div>&nbsp;&nbsp;&nbsp;&nbsp;Stage: " + this.cardStage + "</div>"
-            + "<div>&nbsp;&nbsp;&nbsp;&nbsp;Max HP: " + this.hp + "</div>"
-            + "<div>&nbsp;&nbsp;&nbsp;&nbsp;CurrenyHP: " + this.currentHp + "</div>"
-            + "<div>&nbsp;&nbsp;&nbsp;&nbsp;CurrenyEnergy: " + this.currentEnergy + "</div>"
-            + "<div>&nbsp;&nbsp;&nbsp;&nbsp;CurrenyColorLessEnergy: " + this.currentColorLessEnergy + "</div>"
-            + "<div>&nbsp;&nbsp;&nbsp;&nbsp;Retreat: " + this.retreat + "</div>"
+            + "<div>&nbsp;&nbsp;&nbsp;&nbsp;Pokemon: " + this.cardName + ", Stage: " + this.cardStage + "</div>"
+            + "<div>&nbsp;&nbsp;&nbsp;&nbsp;HP: " + this.currentHp + "/" + this.hp + "; "
+            + "Energy: " + this.currentEnergy + " + " + this.currentColorLessEnergy + "</div>"
+            + "<div>&nbsp;&nbsp;&nbsp;&nbsp;Retreat: Require " + this.retreat[0] + " " + this.retreat[1] + "</div>"
             + "<div>&nbsp;&nbsp;&nbsp;&nbsp;Attacks: " + attacks + "</div>"
             + "<div>";
     }
@@ -145,12 +143,10 @@ class Trainer extends Card {
         this.trainerType = trainerType;
         this.abilityIndex = abilityIndex;
     }
-    
+
     toConsole() {//"<div class='gamelog text-light'>[Info]: " + text + "</div>
         return "Card Detail</div>"
-            + "<div>&nbsp;&nbsp;&nbsp;&nbsp;Name: " + this.cardName + "</div>"
-            + "<div>&nbsp;&nbsp;&nbsp;&nbsp;Type: " + this.cardType + "</div>"
-            + "<div>&nbsp;&nbsp;&nbsp;&nbsp;TrainerType: " + this.trainerType + "</div>"
+            + "<div>&nbsp;&nbsp;&nbsp;&nbsp;Trainer: " + this.cardName + ", " + this.trainerType + "</div>"
             + "<div>&nbsp;&nbsp;&nbsp;&nbsp;Ability: " + Ability_Collection[this.abilityIndex].abilityName + "</div>"
             + "<div>";
     }
@@ -168,9 +164,7 @@ class Energy extends Card {
 
     toConsole() {//"<div class='gamelog text-light'>[Info]: " + text + "</div>
         return "Card Detail</div>"
-            + "<div>&nbsp;&nbsp;&nbsp;&nbsp;Name: " + this.cardName + "</div>"
-            + "<div>&nbsp;&nbsp;&nbsp;&nbsp;Type: " + this.cardType + "</div>"
-            + "<div>&nbsp;&nbsp;&nbsp;&nbsp;Energy: " + this.energy + "</div>"
+            + "<div>&nbsp;&nbsp;&nbsp;&nbsp;Energy: " + this.cardName + "</div>"
             + "<div>";
     }
 
