@@ -65,7 +65,7 @@
             <a class="p-2 text-dark" href="deck.php?action=update">Update Deck</a>
         </div>
     </nav>
- 
+
     <div class="container-fluid" id="gobackDiv">
         <div class="row">
             <!-- playing area -->
@@ -73,17 +73,18 @@
                 <!-- ai playing area -->
                 <div id="divAi" class="h-50 my-0">
                     <div class="row my-0">
-                        <div class="col-12 bg-light" id="divHandCollectionAi" ondrop="drop_handler(event)" ondragover="dragover_handler(event)">
-                            <span v-for="card in player.handCollection" v-html="card.toHtml()"></span>
-                        </div>
-                    </div>
-                    <div class="row my-0">
-                        <div class="col-1 bg-light">
-                            <span>Deck: {{ player.deckCollection.length }} </span>
+                        <div class="col-2 bg-light">
+                            <span>Hand: {{ player.handCollection.length }} </span>
                             <img src="image/DeckCard.png" height="90" width="63">
                         </div>
-                        <div class="col-1 bg-light">
-                            <span>Hand: {{ player.handCollection.length }} </span>
+                        <div class="col-8 bg-light" id="divHandCollectionAi" ondrop="drop_handler(event)" ondragover="dragover_handler(event)">
+                            <span v-for="card in player.handCollection" v-html="card.toHtml()"></span>
+                        </div>
+                        <div class="col-2 bg-light"></div>
+                    </div>
+                    <div class="row my-0">
+                        <div class="col-2 bg-light">
+                            <span>Deck: {{ player.deckCollection.length }} </span>
                             <img src="image/DeckCard.png" height="90" width="63">
                         </div>
                         <div class="col-8 bg-secondary" id="divBenchCollectionAi" ondrop="drop_handler(event)" ondragover="dragover_handler(event)">
@@ -95,51 +96,52 @@
                         </div>
                     </div>
                     <div class="row mb-0">
-                        <div class="col-1 bg-light">
+                        <div class="col-2 bg-light"></div>
+                        <div class="col-4 offset-md-2 bg-secondary" id="divMatCollectionAi" ondrop="drop_handler(event)" ondragover="dragover_handler(event)">
+                            <span v-for="card in player.matCollection" v-html="card.showImage()"></span>
+                        </div>
+                        <div class="col-2 offset-md-2 bg-light">
                             <span>Prize: {{ player.prizeCollection.length }} </span>
                             <img src="image/DeckCard.png" height="90" width="63">
                         </div>
-                        <div class="col-6 offset-md-2 bg-secondary" id="divMatCollectionAi" ondrop="drop_handler(event)" ondragover="dragover_handler(event)">
-                            <span v-for="card in player.matCollection" v-html="card.showImage()"></span>
-                        </div>
-                        <div class="col-1 offset-md-2 bg-light"></div>
                     </div>
                 </div>
                 <!-- user playing area -->
                 <div id="divUser" class="h-50 my-0">
                     <div class="row mt-0 mb-3">
-                        <div class="col-1 bg-light">
+                        <div class="col-2 bg-light">
                             <button type="button" id="endTurn" onclick="game.aiPlayTurn()">End My Turn</button>
                         </div>
-                        <div class="col-6 offset-md-2 bg-secondary" id="divMatCollection" ondrop="drop_handler(event)" ondragover="dragover_handler(event)">
+                        <div class="col-4 offset-md-2 bg-secondary" id="divMatCollection" ondrop="drop_handler(event)" ondragover="dragover_handler(event)">
                             <span v-for="card in player.matCollection" v-html="card.toHtml()"></span>
                         </div>
-                        <div class="col-1 offset-md-2 bg-light">
+                        <div class="col-2 offset-md-2 bg-light">
                             <span>Prize: {{ player.prizeCollection.length }}</span>
                             <img height='90px' width='60px' src="image/DeckCard.png">
                         </div>
                     </div>
                     <div class="row my-0">
                         <div class="col-2 bg-light">
-                            <span>Discard: {{ player.discardCollection.length }} </span>
+                            <span>Deck: {{ player.deckCollection.length }} </span>
                             <img src="image/DeckCard.png" height="90" width="63">
                         </div>
                         <div class="col-8 bg-secondary" id="divBenchCollection" ondrop="drop_handler(event)" ondragover="dragover_handler(event)">
                             <span v-for="card in player.benchCollection" v-html="card.toHtml()"></span>
                         </div>
-                        <div class="col-1 bg-light">
-                            <span>Hand: {{ player.handCollection.length }} </span>
-                            <img src="image/DeckCard.png" height="90" width="63">
-                        </div>
-                        <div class="col-1 bg-light">
-                            <span>Deck: {{ player.deckCollection.length }} </span>
+                        <div class="col-2 bg-light">
+                            <span>Discard: {{ player.discardCollection.length }} </span>
                             <img src="image/DeckCard.png" height="90" width="63">
                         </div>
                     </div>
                     <div class="row my-0">
-                        <div class="col-12 bg-light" id="divHandCollection" ondrop="drop_handler(event)" ondragover="dragover_handler(event)">
+                        <div class="col-2 bg-light">
+                            <span>Hand: {{ player.handCollection.length }} </span>
+                            <img src="image/DeckCard.png" height="90" width="63">
+                        </div>
+                        <div class="col-8 bg-light" id="divHandCollection" ondrop="drop_handler(event)" ondragover="dragover_handler(event)">
                             <span v-for="card in player.handCollection" v-html="card.toHtml()"></span>
                         </div>
+                        <div class="col-2 bg-light"></div>
                     </div>
                 </div>
             </div>

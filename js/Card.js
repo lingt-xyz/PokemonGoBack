@@ -65,6 +65,14 @@ class Pokemon extends Card {
         this.headled = false;
         //
         this.headledAmount = 0;
+        //
+        this.isStuck = false;
+        //
+        this.isAsleep = false;
+        //
+        this.isParalyzed = false;
+        //
+        this.isPoisoned = false;
     }
 
     addEnergy(energy) {
