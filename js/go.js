@@ -51,6 +51,16 @@ function startGame() {
 	game.start();
 }
 
+function flipCoin() {
+	let res = getRandom(1);
+	if (res) {
+		logger.logGeneral("Flip a coin: Head");
+	} else {
+		logger.logGeneral("Flip a coin: Tail");
+	}
+	return res;
+}
+
 function showCardInfo(id, isAi) {
 	if (isAi) {
 		let card = findFromArray(ai.cardCollection, id);
@@ -92,53 +102,126 @@ function applyAbility(id, isAi, abilityIndex) {
 * @param {Number} abilityIndex the index of the abilities it has
 */
 function useAbility(sourceCard, abilityIndex) {
+	let opponent = null;
+	let you = null;
+	if (sourceCard.isAi) {
+		you = ai;
+		opponent = user;
+	} else {
+		you = user;
+		opponent = ai;
+	}
 	let ability = Ability_Collection[abilityIndex];
 	switch (abilityIndex) {
 		case 1:
 			//Act Cute:deck:target:opponent:destination:deck:bottom:choice:them:1
-			deckRandomCard(sourceCard.isAi);
+			deckRandomCard(opponent);
 			break;
 		case 2:
+			//Scratch:dam:target:opponent-active:20
+			damCard(opponent, 20);
 			break;
 		case 3:
+			//Quick Attack:dam:target:opponent-active:10,cond:flip:dam:target:opponent-active:30
+			if (damCard(opponent, 10)) {
+				damCardFlip(opponent, 30);
+			}
 			break;
 		case 4:
+			//Flying Elekick:dam:target:opponent-active:50
+			damCard(opponent, 50);
 			break;
 		case 5:
+			//Nuzzle:cond:flip:applystat:status:paralyzed:opponent-active
+			applyStatParalyzed(opponent);
 			break;
 		case 6:
+			//Quick Attack:dam:target:opponent-active:20,cond:flip:dam:target:opponent-active:10
+			if (damCard(opponent, 20)) {
+				damCardFlip(opponent, 10);
+			}
 			break;
 		case 7:
+			//Circle Circuit:dam:target:opponent-active:20*count(target:your-bench)
+
+			let damHp = 20 * opponent.benchCollection.length;
+			damCard(opponent, damHp);
 			break;
 		case 8:
+			//Thunderbolt:dam:target:opponent-active:100,deenergize:target:your-active:count(target:your-active:energy)
+			if (damCard(opponent, 100)) {
+				deenergizeCard(you, amount);
+			}
 			break;
 		case 9:
+			//Rain Splash:dam:target:opponent-active:20
+			damCard(opponent, 20);
 			break;
 		case 10:
+			//Soaking Horn:dam:target:opponent-active:10,cond:healed:target:your-active:dam:target:opponent-active:80
+			if (damCard(opponent, 10)) {
+				if (you.currentPokemon.headled) {
+					damCard(opponent, 80);
+				}
+			}
 			break;
 		case 11:
+			//Reckless Charge:dam:target:opponent-active:40,dam:target:your-active:10
+			damCard(opponent, 40);
+			damCard(you, 10);
 			break;
 		case 12:
+			//Reckless Charge:dam:target:opponent-active:20,dam:target:your-active:10
+			damCard(opponent, 20);
+			damCard(you, 10);
 			break;
 		case 13:
+			//Cut:dam:target:opponent-active:30
+			damCard(opponent, 30);
 			break;
 		case 14:
+			//Pound:dam:target:opponent-active:10
+			damCard(opponent, 10);
 			break;
 		case 15:
+			//Clamp Crush:dam:target:opponent-active:30,cond:flip:deenergize:target:opponent-active:1,applystat:status:paralyzed:opponent-active
+			if (damCard(opponent, 30)) {
+				deenergizeCardFlip(opponent, 1);
+				applyStatParalyzed(opponent);
+			}
 			break;
 		case 16:
+			//Spike Cannon:dam:target:opponent-active:30,cond:flip:dam:target:opponent-active:30,cond:flip:dam:target:opponent-active:30,cond:flip:dam:target:opponent-active:30,cond:flip:dam:target:opponent-active:30,cond:flip:dam:target:opponent-active:30
+			if (damCard(opponent, 30)) {
+				let res = getRandom(5);
+				damCard(opponent, 30 * res);
+			}
 			break;
 		case 17:
+			//Spiral Drain:dam:target:opponent-active:20,heal:target:your-active:20
+			damCard(opponent, 20);
+			healCard(you, 20);
 			break;
 		case 18:
+			//Aurora Beam:dam:target:opponent-active:80
+			damCard(opponent, 80);
 			break;
 		case 19:
+			//Wing Attack:dam:target:opponent-active:20
+			damCard(opponent, 20);
 			break;
 		case 20:
+			//Brave Bird:dam:target:opponent-active:80,dam:target:your-active:20
+			damCard(opponent, 80);
+			damCard(you, 20);
 			break;
 		case 21:
+			//Lunge:cond:flip:dam:target:opponent-active:20
+			damCardFlip(opponent, 20);
 			break;
 		case 22:
+			//Slash:dam:target:opponent-active:30
+			damCard(opponent, 30);
 			break;
 		case 23:
 			break;
@@ -183,22 +266,81 @@ function useAbility(sourceCard, abilityIndex) {
 	}
 }
 
-function deckRandomCard(isAi) {
-	let arrayFrom = null;
-	let arrayTo = null;
-	if (isAi) {
-		arrayFrom = user.handCollection;
-		arrayTo = usre.deckCollection;
-	} else {
-		arrayFrom = ai.handCollection;
-		arrayTo = ai.deckCollection;
-	}
+function deckRandomCard(player) {
+	let arrayFrom = player.handCollection;
+	let arrayTo = player.deckCollection;
 
-	let index = Math.floor(Math.random() * arrayFrom.length);
+	let index = getRandom(arrayFrom.length);
 	let card = arrayFrom[index];
+	looger.logBattle("Move one random card " + card.cardName + "to deck.");
 	removeFromArrayByIndex(arrayFrom, index);
 	arrayTo.push(card);
+}
 
+function damCard(player, damHp) {
+	if (player.currentPokemon.currentHp < damHp) {
+		player.currentPokemon.damageAmount += player.currentPokemon.currentHp;
+		looger.logBattle(player.currentPokemon.cardName + "'s HP reduced by " + player.currentPokemon.currentHp);
+		player.currentPokemon.currentHp = 0;
+	} else {
+		player.currentPokemon.damageAmount += damHp;
+		player.currentPokemon.currentHp -= damHp;
+		looger.logBattle(player.currentPokemon.cardName + "'s HP reduced by " + damHp);
+	}
+
+	if (player.currentPokemon.currentHp <= 0) {
+		looger.logBattle(player.currentPokemon.cardName + " is dead.. Move it to discard.");
+		removeFromArray(player.matCollection, player.currentPokemon);
+		player.discardCollection.push(player.currentPokemon);
+		player.currentPokemon = null;
+		return false;
+	}
+
+	return true;
+}
+
+function damCardFlip(player, damHp) {
+	if (flipCoin()) {
+		return damCard(player, damHp);
+	} else {
+		logger.logBattle("So: cancel damCard.");
+		return true;
+	}
+}
+
+function healCard(player, healHp) {
+	let before = player.currentPokemon.currentHp;
+	player.currentPokemon.currentHp += healHp;
+	if (player.currentPokemon.currentHp > player.currentPokemon.hp) {
+		player.currentPokemon.currentHp = player.currentPokemon.hp;
+	}
+	let after = player.currentPokemon.currentHp;
+	player.currentPokemon.healed = true;
+	player.currentPokemon.healAmount += after - before;
+	looger.logBattle(player.currentPokemon.cardName + "'s HP increased by " + healHp);
+}
+
+function applyStatParalyzed(player) {
+	//TODO
+}
+function applyStatParalyzedFlip(player) {
+	if (flipCoin()) {
+		applyStatParalyzed(player);
+	} else {
+		logger.logBattle("So: cancel applyStatParalyzed.");
+	}
+}
+
+function deenergizeCard(player, amount) {
+	//TODO
+}
+
+function deenergizeCardFlip(player, amount) {
+	if (flipCoin()) {
+		deenergizeCard(player, amount);
+	} else {
+		logger.logBattle("So: cancel deenergizeCard.");
+	}
 }
 
 function gatherBattleInfo(sourceCard, sub) {

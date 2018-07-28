@@ -1,6 +1,10 @@
 let uuid = 0;
-function getUUID(){
+function getUUID() {
     return ++uuid;
+}
+
+function getRandom(counter) {
+    return Math.floor(Math.random() * counter);
 }
 
 // use Fisher-Yates Shuffle 
@@ -24,20 +28,20 @@ function shuffle(array) {
     return array;
 }
 
-function findFromArray(array, id){
+function findFromArray(array, id) {
     return array.find(element => element.id == id);
 }
 
-function findAndRemoveFromArray(array, id){
+function findAndRemoveFromArray(array, id) {
     let element = findFromArray(array, id);
     array.splice(array.indexOf(element), 1);
     return element;
 }
 
-function removeFromArray(array, element){
+function removeFromArray(array, element) {
     array.splice(array.indexOf(element), 1);
 }
 
-function removeFromArrayByIndex(array, index){
+function removeFromArrayByIndex(array, index) {
     array.splice(index, 1);
 }

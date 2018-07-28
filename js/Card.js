@@ -57,12 +57,12 @@ class Pokemon extends Card {
         this.currentEnergy = 0;
         // other energy except its property energy
         this.currentColorLessEnergy = 0;
-        //
-        this.attackInfo = "";
-        //
-        this.attackResult = false;
         // 
-        this.damage = 0;
+        this.damageAmount = 0;
+        //
+        this.headled = false;
+        //
+        this.headledAmount = 0;
     }
 
     addEnergy(energy) {
