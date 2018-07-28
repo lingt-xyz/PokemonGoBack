@@ -4,7 +4,7 @@ function getUUID() {
 }
 
 function getRandom(counter) {
-    return Math.floor(Math.random() * counter);
+    return Math.floor(Math.random() * (counter + 1));
 }
 
 // use Fisher-Yates Shuffle 

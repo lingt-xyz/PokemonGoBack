@@ -143,9 +143,7 @@ function useAbility(sourceCard, abilityIndex) {
 			break;
 		case 7:
 			//Circle Circuit:dam:target:opponent-active:20*count(target:your-bench)
-
-			let damHp = 20 * opponent.benchCollection.length;
-			damCard(opponent, damHp);
+			damCard(opponent, 20 * opponent.benchCollection.length);
 			break;
 		case 8:
 			//Thunderbolt:dam:target:opponent-active:100,deenergize:target:your-active:count(target:your-active:energy)
@@ -225,167 +223,248 @@ function useAbility(sourceCard, abilityIndex) {
 			break;
 		case 23:
 			//Nyan Press:dam:target:opponent-active:40,cond:flip:dam:target:opponent-active:40:else:applystat:status:paralyzed:opponent-active
-			if(damCard(opponent, 40)){
-				if(flipCoin()){
+			if (damCard(opponent, 40)) {
+				if (flipCoin()) {
 					damCard(opponent, 40);
-				}else{
+				} else {
 					applyStatParalyzed(opponent);
 				}
 			}
 			break;
 		case 24:
 			//Random Spark:dam:target:choice:opponent:30
-			
+			// TODO
 			break;
 		case 25:
 			//Bite:dam:target:opponent-active:40
+			damCard(opponent, 40);
 			break;
 		case 26:
 			//Bite:dam:target:opponent-active:10
+			damCard(opponent, 40);
 			break;
 		case 27:
 			//Knuckle Punch:dam:target:opponent-active:30
+			damCard(opponent, 30);
 			break;
 		case 28:
 			//Electroslug:dam:target:opponent-active:90
+			damCard(opponent, 90);
 			break;
 		case 29:
 			//Knuckle Punch:dam:target:opponent-active:20
+			damCard(opponent, 20);
 			break;
 		case 30:
 			//Destructive Beam:cond:flip:deenergize:target:opponent-active:1
+			deenergizeCardFlip(opponent, 1);
 			break;
 		case 31:
 			//Tierno:draw:3
+			drawCard(you, 3);
 			break;
 		case 32:
 			//Potion:heal:target:choice:your:30
+			// TODO
 			break;
 		case 33:
 			//Misty's Determination:cond:ability:deck:target:your:destination:discard:choice:you:1:(search:target:your:source:deck:filter:top:8:1,shuffle:target:your)
+			// TODO
 			break;
 		case 34:
 			//Pokémon Center Lady:heal:target:choice:your:60,destat:target:last
+			//TODO
 			break;
 		case 35:
 			//Clemont:search:target:your:source:deck:filter:energy:4
+			//TODO
 			break;
 		case 36:
 			//Ear Influence:redamage:source:choice:opponent:destination:opponent:count(target:last:source:damage)
+			//TODO
 			break;
 		case 37:
 			//Psychic:dam:target:opponent-active:60,dam:target:opponent-active:count(target:opponent-active:energy)*10
+			if (damCard(opponent, 60)) {
+				damCard(opponent, (opponent.currentPokemon.currentEnergy + opponent.currentPokemon.currentColorLessEnergy) * 10);
+			}
 			break;
 		case 38:
 			//Hug:dam:target:opponent-active:30,applystat:status:stuck:opponent-active
+			if (damCard(opponent, 30)) {
+				applyStatStuck(opponent);
+			}
 			break;
 		case 39:
 			//Wish:search:target:your:source:deck:1
+			// TODO
 			break;
 		case 40:
 			//Heart Sign:dam:target:opponent-active:50
+			damCard(opponent, 50);
 			break;
 		case 41:
 			//Act Tough:dam:target:opponent-active:10,cond:count(target:your-active:energy:psychic)>0:dam:target:opponent-active:20
+			if (damCard(opponent, 10)) {
+				if (you.currentPokemon.property == "psychic" && you.currentPokemon.currentEnergy > 0) {
+					damCard(opponent, 20);
+				}
+			}
 			break;
 		case 42:
 			//Exhausted Tackle:cond:flip:dam:target:opponent-active:30:else:dam:target:your-active:30
+			if (flipCoin()) {
+				damCard(opponent, 30);
+			} else {
+				damCard(you, 30);
+			}
 			break;
 		case 43:
 			//Knuckle Punch:dam:target:opponent-active:10
+			damCard(opponent, 10);
 			break;
 		case 44:
 			//Double Stab:cond:flip:dam:target:opponent-active:10,cond:flip:dam:target:opponent-active:10
+			if (damCardFlip(opponent, 10)) {
+				damCardFlip(opponent, 10);
+			}
 			break;
 		case 45:
 			//Doduo Delivery:draw:2
+			drawCard(you, 2);
 			break;
 		case 46:
 			//Fury Attack:dam:target:opponent-active:40,cond:flip:dam:target:opponent-active:40,cond:flip:dam:target:opponent-active:40,cond:flip:dam:target:opponent-active:40
+			if (damCard(opponent, 40)) {
+				let res = getRandom(3);
+				damCard(opponent, 40 * res);
+			}
 			break;
 		case 47:
 			//Rollout:dam:target:opponent-active:10
+			damCard(opponent, 10);
 			break;
 		case 48:
 			//Flail:dam:target:opponent-active:count(target:your-active:damage)*10
+			damCard(opponent, you.currentPokemon.damageAmount * 10);
 			break;
 		case 49:
 			//Skill Dive:dam:target:opponent:10
+			damCard(opponent, 10);
 			break;
 		case 50:
 			//Poison Ring:applystat:status:stuck:opponent-active,applystat:status:poisoned:opponent-active
+			applyStatStuck(opponent);
+			applyStatPoisoned(opponent);
 			break;
 		case 51:
 			//Sleep Poison:cond:flip:(applystat:status:asleep:opponent-active,applystat:status:poisoned:opponent-active)
+			if (flipCoin()) {
+				applyStatStuck(opponent);
+				applyStatPoisoned(opponent);
+			} else {
+				logger.logBattle("So: cancel applystat.");
+			}
 			break;
 		case 52:
 			//Mine:search:target:opponent:source:deck:filter:top:1:0,cond:choice:shuffle:target:opponent
+			//TODO
 			break;
 		case 53:
 			//Mud Slap:dam:target:opponent-active:20
+			damCard(opponent, 20);
 			break;
 		case 54:
 			//Earthquake:dam:target:opponent-active:60,dam:target:your-bench:10
+			damCard(opponent, 60);
+			damBench(you, 60);
 			break;
 		case 55:
 			//Rock Tumble:dam:target:opponent-active:60
+			damCard(opponent, 60);
 			break;
 		case 56:
 			//Scratch:dam:target:opponent-active:10
+			damCard(opponent, 10);
 			break;
 		case 57:
 			//Spacing Out:cond:flip:heal:target:your-active:10
+			healCard(you, 10);
 			break;
 		case 58:
 			//Scavenge:cond:ability:deenergize:target:your-active:1:(search:target:your:source:discard:filter:cat:item:1)
+			// TODO
 			break;
 		case 59:
 			//Stretch Kick:dam:target:choice:opponent-bench:30
+			// TODO
 			break;
 		case 60:
 			//Spiral Kick:dam:target:opponent-active:30
+			damCard(opponent, 30);
 			break;
 		case 61:
 			//Bullet Punch:dam:target:opponent-active:20,cond:flip:dam:target:opponent-active:20,cond:flip:dam:target:opponent-active:20
+			if (damCard(opponent, 20)) {
+				let res = getRandom(2);
+				damCard(opponent, 20 * res)
+			}
 			break;
 		case 62:
 			//Mach Cross:dam:target:opponent-active:60
+			damCard(opponent, 60);
 			break;
 		case 63:
 			//Beatdown:dam:target:opponent-active:40
+			damCard(opponent, 40);
 			break;
 		case 64:
 			//Twinkle:applystat:status:asleep:opponent-active
+			applyStatAsleep(opponent);
 			break;
 		case 65:
 			//Fake Out:dam:target:opponent-active:30,cond:flip:applystat:status:paralyzed:opponent-active
+			if (damCard(opponent, 30)) {
+				applyStatParalyzedFlip(opponent);
+			}
 			break;
 		case 66:
 			//Ambush:dam:target:opponent-active:40,cond:flip:dam:target:opponent-active:30
+			if (damCard(opponent, 40)) {
+				damCardFlip(opponent, 30);
+			}
 			break;
 		case 67:
 			//Floral Crown:add:target:your:trigger:opponent:turn-end:(heal:target:self:20)
+			// TODO
 			break;
 		case 68:
 			//Poké Ball:cond:flip:search:target:your:source:deck:filter:pokemon:1
+			// TODO
 			break;
 		case 69:
 			//Shauna:deck:target:your:destination:deck:count(your-hand),shuffle:target:your,draw:5
+			// TODO
 			break;
 		case 70:
 			//Pokémon Fan Club:search:target:your:source:deck:filter:pokemon:cat:basic:2,shuffle:target:your
+			// TODO
 			break;
 		case 71:
 			//Switch:swap:source:your-active:destination:choice:your-bench
+			// TODO
 			break;
 		case 72:
 			//Energy Switch:reenergize:target:choice:your:1:target:choice:your:1
+			// TODO
 			break;
 		case 73:
 			//Red Card:deck:target:opponent:destination:deck:count(opponent-hand),shuffle:target:opponent,draw:opponent:4
+			// TODO
 			break;
 		case 74:
 			//Wally:search:target:choice:your-pokemon:cat:basic:source:deck:filter:evolves-from:target:last:1,shuffle:target:your
+			// TODO
 			break;
 		default:
 			break;
@@ -398,7 +477,7 @@ function deckRandomCard(player) {
 
 	let index = getRandom(arrayFrom.length);
 	let card = arrayFrom[index];
-	looger.logBattle("Move one random card " + card.cardName + "to deck.");
+	logger.logBattle("Move one random card " + card.cardName + "to deck.");
 	removeFromArrayByIndex(arrayFrom, index);
 	arrayTo.push(card);
 }
@@ -406,16 +485,16 @@ function deckRandomCard(player) {
 function damCard(player, damHp) {
 	if (player.currentPokemon.currentHp < damHp) {
 		player.currentPokemon.damageAmount += player.currentPokemon.currentHp;
-		looger.logBattle(player.currentPokemon.cardName + "'s HP reduced by " + player.currentPokemon.currentHp);
+		logger.logBattle(player.currentPokemon.cardName + "'s HP reduced by " + player.currentPokemon.currentHp);
 		player.currentPokemon.currentHp = 0;
 	} else {
 		player.currentPokemon.damageAmount += damHp;
 		player.currentPokemon.currentHp -= damHp;
-		looger.logBattle(player.currentPokemon.cardName + "'s HP reduced by " + damHp);
+		logger.logBattle(player.currentPokemon.cardName + "'s HP reduced by " + damHp);
 	}
 
 	if (player.currentPokemon.currentHp <= 0) {
-		looger.logBattle(player.currentPokemon.cardName + " is dead.. Move it to discard.");
+		logger.logBattle(player.currentPokemon.cardName + " is dead.. Move it to discard.");
 		removeFromArray(player.matCollection, player.currentPokemon);
 		player.discardCollection.push(player.currentPokemon);
 		player.currentPokemon = null;
@@ -423,6 +502,29 @@ function damCard(player, damHp) {
 	}
 
 	return true;
+}
+
+function damBench(player, damHp) {
+	for (let card of player.benchCollection) {
+		if (card.cardType == Card_Type.pokemon) {
+			if (card.currentHp < damHp) {
+				card.damageAmount += card.currentHp;
+				looger.logBattle(card.cardName + "'s HP reduced by " + card.currentHp);
+				card.currentHp = 0;
+			} else {
+				card.damageAmount += damHp;
+				card.currentHp -= damHp;
+				looger.logBattle(card.cardName + "'s HP reduced by " + damHp);
+			}
+
+			if (card.currentHp <= 0) {
+				looger.logBattle(card.cardName + " is dead.. Move it to discard.");
+				removeFromArray(player.benchCollection, card);
+				player.discardCollection.push(card);
+			}
+		}
+	}
+
 }
 
 function damCardFlip(player, damHp) {
@@ -443,18 +545,31 @@ function healCard(player, healHp) {
 	let after = player.currentPokemon.currentHp;
 	player.currentPokemon.healed = true;
 	player.currentPokemon.healAmount += after - before;
-	looger.logBattle(player.currentPokemon.cardName + "'s HP increased by " + healHp);
+	logger.logBattle(player.currentPokemon.cardName + "'s HP increased by " + healHp);
 }
 
 function applyStatParalyzed(player) {
 	//TODO
 }
+
 function applyStatParalyzedFlip(player) {
 	if (flipCoin()) {
 		applyStatParalyzed(player);
 	} else {
 		logger.logBattle("So: cancel applyStatParalyzed.");
 	}
+}
+
+function applyStatStuck(player) {
+	//TODO
+}
+
+function applyStatPoisoned(player) {
+	// TODO
+}
+
+function applyStatAsleep(player) {
+	//TODO
 }
 
 function deenergizeCard(player, amount) {
@@ -466,6 +581,16 @@ function deenergizeCardFlip(player, amount) {
 		deenergizeCard(player, amount);
 	} else {
 		logger.logBattle("So: cancel deenergizeCard.");
+	}
+}
+
+function drawCard(player, amount) {
+	while (amount != 0) {
+		let card = player.deckCollection.pop();
+		amount--;
+		if (card) {
+			player.handCollection.push(card);
+		}
 	}
 }
 
