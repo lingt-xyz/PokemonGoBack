@@ -9,7 +9,7 @@ class Game {
 		logger.logGeneral("Game Start!");
 		logger.logGeneral("Deal cards to both players.");
 		// decide who is first
-		logger.logGeneral("Flip a coin to decide play order.");
+		logger.logGeneral("Flip a coin to decide who plays first.");
 
 		if (flipCoin()) {//user's turn
 			this.userPlayTurn();

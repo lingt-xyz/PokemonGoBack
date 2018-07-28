@@ -26,7 +26,7 @@ class GameConsole {
      */
     logAbility(sourceCard) {
         $('#divGameConsole :button').prop('disabled', true);
-        $("#divGameConsole").append("<div class='gamelog text-light bg-dark'>Choose the ability:</div>");
+        $("#divGameConsole").append("<div class='gamelog text-dark'>[Choose]: Select an ability:</div>");
         sourceCard.attacks.forEach(element => {
             let abilityIndex = 0;
             if (element.length == 3) {
