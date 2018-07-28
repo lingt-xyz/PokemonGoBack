@@ -225,9 +225,17 @@ function useAbility(sourceCard, abilityIndex) {
 			break;
 		case 23:
 			//Nyan Press:dam:target:opponent-active:40,cond:flip:dam:target:opponent-active:40:else:applystat:status:paralyzed:opponent-active
+			if(damCard(opponent, 40)){
+				if(flipCoin()){
+					damCard(opponent, 40);
+				}else{
+					applyStatParalyzed(opponent);
+				}
+			}
 			break;
 		case 24:
 			//Random Spark:dam:target:choice:opponent:30
+			
 			break;
 		case 25:
 			//Bite:dam:target:opponent-active:40
