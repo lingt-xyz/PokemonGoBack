@@ -41,11 +41,11 @@ class Heal extends SubAbility {
 
 // discard all energy attached to this pokemon
 class Deenergize extends SubAbility {
-    constructor(target,str) {
+    constructor(target, str) {
         super();
-		this.target= target;
-		//todo: decode the str to get exact number of energy that will be remove, and other info.
-		this.str = str;
+        this.target = target;
+        //todo: decode the str to get exact number of energy that will be remove, and other info.
+        this.str = str;
 
     }
 }
@@ -97,7 +97,7 @@ class ApplyStat extends SubAbility {
 class Draw extends SubAbility {
     constructor(traget, number) {
         super();
-		this.target = target;
+        this.target = target;
         this.number = number;
     }
 }
@@ -105,12 +105,12 @@ class Draw extends SubAbility {
 // redamage:source:choice:opponent:destination:opponent:count(target:last:source:damage)
 // Move as many damage counters on your opponent's pokemon as you like to any of your opponent's other pokemon in any way you like
 class Redamage extends SubAbility {
-    constructor(targetFrom,targetTo, damHp) {
-       super();
-       this.targetFrom = targetFrom;
-       this.targetTo = targetTo;
-       //TODO : decode damHp(str) to find the exact number of dam amount
-       this.damHp = damHp;
+    constructor(targetFrom, targetTo, damHp) {
+        super();
+        this.targetFrom = targetFrom;
+        this.targetTo = targetTo;
+        //TODO : decode damHp(str) to find the exact number of dam amount
+        this.damHp = damHp;
     }
 }
 
@@ -127,9 +127,11 @@ class Search extends SubAbility {
 // deck:target:opponent:destination:deck:count(opponent-hand)
 // deck:target:opponent:destination:deck:bottom:choice:them:1
 class Deck extends SubAbility {
-    constructor() {
+    constructor(source, target, amount) {
         super();
-        //TODO
+        this.target = target;
+        this.source = source;
+        this.amount = amount;
     }
 }
 
@@ -152,8 +154,10 @@ class Cond extends SubAbility {
 
 // add:target:your:trigger:opponent:turn-end:(heal:target:self:20)
 class Add extends SubAbility {
-    constructor() {
+    constructor(target, trigger, spell) {
         super();
-        //TODO
+        this.target = target;
+        this.trigger = trigger;
+        this.spell = spell;
     }
 }
