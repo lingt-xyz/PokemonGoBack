@@ -136,6 +136,10 @@ Red Card:deck:target:opponent:destination:deck:count(opponent-hand),shuffle:targ
 Wally:search:target:choice:your-pokemon:cat:basic:source:deck:filter:evolves-from:target:last:1,shuffle:target:your
 `;
 
+let Deck_Envolve = [];
+let Deck_ai_Weak = [];
+let Deck_user_Strong = [];
+
 let Card_Collection = new Array();
 let Ability_Collection = new Array();
 
