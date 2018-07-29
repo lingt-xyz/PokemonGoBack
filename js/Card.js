@@ -66,6 +66,8 @@ class Pokemon extends Card {
         //
         this.headledAmount = 0;
         //
+        this.applyEnergy = false;
+        //
         this.isParalyzed = false;
         this.isParalyzedCounter = 0;
         //

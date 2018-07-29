@@ -245,20 +245,34 @@ function drop_handler(ev) {
 					logger.logGeneral("TODO: Trainer!");
 				} else {// this is a pokemon
 					if (sourceCard.cardType == Card_Type.energy) {
-						logger.logBattle("Apply Energy to Pokemon " + targetCard.cardName);
-						// TODO some cards only have colorless energy
-						targetCard.addEnergy(sourceCard);
-						removeFromArray(user.handCollection, sourceCard);
-						user.discardCollection.push(sourceCard);
+						if (user.canApplyEnergy(targetCard)) {
+							targetCard.applyEnergy = true;
+							logger.logBattle("Apply Energy to Pokemon " + targetCard.cardName);
+							// TODO some cards only have colorless energy
+							targetCard.addEnergy(sourceCard);
+							removeFromArray(user.handCollection, sourceCard);
+							user.discardCollection.push(sourceCard);
+						} else {
+							logger.logWarning("You can only apply energy once per turn.");
+							return;
+						}
 					} else if (sourceCard.cardType == Card_Type.trainer) {
 						logger.logGeneral("TODO: Trainer!");
 					} else {// moving a pokemon to a pokemon: evolve
 						if (sourceCard.cardBasic == targetCard.cardName) {
-							logger.logBattle("Evolve pokemon " + targetCard.cardName + " to " + sourceCard.cardName);
-							removeFromArray(user.benchCollection, targetCard);
-							user.discardCollection.push(targetCard);
-							removeFromArray(user.handCollection, sourceCard);
-							user.benchCollection.push(sourceCard);
+							if (user.canUseEnvolve) {
+								user.canUseEnvolve = false;
+								logger.logBattle("Evolve pokemon " + targetCard.cardName + " to " + sourceCard.cardName);
+								sourceCard.currentEnergy += targetCard.currentEnergy;
+								sourceCard.currentColorLessEnergy += targetCard.currentColorLessEnergy;
+								removeFromArray(user.benchCollection, targetCard);
+								user.discardCollection.push(targetCard);
+								removeFromArray(user.handCollection, sourceCard);
+								user.benchCollection.push(sourceCard);
+							} else {
+								logger.logWarning("You can only envolve one pokemon per turn.");
+								return;
+							}
 						} else {// do nothing
 
 						}
@@ -272,20 +286,34 @@ function drop_handler(ev) {
 					logger.logGeneral("TODO: Trainer!");
 				} else {// this is a pokemon
 					if (sourceCard.cardType == Card_Type.energy) {
-						logger.logBattle("Apply Energy to Pokemon " + targetCard.cardName);
-						targetCard.addEnergy(sourceCard);
-						removeFromArray(user.handCollection, sourceCard);
-						user.discardCollection.push(sourceCard);
+						if (user.canApplyEnergy(targetCard)) {
+							targetCard.applyEnergy = true;
+							logger.logBattle("Apply Energy to Pokemon " + targetCard.cardName);
+							targetCard.addEnergy(sourceCard);
+							removeFromArray(user.handCollection, sourceCard);
+							user.discardCollection.push(sourceCard);
+						} else {
+							logger.logWarning("You can only apply energy once per turn.");
+							return;
+						}
 					} else if (sourceCard.cardType == Card_Type.trainer) {
 						logger.logGeneral("TODO: Trainer!");
 					} else {// moving a pokemon to a pokemon: envole
 						if (sourceCard.cardBasic == targetCard.cardName) {
-							logger.logBattle("Evolve pokemon " + targetCard.cardName + " to " + sourceCard.cardName);
-							removeFromArray(user.matCollection, targetCard);
-							user.discardCollection.push(targetCard);
-							removeFromArray(user.handCollection, sourceCard);
-							user.matCollection.push(sourceCard);
-							user.currentPokemon = sourceCard;
+							if (user.canUseEnvolve) {
+								user.canUseEnvolve = false;
+								logger.logBattle("Evolve pokemon " + targetCard.cardName + " to " + sourceCard.cardName);
+								sourceCard.currentEnergy += targetCard.currentEnergy;
+								sourceCard.currentColorLessEnergy += targetCard.currentColorLessEnergy;
+								removeFromArray(user.matCollection, targetCard);
+								user.discardCollection.push(targetCard);
+								removeFromArray(user.handCollection, sourceCard);
+								user.matCollection.push(sourceCard);
+								user.currentPokemon = sourceCard;
+							} else {
+								logger.logWarning("You can only envolve one pokemon per turn.");
+								return;
+							}
 						} else {// do nothing
 
 						}
@@ -364,24 +392,36 @@ function drop_handler(ev) {
 						return;
 					}
 					if (sourceCard.retreat.length == 2) {// needs energy (colorless) to retreat
-						let energyNeeded = sourceCard.retreat[0];
-						if (sourceCard.currentColorLessEnergy >= energyNeeded) {
-							sourceCard.currentColorLessEnergy -= energyNeeded;
-							logger.logBattle("Retreat " + sourceCard.cardName + ".");
-							findAndRemoveFromArray(user.matCollection, sourceCard);
-							user.benchCollection.push(sourceCard);
-						} else if ((sourceCard.currentColorLessEnergy + sourceCard.currentEnergy) >= energyNeeded) {
-							sourceCard.currentEnergy = (sourceCard.currentEnergy + sourceCard.currentColorLessEnergy - energyNeeded);
+						if (user.canUseRetreat) {
+							user.canUseRetreat = false;
+							let energyNeeded = sourceCard.retreat[0];
+							if (sourceCard.currentColorLessEnergy >= energyNeeded) {
+								sourceCard.currentColorLessEnergy -= energyNeeded;
+								logger.logBattle("Retreat " + sourceCard.cardName + ".");
+								findAndRemoveFromArray(user.matCollection, sourceCard);
+								user.benchCollection.push(sourceCard);
+							} else if ((sourceCard.currentColorLessEnergy + sourceCard.currentEnergy) >= energyNeeded) {
+								sourceCard.currentEnergy = (sourceCard.currentEnergy + sourceCard.currentColorLessEnergy - energyNeeded);
+								logger.logBattle("Retreat " + sourceCard.cardName + ".");
+								findAndRemoveFromArray(user.matCollection, sourceCard);
+								user.benchCollection.push(sourceCard);
+							} else {
+								logger.logBattle("Retreat " + sourceCard.cardName + " failed, insufficient energy.");
+							}
+						} else {
+							logger.logWarning("You can only retreat one pokemon per turn.");
+							return;
+						}
+					} else {
+						if (user.canUseRetreat) {
+							user.canUseRetreat = false;
 							logger.logBattle("Retreat " + sourceCard.cardName + ".");
 							findAndRemoveFromArray(user.matCollection, sourceCard);
 							user.benchCollection.push(sourceCard);
 						} else {
-							logger.logBattle("Retreat " + sourceCard.cardName + " failed, insufficient energy.");
+							logger.logWarning("You can only retreat one pokemon per turn.");
+							return;
 						}
-					} else {
-						logger.logBattle("Retreat " + sourceCard.cardName + ".");
-						findAndRemoveFromArray(user.matCollection, sourceCard);
-						user.benchCollection.push(sourceCard);
 					}
 				} else if (targetId == "divMatCollection") {// moving in the same div, do nothing
 

@@ -26,12 +26,10 @@ class Player {
 		
 		//in-turn action
 		this.canUseAttact = true;//attack once per turn
-		this.canUseEnvolve = false;//envolve once per turn when saticfy envolve require(has stage-one in bench/hand)
+		this.canUseEnvolve = true;//envolve once per turn when saticfy envolve require(has stage-one in bench/hand)
 		this.canUseTrainer = true;//has at least one trainer in hand && only can use one trainer card per turn
-		//TODO:only can apply one energy per pokemon per turn
-		this.canApplyEnergy = true;
+		this.canUseEnergy = true;
 		this.canUseRetreat = true;//has energy on pokemon that can use 
-		
     }
 
     // build deck: use fixed order or randomly generate
@@ -194,12 +192,52 @@ class Player {
      */
     playable() {
         // in what cases the player cannot do any action: attack, envolve, use energy, use trainer
-		
-		return (this.canUseAttact || this.canUseEnvolve || this.canUseTrainer || this.canApplyEnergy ||this.canUseRetreat);
-    
+        this.canUseEnergy = false;
+        for (let item of this.matCollection) {
+            if (item.cardType == Card_Type.pokemon) {
+                if(item.applyEnergy){
+
+                }else{
+                    this.canUseEnergy = true;
+                    break;
+                }
+            }
+        }
+        for (let item of this.benchCollection) {
+            if (item.cardType == Card_Type.pokemon) {
+                if(item.applyEnergy){
+
+                }else{
+                    this.canUseEnergy = true;
+                    break;
+                }
+            }
+        }
+		return (this.canUseAttact || this.canUseEnvolve || this.canUseTrainer || this.canUseEnergy ||this.canUseRetreat);
     }
-	
-		
+    
+    initPlayable(){
+        this.canUseAttact = true;
+        this.canUseEnvolve = true;
+        this.canUseTrainer = true;
+        this.canUseEnergy = true;
+        this.canUseRetreat = true;
+        for (let item of this.matCollection) {
+            if (item.cardType == Card_Type.pokemon) {
+               item.applyEnergy = false;
+            }
+        }
+        for (let item of this.benchCollection) {
+            if (item.cardType == Card_Type.pokemon) {
+                item.applyEnergy = false;
+            }
+        }
+    }
+
+    canApplyEnergy(pokemon){
+        return !pokemon.applyEnergy;
+    }
+
     play() {
         for (let item of this.matCollection) {
             if (item.cardType == Card_Type.pokemon) {
