@@ -6,8 +6,8 @@ $(function () {
 
 function startNewGame() {
 	logger = new GameConsole();
-	user = new Player(userOrder, false);
-	ai = new Player(aiOrder, true);
+	user = new Player(null, false);
+	ai = new Player(null, true);
 
 	startGame();
 }
@@ -22,9 +22,8 @@ function startDefinedGame() {
 
 function startEnvolveGame() {
 	logger = new GameConsole();
-	userOrder = Deck_Envolve;
-	user = new Player(userOrder, false);
-	ai = new Player(aiOrder, true);
+	user = new Player(Deck_Envolve, false);
+	ai = new Player(null, true);
 
 	startGame();
 }
