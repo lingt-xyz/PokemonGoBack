@@ -83,7 +83,7 @@ class Pokemon extends Card {
         }
     }
 
-    sufficientEnergy(abilityIndex){
+    sufficientEnergy(abilityIndex) {
         for (let element of this.attacks) {
             if (element.length == 3 && element[2] == abilityIndex) {
                 // TODO check only colorless
@@ -180,10 +180,30 @@ class Pokemon extends Card {
             }
         });
         attacks = attacks.substr(0, attacks.length - 1);
+        let states = "";
+        if (this.isStuck) {
+            states += "Stuck,";
+        }
+        if (this.isAsleep) {
+            states += "Asleep,"
+        }
+        if (this.isParalyzed) {
+            states += "Paralyzed,"
+        }
+        if (this.isPoisoned) {
+            states += "Poisoned,"
+        }
+        if(states){
+            states = states.substr(0, states.length - 1);
+        }else{
+            states = "None";
+        }
+
         return "Card Detail</div>"
             + "<div>&nbsp;&nbsp;&nbsp;&nbsp;Pokemon: " + this.cardName + ", Stage: " + this.cardStage + "</div>"
             + "<div>&nbsp;&nbsp;&nbsp;&nbsp;HP: " + this.currentHp + "/" + this.hp + "; "
             + "Energy: " + this.currentEnergy + " + " + this.currentColorLessEnergy + "</div>"
+            + "<div>&nbsp;&nbsp;&nbsp;&nbsp;State: " + states + "</div>"
             + "<div>&nbsp;&nbsp;&nbsp;&nbsp;Retreat: Require " + this.retreat[0] + " " + this.retreat[1] + "</div>"
             + "<div>&nbsp;&nbsp;&nbsp;&nbsp;Attacks: " + attacks + "</div>"
             + "<div>";

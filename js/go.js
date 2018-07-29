@@ -563,7 +563,7 @@ function healCard(player, healHp) {
 }
 
 function applyStatParalyzed(player) {
-	//TODO
+	player.currentPokemon.isParalyzed = true;
 }
 
 function applyStatParalyzedFlip(player) {
@@ -575,15 +575,15 @@ function applyStatParalyzedFlip(player) {
 }
 
 function applyStatStuck(player) {
-	//TODO
+	player.currentPokemon.isStuck = true;
 }
 
 function applyStatPoisoned(player) {
-	// TODO
+	player.currentPokemon.isPoisoned = true;
 }
 
 function applyStatAsleep(player) {
-	//TODO
+	player.currentPokemon.isAsleep = true;
 }
 
 function deenergizeCard(player, amount) {
