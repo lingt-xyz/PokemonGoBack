@@ -189,12 +189,12 @@ function chooseOneDeckCardinArrangeOf(player,arrange_start, arrange_end){
 
 function chooseCardRandom(player) {
 	let randomArray = [];
-	for (let item of this.matCollection) {
+	for (let item of player.matCollection) {
 		if (item.cardType == Card_Type.pokemon) {
 			randomArray.push(item);
 		}
 	}
-	for (let item of this.benchCollection) {
+	for (let item of player.benchCollection) {
 		if (item.cardType == Card_Type.pokemon) {
 			randomArray.push(item);
 		}

@@ -335,9 +335,9 @@ function useAbility(sourceCard, abilityIndex) {
 			break;
 		case 33:
 			//Misty's Determination:cond:ability:deck:target:your:destination:discard:choice:you:1:(search:target:your:source:deck:filter:top:8:1,shuffle:target:your)
-			if(chooseHandCardDisCard(player,1)){
+			if (chooseHandCardDisCard(player, 1)) {
 				//choose one from top-8 card in deck,then shuffle
-				chooseFromDeckAndShuffle(player,1,0,9);
+				chooseFromDeckAndShuffle(player, 1, 0, 9);
 			}
 			break;
 		case 34:
@@ -347,7 +347,7 @@ function useAbility(sourceCard, abilityIndex) {
 			break;
 		case 35:
 			//Clemont:search:target:your:source:deck:filter:energy:4
-			//TODO
+			searchEnergyCardFromDeck(player, 4);
 			break;
 		case 36:
 			//Ear Influence:redamage:source:choice:opponent:destination:opponent:count(target:last:source:damage)
@@ -367,7 +367,7 @@ function useAbility(sourceCard, abilityIndex) {
 			break;
 		case 39:
 			//Wish:search:target:your:source:deck:1
-			// TODO
+			searchfromDeck(player,1);
 			break;
 		case 40:
 			//Heart Sign:dam:target:opponent-active:50
@@ -707,39 +707,64 @@ function chooseHandCardDisCard(player, amount) {
 		while (amount != 0) {
 			let choosedCard = chooseHandCard(player);
 			let index = player.handCollection.indexOf(choosedCard);
-			let card = player.handCollection.slice(index,index+1);
+			let card = player.handCollection.slice(index, index + 1);
 			amount--;
 			if (card) {
 				player.discardCollection.push(card);
 			}
 		}
 		return true;
-	 }else{
-		 logger.logWarning("Do not have enought cards to discard");
-		 return false;
-	 }
-	
+	} else {
+		logger.logWarning("Do not have enought cards to discard");
+		return false;
+	}
+
 }
-function chooseFromDeckAndShuffle(player,amount,startindex,endindex){
-	if(amount <= player.deckCollection.length)
-	{
-		while(amount !=0){
-			let choosedCard = chooseOneDeckCardinArrangeOf(player,startindex,endindex)
-			if(choosedCard){
+function chooseFromDeckAndShuffle(player, amount, startindex, endindex) {
+	if (amount <= player.deckCollection.length) {
+		while (amount != 0) {
+			let choosedCard = chooseOneDeckCardinArrangeOf(player, startindex, endindex)
+			if (choosedCard) {
 				player.handCollection.push(chooseCard);
-				removeFromArray(player.deckCollection,choosedCard);
+				removeFromArray(player.deckCollection, choosedCard);
 			}
 			amount--;
 		}
 		shuffle(player.deckCollection);
 		return ture;
 
-	}else{
+	} else {
+		logger.logWarning("Do not have enought cards ind Deck");
 		return false;
 	}
 }
-function searchCardFrom(player,filter,amount)
-{
+function searchEnergyCardFromDeck(player, amount) {
 
 
-};
+	for (let item of player.deckCollection) {
+
+		if (item.cardType == Card_Type.energy) {
+			player.handCollection.push(item);
+			removeFromArray(player.deckCollection, item);
+			amount--;
+		}
+		if (amount == 0) {
+			break;
+		}
+
+	}
+	shuffle(player.deckCollection);
+}
+
+function searchfromDeck(player, amount){
+
+	shuffle(player.deckCollection);//shuffle first to make the card will be picked randomly from you deck
+	while (amount != 0) {
+		let card = player.deckCollection.pop();
+		amount--;
+		if (card) {
+			player.handCollection.push(card);
+		}
+	}
+	shuffle(player.deckCollection);
+}
