@@ -183,12 +183,27 @@ class Player {
     /**
      * @returns {boolean}
      */
-    playable(){
+    playable() {
         // in what cases the player cannot do any action: attack, envolve, use energy, use trainer
         return true;
     }
 
     play() {
+        for (let item of this.matCollection) {
+            if (item.cardType == Card_Type.pokemon) {
+                item.refreshState();
+            }
+        }
+        for (let item of this.benchCollection) {
+            if (item.cardType == Card_Type.pokemon) {
+                item.refreshState();
+            }
+        }
+        for (let item of this.handCollection) {
+            if (item.cardType == Card_Type.pokemon) {
+                item.refreshState();
+            }
+        }
         if (this.dealCard()) {
             if (this == ai) {
                 let pokemon = this.matCollection.find(item => item.cardType == Card_Type.pokemon);

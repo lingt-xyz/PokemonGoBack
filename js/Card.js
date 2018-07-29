@@ -66,13 +66,27 @@ class Pokemon extends Card {
         //
         this.headledAmount = 0;
         //
-        this.isStuck = false;
+        this.isParalyzed = false;
+        this.isParalyzedCounter = 0;
         //
         this.isAsleep = false;
         //
-        this.isParalyzed = false;
+        this.isStuck = false;
+        this.isStuckCounter = 0;
         //
         this.isPoisoned = false;
+    }
+
+    refreshState(){
+        if(this.isParalyzedCounter){
+            this.isParalyzed = false;
+        }
+        if(getRandom(1)){
+            this.isAsleep = false;
+        }
+        if(this.isStuckCounter){
+            this.isStuck = false;
+        }
     }
 
     addEnergy(energy) {
