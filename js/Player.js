@@ -47,7 +47,7 @@ class Player {
             let index = Math.floor(Math.random() * Card_Collection.length);
             while (!Card_Collection[index]) {
                 index++;
-                if(index >= Card_Collection.length){
+                if (index >= Card_Collection.length) {
                     index = 0;
                 }
             }
@@ -66,7 +66,7 @@ class Player {
             let index = Math.floor(Math.random() * Card_Collection.length);
             while (Card_Collection[index] == null) {
                 index++;
-                if(index >= Card_Collection.length){
+                if (index >= Card_Collection.length) {
                     index = 0;
                 }
             }
@@ -85,7 +85,7 @@ class Player {
             let index = Math.floor(Math.random() * Card_Collection.length);
             while (Card_Collection[index] == null) {
                 index++;
-                if(index >= Card_Collection.length){
+                if (index >= Card_Collection.length) {
                     index = 0;
                 }
             }
@@ -132,7 +132,7 @@ class Player {
             let index = Math.floor(Math.random() * Card_Collection.length);
             while (!Card_Collection[index]) {
                 index++;
-                if(index >= Card_Collection.length){
+                if (index >= Card_Collection.length) {
                     index = 0;
                 }
             }
@@ -144,9 +144,9 @@ class Player {
 
     // for each new round, get a new card from deck
     dealCard() {
-        if (this.deckCollection.length < 1)
-            alert("empty deck");
-        else {
+        if (this.deckCollection.length < 1) {
+            logger.logGeneral("empty deck");
+        } else {
             if (this.hasPokemon()) {// if player has a pokemon, get a card from deck
                 logger.logGeneral("Deal one card to " + (this == ai ? "AI" : "User") + ".");
                 this.handCollection.push(this.deckCollection[0]);
@@ -157,14 +157,16 @@ class Player {
                     this.handCollection.push(pokemonCard);
                     removeFromArray(this.deckCollection, pokemonCard);
                 } else {//if no pokemon in deck , game end
-                    if(this.isAi){
+                    if (this.isAi) {
                         logger.logGeneral("No more pokemon, AI lose the Game ");
-                    }else{
+                    } else {
                         logger.logGeneral("No more pokemon, you lose the Game ");
                     }
+                    return false;
                 }
             }
         }
+        return true;
     }
 
     // check whether player has pokemon card can be used
@@ -179,30 +181,35 @@ class Player {
     }
 
     play() {
-        this.dealCard();
-        if (this == ai) {
-            let pokemon = this.matCollection.find(item => item.cardType == Card_Type.pokemon);
-            if (pokemon) {// there is a pokemon on mat
-                let energy = null;
-                if (energy = this.handCollection.find(item => item.cardType == Card_Type.energy)) {
-                    removeFromArray(this.handCollection, energy);
-                    this.matCollection.push(energy);
-                    setTimeout(function () {
-                        pokemon.addEnergy(energy);
-                        logger.logBattle("(AI) Apply Energy to Pokemon.");
-                        removeFromArray(ai.matCollection, energy);
-                    }, 500);
+        if (this.dealCard()) {
+            if (this == ai) {
+                let pokemon = this.matCollection.find(item => item.cardType == Card_Type.pokemon);
+                if (pokemon) {// there is a pokemon on mat
+                    let energy = null;
+                    if (energy = this.handCollection.find(item => item.cardType == Card_Type.energy)) {
+                        removeFromArray(this.handCollection, energy);
+                        this.matCollection.push(energy);
+                        setTimeout(function () {
+                            pokemon.addEnergy(energy);
+                            logger.logBattle("(AI) Apply Energy to Pokemon.");
+                            removeFromArray(ai.matCollection, energy);
+                        }, 500);
+                    }
+                } else {// pick a pokemon, put it on the mat
+                    pokemon = this.handCollection.find(item => item.cardType == Card_Type.pokemon);
+                    if (pokemon) {
+                        removeFromArray(this.handCollection, pokemon);
+                        this.matCollection.push(pokemon);
+                        this.currentPokemon = pokemon;
+                        this.currentPokemon.showImage();
+                    } else {
+                        logger.logGeneral("No more pokemon, AI lose the Game ");
+                    }
                 }
-            } else {// pick a pokemon, put it on the mat
-                pokemon = this.handCollection.find(item => item.cardType == Card_Type.pokemon);
-                removeFromArray(this.handCollection, pokemon);
-                this.matCollection.push(pokemon);
-                this.currentPokemon = pokemon;
-                this.currentPokemon.showImage();
+                // do more
+            } else {
+                // do nothing
             }
-            // do more
-        } else {
-            // do nothing
         }
     }
 
