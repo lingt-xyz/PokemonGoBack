@@ -321,7 +321,7 @@ function drop_handler(ev) {
 							return;
 						}
 					} else if (sourceCard.cardType == Card_Type.trainer) {
-						logger.logGeneral("TODO: Trainer!");
+						// do nothing
 					} else {// moving a pokemon to a pokemon: envole
 						if (sourceCard.cardBasic == targetCard.cardName) {
 							if (user.canUseEnvolve) {

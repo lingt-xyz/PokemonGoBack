@@ -254,6 +254,7 @@ class Player {
                 item.refreshState();
             }
         }
+
         if (this.dealCard()) {
             if (this == ai) {
                 let pokemon = this.matCollection.find(item => item.cardType == Card_Type.pokemon);
@@ -278,6 +279,25 @@ class Player {
                         this.currentPokemon.showImage();
                     } else {
                         logger.logGeneral("No more pokemon, AI lose the Game ");
+                    }
+                }
+
+                // attach
+                if(user.currentPokemon){
+                    let abilityIndex = 0;
+                    this.currentPokemon.attacks.forEach(element => {
+                        if (element.length == 3) {
+                            abilityIndex = element[2];
+                            return;
+                        } else if (element.length == 5) {
+                            abilityIndex = element[4];
+                            return;
+                        }
+                    });
+
+                    if (this.currentPokemon.sufficientEnergy(abilityIndex)) {
+                        useAbility(this.currentPokemon, abilityIndex);
+                        this.currentPokemon.consumeEnergy(abilityIndex);
                     }
                 }
                 // do more
