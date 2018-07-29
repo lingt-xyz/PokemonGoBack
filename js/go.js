@@ -290,6 +290,10 @@ function drop_handler(ev) {
 				logger.logGeneral("TODO: Trainer!");
 			} else {// moving a pokemon
 				if (targetId == "divBenchCollection") {// moving to bench, retreat
+					if(sourceCard.isStuck){
+						logger.logBattle("Retreat " + sourceCard.cardName + "(Stuck) failed.");
+						return;
+					}
 					if (sourceCard.retreat.length == 2) {// needs energy (colorless) to retreat
 						let energyNeeded = sourceCard.retreat[0];
 						if (sourceCard.currentColorLessEnergy >= energyNeeded) {
