@@ -491,6 +491,11 @@ function deckRandomCard(player) {
 }
 
 function damCard(player, damHp) {
+	if(!player.currentPokemon){
+		logger.logBattle("No avaliable target.");
+		return false;
+	}
+	
 	if (player.currentPokemon.currentHp < damHp) {
 		player.currentPokemon.damageAmount += player.currentPokemon.currentHp;
 		logger.logBattle(player.currentPokemon.cardName + "'s HP reduced by " + player.currentPokemon.currentHp);

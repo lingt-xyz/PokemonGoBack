@@ -180,6 +180,13 @@ class Player {
         }
     }
 
+    /**
+     * @returns {boolean}
+     */
+    playable(){
+        // in what cases the player cannot do any action: attack, envolve, use energy, use trainer
+    }
+
     play() {
         if (this.dealCard()) {
             if (this == ai) {
