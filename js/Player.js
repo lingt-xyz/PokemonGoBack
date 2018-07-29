@@ -23,6 +23,15 @@ class Player {
         this.buildCardInHand();
         this.buildPrizeCard();
         this.currentPokemon = null;
+		
+		//in-turn action
+		this.canUseAttact = true;//attack once per turn
+		this.canUseEnvolve = false;//envolve once per turn when saticfy envolve require(has stage-one in bench/hand)
+		this.canUseTrainer = true;//has at least one trainer in hand && only can use one trainer card per turn
+		//TODO:only can apply one energy per pokemon per turn
+		this.canApplyEnergy = true;
+		this.canUseRetreat = true;//has energy on pokemon that can use 
+		
     }
 
     // build deck: use fixed order or randomly generate
@@ -185,9 +194,12 @@ class Player {
      */
     playable(){
         // in what cases the player cannot do any action: attack, envolve, use energy, use trainer
-        return true;
+		
+		return (this.canUseAttact || this.canUseEnvolve || this.canUseTrainer || this.canApplyEnergy ||this.canUseRetreat);
+    
     }
-
+	
+		
     play() {
         if (this.dealCard()) {
             if (this == ai) {
