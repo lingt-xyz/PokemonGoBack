@@ -105,6 +105,62 @@ function applyAbility(id, isAi, abilityIndex) {
 	}
 }
 
+function chooseCard(player) {
+	let prompt = "";
+	for (let item of this.matCollection) {
+		if (item.cardType == Card_Type.pokemon) {
+			prompt += (item.id + ":" + item.cardName + ";");
+		}
+	}
+	for (let item of this.benchCollection) {
+		if (item.cardType == Card_Type.pokemon) {
+			prompt += (item.id + ":" + item.cardName);
+		}
+	}
+
+	let res = prompt("Choose your target: " + prompt, "");
+
+	if (isNaN(res)) {
+		return null;
+	} else {
+		for (let item of this.matCollection) {
+			if (item.cardType == Card_Type.pokemon) {
+				if (item.id == res) {
+					return item;
+				}
+			}
+		}
+		for (let item of this.benchCollection) {
+			if (item.cardType == Card_Type.pokemon) {
+				if (item.id == res) {
+					return item;
+				}
+			}
+		}
+		return null;
+	}
+}
+
+function chooseCardRandom(player) {
+	let randomArray = [];
+	for (let item of this.matCollection) {
+		if (item.cardType == Card_Type.pokemon) {
+			randomArray.push(item);
+		}
+	}
+	for (let item of this.benchCollection) {
+		if (item.cardType == Card_Type.pokemon) {
+			randomArray.push(item);
+		}
+	}
+
+	if (randomArray.length = 0) {
+		return null;
+	} else {
+		return randomArray[getRandom(randomArray.length - 1)];
+	}
+}
+
 function dragstart_handler(ev) {
 	ev.dataTransfer.setData("id", ev.target.id);
 	ev.dataTransfer.setData("role", ev.target.attributes["data-role"].value);
@@ -136,7 +192,7 @@ function drop_handler(ev) {
 		return;
 	}
 
-	if(!user.playable()){
+	if (!user.playable()) {
 		logger.logWarning("You cannot do any more actions.");
 		return;
 	}
@@ -290,7 +346,7 @@ function drop_handler(ev) {
 				logger.logGeneral("TODO: Trainer!");
 			} else {// moving a pokemon
 				if (targetId == "divBenchCollection") {// moving to bench, retreat
-					if(sourceCard.isStuck){
+					if (sourceCard.isStuck) {
 						logger.logBattle("Retreat " + sourceCard.cardName + "(Stuck) failed.");
 						return;
 					}

@@ -331,14 +331,15 @@ function useAbility(sourceCard, abilityIndex) {
 			break;
 		case 32:
 			//Potion:heal:target:choice:your:30
-			// TODO
+			healCardChoose(you, 30);
 			break;
 		case 33:
 			//Misty's Determination:cond:ability:deck:target:your:destination:discard:choice:you:1:(search:target:your:source:deck:filter:top:8:1,shuffle:target:your)
 			// TODO
 			break;
 		case 34:
-			//Pokémon Center Lady:heal:target:choice:your:60,destat:target:last
+            //Pokémon Center Lady:heal:target:choice:your:60,destat:target:last
+            healCardChoose(you, 60);
 			//TODO
 			break;
 		case 35:
@@ -617,6 +618,19 @@ function healCard(player, healHp) {
 	player.currentPokemon.healed = true;
 	player.currentPokemon.healAmount += after - before;
 	logger.logBattle(player.currentPokemon.cardName + "'s HP increased by " + healHp);
+}
+
+function healCardChoose(player, healHp) {
+    let pokemon = chooseCard(player);
+	let before = pokemon.currentHp;
+	pokemon.currentHp += healHp;
+	if (pokemonn.currentHp > pokemon.hp) {
+		pokemon.currentHp = pokemon.hp;
+	}
+	let after = pokemon.currentHp;
+	pokemon.healed = true;
+	pokemon.healAmount += after - before;
+	logger.logBattle(pokemon.cardName + "'s HP increased by " + healHp);
 }
 
 function applyStatParalyzed(player) {
