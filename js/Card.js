@@ -239,6 +239,10 @@ class Trainer extends Card {
         this.abilityIndex = abilityIndex;
     }
 
+    useAbility(){
+        // TODO
+    }
+
     toConsole() {//"<div class='gamelog text-light'>[Info]: " + text + "</div>
         return "Card Detail</div>"
             + "<div>&nbsp;&nbsp;&nbsp;&nbsp;Trainer: " + this.cardName + ", " + this.trainerType + "</div>"

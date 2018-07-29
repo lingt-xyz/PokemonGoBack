@@ -22,6 +22,14 @@ function startDefinedGame() {
 
 function startEnvolveGame() {
 	logger = new GameConsole();
+	user = new Player(Deck_Heal, false);
+	ai = new Player(null, true);
+
+	startGame();
+}
+
+function startItemGame() {
+	logger = new GameConsole();
 	user = new Player(Deck_Envolve, false);
 	ai = new Player(null, true);
 
@@ -217,7 +225,8 @@ function drop_handler(ev) {
 			if (sourceCard.cardType == Card_Type.energy) {// moving an energy
 				logger.logWarning("Energy cannot be moved to here!");
 			} else if (sourceCard.cardType == Card_Type.trainer) {// moving a trainer
-				logger.logGeneral("TODO: Trainer!");
+				removeFromArray(user.handCollection, sourceCard);
+				user.benchCollection.push(sourceCard);
 			} else {// moving a pokemon
 				if (targetId == "divBenchCollection") {// moving to bench
 					removeFromArray(user.handCollection, sourceCard);
@@ -242,7 +251,7 @@ function drop_handler(ev) {
 				if (targetCard.cardType == Card_Type.energy) {
 					logger.logError("Unexpected logic error!");
 				} else if (sourceCard.cardType == Card_Type.trainer) {
-					logger.logGeneral("TODO: Trainer!");
+					logger.logGeneral("Move Trainer to your mat to use its ability.");
 				} else {// this is a pokemon
 					if (sourceCard.cardType == Card_Type.energy) {
 						if (user.canApplyEnergy(targetCard)) {
@@ -257,7 +266,7 @@ function drop_handler(ev) {
 							return;
 						}
 					} else if (sourceCard.cardType == Card_Type.trainer) {
-						logger.logGeneral("TODO: Trainer!");
+						// do nothing
 					} else {// moving a pokemon to a pokemon: evolve
 						if (sourceCard.cardBasic == targetCard.cardName) {
 							if (user.canUseEnvolve) {
@@ -283,7 +292,10 @@ function drop_handler(ev) {
 				if (targetCard.cardType == Card_Type.energy) {
 					logger.logError("Unexpected logic error!");
 				} else if (sourceCard.cardType == Card_Type.trainer) {
-					logger.logGeneral("TODO: Trainer!");
+					logger.logBattle("Use Trainer: " + trainer.cardName);
+					removeFromArray(user.handCollection, sourceCard);
+					user.matCollection.push(sourceCard);
+					trainer.useAbility();
 				} else {// this is a pokemon
 					if (sourceCard.cardType == Card_Type.energy) {
 						if (user.canApplyEnergy(targetCard)) {
@@ -329,7 +341,12 @@ function drop_handler(ev) {
 			if (sourceCard.cardType == Card_Type.energy) {// moving an energy
 				logger.logError("Unexpected logic error!");
 			} else if (sourceCard.cardType == Card_Type.trainer) {// moving a trainer
-				logger.logGeneral("TODO: Trainer!");
+				if (targetId == "divMatCollection"){
+					logger.logBattle("Use Trainer: " + trainer.cardName);
+					removeFromArray(user.benchCollection, sourceCard);
+					user.matCollection.push(sourceCard);
+					trainer.useAbility();
+				}
 			} else {// moving a pokemon
 				if (targetId == "divBenchCollection") {// moving in the same div, do nothing
 
@@ -355,12 +372,12 @@ function drop_handler(ev) {
 				if (targetCard.cardType == Card_Type.energy) {
 					logger.logError("Unexpected logic error!");
 				} else if (sourceCard.cardType == Card_Type.trainer) {
-					logger.logGeneral("TODO: Trainer!");
+					// do nothing
 				} else {// this is a pokemon
 					if (sourceCard.cardType == Card_Type.energy) {
 						logger.logError("Unexpected logic error!");
 					} else if (sourceCard.cardType == Card_Type.trainer) {
-						logger.logGeneral("TODO: Trainer!");
+						logger.logError("Unexpected logic error!");
 					} else {// moving a pokemon to a pokemon: envole
 						if (sourceCard.cardBasic == targetCard.cardName) {
 							logger.logBattle("Evolve pokemon " + targetCard.cardName + " to " + sourceCard.cardName);
@@ -384,7 +401,7 @@ function drop_handler(ev) {
 			if (sourceCard.cardType == Card_Type.energy) {// moving an energy
 				logger.logError("Unexpected logic error!");
 			} else if (sourceCard.cardType == Card_Type.trainer) {// moving a trainer
-				logger.logGeneral("TODO: Trainer!");
+				logger.logError("Unexpected logic error!");
 			} else {// moving a pokemon
 				if (targetId == "divBenchCollection") {// moving to bench, retreat
 					if (sourceCard.isStuck) {
