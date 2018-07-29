@@ -14,8 +14,8 @@ function startNewGame() {
 
 function startDefinedGame() {
 	logger = new GameConsole();
-	user = new Player(userOrder, false);
-	ai = new Player(aiOrder, true);
+	user = new Player(Deck_Defined_User, false);
+	ai = new Player(Deck_Defined_AI, true);
 
 	startGame();
 }
@@ -495,7 +495,7 @@ function damCard(player, damHp) {
 		logger.logBattle("No avaliable target.");
 		return false;
 	}
-	
+
 	if (player.currentPokemon.currentHp < damHp) {
 		player.currentPokemon.damageAmount += player.currentPokemon.currentHp;
 		logger.logBattle(player.currentPokemon.cardName + "'s HP reduced by " + player.currentPokemon.currentHp);
@@ -635,6 +635,11 @@ function drop_handler(ev) {
 
 	if (role != "user") {// this card is from AI or from other div
 		logger.logWarning("This card is not movable!");
+		return;
+	}
+
+	if(!user.playable()){
+		logger.logWarning("You cannot do any more actions.");
 		return;
 	}
 
@@ -854,6 +859,4 @@ function drop_handler(ev) {
 	} else {
 		logger.logError("This card is not movable!");
 	}
-
-	ev.stopPropagation();
 }

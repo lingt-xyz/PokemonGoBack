@@ -136,6 +136,8 @@ Red Card:deck:target:opponent:destination:deck:count(opponent-hand),shuffle:targ
 Wally:search:target:choice:your-pokemon:cat:basic:source:deck:filter:evolves-from:target:last:1,shuffle:target:your
 `;
 
+let Deck_Defined_AI = [];
+let Deck_Defined_User = [];
 let Deck_Envolve = [3,4,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25];
 let Deck_ai_Weak = [37,58,58,58,58,58,58,58,58,58,58,58,58,58,58,58,58,58,58,58,58,58,58,58,58,58,58,58,58,58,58,58,58,58,58,58,58,58,58,58,58,58,58,58,58,58,58,58,58,58,58,58,58,58,58,58,58,58,58,58];
 let Deck_user_Strong = [17,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25];
@@ -155,8 +157,6 @@ let ai = null;
 let game = null;
 let currentPlayer = null;
 let logger = null;
-let userOrder = null;
-let aiOrder = null;
 
 let userVue = null;
 let aiVue = null;
