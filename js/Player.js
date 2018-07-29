@@ -216,6 +216,7 @@ class Player {
                             pokemon.addEnergy(energy);
                             logger.logBattle("(AI) Apply Energy to Pokemon.");
                             removeFromArray(ai.matCollection, energy);
+                            ai.discardCollection.push(energy);
                         }, 500);
                     }
                 } else {// pick a pokemon, put it on the mat
