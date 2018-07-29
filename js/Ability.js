@@ -460,6 +460,10 @@ function useAbility(sourceCard, abilityIndex) {
 			break;
 		case 58:
 			//Scavenge:cond:ability:deenergize:target:your-active:1:(search:target:your:source:discard:filter:cat:item:1)
+			//search[target]:[source]:[filter]:[amount]
+			deenergizeCard(you,1);
+			search(player.discardCollection);
+			
 			// TODO
 			break;
 		case 59:
@@ -659,6 +663,20 @@ function applyStatAsleep(player) {
 
 function deenergizeCard(player, amount) {
 	//TODO
+	if(amount>=(player.currentPokemon.currentEnergy+player.currentPokemon.currentColorLessEnergy)){
+		player.currentPokemon.currentEnergy=0;
+		player.currentPokemon.currentColorLessEnergy=0;
+	}
+	else {
+		if(amount<player.currentPokemon.currentEnergy){
+			player.currentPokemon.currentEnergy-=amount;
+		}
+		else{
+			player.currentPokemon.currentColorLessEnergy=(player.currentPokemon.currentEnergy-amount);
+			player.currentPokemon.currentEnergy=0;
+		}
+	}
+	
 }
 
 function deenergizeCardFlip(player, amount) {
@@ -677,4 +695,14 @@ function drawCard(player, amount) {
 			player.handCollection.push(card);
 		}
 	}
+function destat(player){
+	player.currentPokemon.isAsleep=false;
+	player.currentPokemon.isParalyzed=false;
+	player.currentPokemon.isPoisoned=false;
+	player.currentPokemon.isStuck=false;
+}
+
+function search(player,sourceCard,type,amount){
+
+}
 }
