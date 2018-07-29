@@ -80,12 +80,14 @@ class Pokemon extends Card {
     refreshState(){
         if(this.isParalyzedCounter){
             this.isParalyzed = false;
+            this.isParalyzedCounter = 0;
         }
         if(getRandom(1)){
             this.isAsleep = false;
         }
         if(this.isStuckCounter){
             this.isStuck = false;
+            this.isStuckCounter = 0;
         }
     }
 
