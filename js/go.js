@@ -223,10 +223,23 @@ function drop_handler(ev) {
 		let sourceCard = findFromArray(user.handCollection, id);
 		if (isNaN(targetId)) {// moving to a div
 			if (sourceCard.cardType == Card_Type.energy) {// moving an energy
-				logger.logWarning("Energy cannot be moved to here!");
+				logger.logWarning("Energy cannot be moved here!");
 			} else if (sourceCard.cardType == Card_Type.trainer) {// moving a trainer
-				removeFromArray(user.handCollection, sourceCard);
-				user.benchCollection.push(sourceCard);
+				if (targetId == "divBenchCollection") {// moving to bench
+					removeFromArray(user.handCollection, sourceCard);
+					user.benchCollection.push(sourceCard);
+				} else if (targetId == "divMatCollection") {// moving to mat
+					logger.logBattle("Use Trainer: " + trainer.cardName);
+					removeFromArray(user.handCollection, sourceCard);
+					user.matCollection.push(sourceCard);
+					trainer.useAbility();
+					removeFromArray(user.matCollection, sourceCard);
+					user.discardCollection.push(sourceCard);
+				} else if (targetId == "divHandCollection") {// moving in the same div, do nothing
+
+				} else {// moving to other div
+					logger.logWarning("Trainer cannot be moved here!");
+				}
 			} else {// moving a pokemon
 				if (targetId == "divBenchCollection") {// moving to bench
 					removeFromArray(user.handCollection, sourceCard);
@@ -242,7 +255,7 @@ function drop_handler(ev) {
 				} else if (targetId == "divHandCollection") {// moving in the same div, do nothing
 
 				} else {// moving to other div
-					logger.logWarning("Pokemon cannot be moved to here!");
+					logger.logWarning("Pokemon cannot be moved here!");
 				}
 			}
 		} else {// moving to a card
@@ -341,11 +354,13 @@ function drop_handler(ev) {
 			if (sourceCard.cardType == Card_Type.energy) {// moving an energy
 				logger.logError("Unexpected logic error!");
 			} else if (sourceCard.cardType == Card_Type.trainer) {// moving a trainer
-				if (targetId == "divMatCollection"){
+				if (targetId == "divMatCollection") {
 					logger.logBattle("Use Trainer: " + trainer.cardName);
 					removeFromArray(user.benchCollection, sourceCard);
 					user.matCollection.push(sourceCard);
 					trainer.useAbility();
+					removeFromArray(user.matCollection, sourceCard);
+					user.discardCollection.push(sourceCard);
 				}
 			} else {// moving a pokemon
 				if (targetId == "divBenchCollection") {// moving in the same div, do nothing
@@ -361,7 +376,7 @@ function drop_handler(ev) {
 				} else if (targetId == "divHandCollection") {// moving back to handCollection
 					logger.logWarning("Pokemon cannot be moved back to here!");
 				} else {// moving to other div
-					logger.logWarning("Pokemon cannot be moved to here!");
+					logger.logWarning("Pokemon cannot be moved here!");
 				}
 			}
 		} else {// moving to a card
@@ -447,7 +462,7 @@ function drop_handler(ev) {
 				} else if (targetId == "divMatCollectionAi") {// moving to ai mat: battle
 					logger.logAbility(sourceCard);
 				} else {// moving to other div
-					logger.logWarning("Pokemon cannot be moved to here!");
+					logger.logWarning("Pokemon cannot be moved here!");
 				}
 			}
 		} else {// moving to a card
