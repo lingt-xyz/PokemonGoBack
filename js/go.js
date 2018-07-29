@@ -30,7 +30,7 @@ function startEnvolveGame() {
 
 function startItemGame() {
 	logger = new GameConsole();
-	user = new Player(Deck_Envolve, false);
+	user = new Player(Deck_Heal, false);
 	ai = new Player(null, true);
 
 	startGame();
@@ -229,12 +229,14 @@ function drop_handler(ev) {
 					removeFromArray(user.handCollection, sourceCard);
 					user.benchCollection.push(sourceCard);
 				} else if (targetId == "divMatCollection") {// moving to mat
-					logger.logBattle("Use Trainer: " + trainer.cardName);
+					logger.logBattle("Use Trainer: " + sourceCard.cardName);
 					removeFromArray(user.handCollection, sourceCard);
 					user.matCollection.push(sourceCard);
-					trainer.useAbility();
-					removeFromArray(user.matCollection, sourceCard);
-					user.discardCollection.push(sourceCard);
+					sourceCard.useAbility();
+					setTimeout(function () {
+						removeFromArray(user.matCollection, sourceCard);
+						user.discardCollection.push(sourceCard);
+					}, 1000);
 				} else if (targetId == "divHandCollection") {// moving in the same div, do nothing
 
 				} else {// moving to other div
@@ -305,10 +307,7 @@ function drop_handler(ev) {
 				if (targetCard.cardType == Card_Type.energy) {
 					logger.logError("Unexpected logic error!");
 				} else if (sourceCard.cardType == Card_Type.trainer) {
-					logger.logBattle("Use Trainer: " + trainer.cardName);
-					removeFromArray(user.handCollection, sourceCard);
-					user.matCollection.push(sourceCard);
-					trainer.useAbility();
+					// do nothing
 				} else {// this is a pokemon
 					if (sourceCard.cardType == Card_Type.energy) {
 						if (user.canApplyEnergy(targetCard)) {
@@ -355,12 +354,14 @@ function drop_handler(ev) {
 				logger.logError("Unexpected logic error!");
 			} else if (sourceCard.cardType == Card_Type.trainer) {// moving a trainer
 				if (targetId == "divMatCollection") {
-					logger.logBattle("Use Trainer: " + trainer.cardName);
+					logger.logBattle("Use Trainer: " + sourceCard.cardName);
 					removeFromArray(user.benchCollection, sourceCard);
 					user.matCollection.push(sourceCard);
-					trainer.useAbility();
-					removeFromArray(user.matCollection, sourceCard);
-					user.discardCollection.push(sourceCard);
+					sourceCard.useAbility();
+					setTimeout(function () {
+						removeFromArray(user.matCollection, sourceCard);
+						user.discardCollection.push(sourceCard);
+					}, 1000);
 				}
 			} else {// moving a pokemon
 				if (targetId == "divBenchCollection") {// moving in the same div, do nothing
