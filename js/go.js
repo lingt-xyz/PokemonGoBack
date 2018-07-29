@@ -97,8 +97,9 @@ function applyAbility(id, isAi, abilityIndex) {
 	} else {
 		sourceCard = user.currentPokemon;
 	}
-	if (sourceCard.consumeEnergy(abilityIndex)) {
+	if (sourceCard.sufficientEnergy(abilityIndex)) {
 		useAbility(sourceCard, abilityIndex);
+		sourceCard.consumeEnergy(abilityIndex);
 	} else {
 		logger.logBattle("Failed, insufficient energy.");
 	}

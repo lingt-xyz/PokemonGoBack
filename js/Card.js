@@ -83,6 +83,46 @@ class Pokemon extends Card {
         }
     }
 
+    sufficientEnergy(abilityIndex){
+        for (let element of this.attacks) {
+            if (element.length == 3 && element[2] == abilityIndex) {
+                // TODO check only colorless
+                if (element[0] == this.property) {
+                    if (this.currentEnergy >= element[1]) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } else {// only need colorless energy
+                    if (this.currentColorLessEnergy >= element[1]) {
+                        return true;
+                    } else if ((this.currentColorLessEnergy + this.currentEnergy) >= element[1]) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            } else if (element.length == 5 && element[4] == abilityIndex) {
+                //Needs " + element[1] + " " + element[0] + ", " + element[3] + " " + element[2] + ",");
+                // TODO check only colorless
+                // TODO check: first one always colorless; second one is property
+                if (this.currentEnergy >= element[3]) {
+                    if (this.currentColorLessEnergy >= element[1]) {
+                        return true;
+                    } else if ((this.currentEnergy + this.currentColorLessEnergy) >= (+element[3] + +element[1])) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+
+                } else {
+                    return false;
+                }
+            }
+        }
+        return false;
+    }
+
     consumeEnergy(abilityIndex) {
         for (let element of this.attacks) {
             if (element.length == 3 && element[2] == abilityIndex) {
