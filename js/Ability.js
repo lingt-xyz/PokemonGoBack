@@ -1,15 +1,15 @@
 class Ability {
-    constructor(lineNumber, abilityName) {
-        this.lineNumber = lineNumber;
-        this.abilityName = abilityName;
-        this.subAbilities = [];
-    }
+	constructor(lineNumber, abilityName) {
+		this.lineNumber = lineNumber;
+		this.abilityName = abilityName;
+		this.subAbilities = [];
+	}
 }
 
 class SubAbility {
-    constructor() {
-        this.condition = null;
-    }
+	constructor() {
+		this.condition = null;
+	}
 }
 
 // target:opponent:10
@@ -20,106 +20,106 @@ class SubAbility {
 // target:choice:opponent:30
 // target:choice:opponent-bench:30
 class Dam extends SubAbility {
-    constructor(target, damHp) {
-        super();
-        this.target = target;
-        this.damHp = damHp;
-    }
+	constructor(target, damHp) {
+		super();
+		this.target = target;
+		this.damHp = damHp;
+	}
 }
 
 // heal:target:choice:your:30
 // heal:target:choice:your:60
 // heal:target:self:20
 class Heal extends SubAbility {
-    constructor(target, number) {
-        super();
-        this.target = target;
-        //your-active, choice:your, self
-        this.number = number;
-    }
+	constructor(target, number) {
+		super();
+		this.target = target;
+		//your-active, choice:your, self
+		this.number = number;
+	}
 }
 
 // discard all energy attached to this pokemon
 class Deenergize extends SubAbility {
-    constructor(target, str) {
-        super();
-        this.target = target;
-        //todo: decode the str to get exact number of energy that will be remove, and other info.
-        this.str = str;
+	constructor(target, str) {
+		super();
+		this.target = target;
+		//todo: decode the str to get exact number of energy that will be remove, and other info.
+		this.str = str;
 
-    }
+	}
 }
 
 // reenergize:target:choice:your:1:target:choice:your:1
 // move a basic energy from 1 of your pokemon to another of your pokemon
 class Reenergize extends SubAbility {
-    constructor(fromPokemon, fromAmout, toPokemon, toAmount) {
-        super();
-        this.source = fromPokemon;
-        this.target = toPokemon;
-        this.fromAmout = fromAmout;
-        this.toAmount = toAmount;
-    }
+	constructor(fromPokemon, fromAmout, toPokemon, toAmount) {
+		super();
+		this.source = fromPokemon;
+		this.target = toPokemon;
+		this.fromAmout = fromAmout;
+		this.toAmount = toAmount;
+	}
 }
 
 // swap:source:your-active:destination:choice:your-bench
 // switch your active pokemon with 1 of your benched pokemon
 class Swap extends SubAbility {
-    constructor(source, destination) {
-        super();
-        this.source = source;
-        this.destination = destination;
-    }
+	constructor(source, destination) {
+		super();
+		this.source = source;
+		this.destination = destination;
+	}
 }
 
 
 // destat:target:last
 class Destat extends SubAbility {
-    constructor(target) {
-        super();
-        this.target = target;
-    }
+	constructor(target) {
+		super();
+		this.target = target;
+	}
 }
 
 // applystat:status:stuck:opponent-active
 // opponent-active ?
 // stuck = That pokemon can't retreat during your opponent's next turn
 class ApplyStat extends SubAbility {
-    constructor(type, target) {
-        super();
-        this.type = type;
-        this.target = target;
-    }
+	constructor(type, target) {
+		super();
+		this.type = type;
+		this.target = target;
+	}
 }
 
 // draw:3
 // draw 3 dards
 class Draw extends SubAbility {
-    constructor(traget, number) {
-        super();
-        this.target = target;
-        this.number = number;
-    }
+	constructor(traget, number) {
+		super();
+		this.target = target;
+		this.number = number;
+	}
 }
 
 // redamage:source:choice:opponent:destination:opponent:count(target:last:source:damage)
 // Move as many damage counters on your opponent's pokemon as you like to any of your opponent's other pokemon in any way you like
 class Redamage extends SubAbility {
-    constructor(targetFrom, targetTo, damHp) {
-        super();
-        this.targetFrom = targetFrom;
-        this.targetTo = targetTo;
-        //TODO : decode damHp(str) to find the exact number of dam amount
-        this.damHp = damHp;
-    }
+	constructor(targetFrom, targetTo, damHp) {
+		super();
+		this.targetFrom = targetFrom;
+		this.targetTo = targetTo;
+		//TODO : decode damHp(str) to find the exact number of dam amount
+		this.damHp = damHp;
+	}
 }
 
 //
 class Search extends SubAbility {
-    constructor() {
-        super();
-        //TODO
-    }
+	constructor() {
+		super();
+		//TODO
+	}
 }
 
 
@@ -127,39 +127,39 @@ class Search extends SubAbility {
 // deck:target:opponent:destination:deck:count(opponent-hand)
 // deck:target:opponent:destination:deck:bottom:choice:them:1
 class Deck extends SubAbility {
-    constructor(source, target, amount) {
-        super();
-        this.target = target;
-        this.source = source;
-        this.amount = amount;
-    }
+	constructor(source, target, amount) {
+		super();
+		this.target = target;
+		this.source = source;
+		this.amount = amount;
+	}
 }
 
 // shuffle:target:your
 // shuffle:target:opponent
 class Shuffle extends SubAbility {
-    constructor(target) {
-        super();
-        this.target = target;
-    }
+	constructor(target) {
+		super();
+		this.target = target;
+	}
 }
 
 // flip, ability, healed
 class Cond extends SubAbility {
-    constructor(type) {
-        super();
-        this.type = type;
-    }
+	constructor(type) {
+		super();
+		this.type = type;
+	}
 }
 
 // add:target:your:trigger:opponent:turn-end:(heal:target:self:20)
 class Add extends SubAbility {
-    constructor(target, trigger, spell) {
-        super();
-        this.target = target;
-        this.trigger = trigger;
-        this.spell = spell;
-    }
+	constructor(target, trigger, spell) {
+		super();
+		this.target = target;
+		this.trigger = trigger;
+		this.spell = spell;
+	}
 }
 
 /**
@@ -299,7 +299,7 @@ function useAbility(sourceCard, abilityIndex) {
 			break;
 		case 24:
 			//Random Spark:dam:target:choice:opponent:30
-			// TODO
+			DamCardChoose(opponent, 30);
 			break;
 		case 25:
 			//Bite:dam:target:opponent-active:40
@@ -335,11 +335,14 @@ function useAbility(sourceCard, abilityIndex) {
 			break;
 		case 33:
 			//Misty's Determination:cond:ability:deck:target:your:destination:discard:choice:you:1:(search:target:your:source:deck:filter:top:8:1,shuffle:target:your)
-			// TODO
+			if(chooseHandCardDisCard(player,1)){
+				//choose one from top-8 card in deck,then shuffle
+				chooseFromDeckAndShuffle(player,1,0,9);
+			}
 			break;
 		case 34:
-            //Pokémon Center Lady:heal:target:choice:your:60,destat:target:last
-            healCardChoose(you, 60);
+			//Pokémon Center Lady:heal:target:choice:your:60,destat:target:last
+			healCardChoose(you, 60);
 			//TODO
 			break;
 		case 35:
@@ -550,7 +553,7 @@ function deckRandomCard(player) {
 }
 
 function damCard(player, damHp) {
-	if(!player.currentPokemon){
+	if (!player.currentPokemon) {
 		logger.logBattle("No avaliable target.");
 		return false;
 	}
@@ -574,6 +577,26 @@ function damCard(player, damHp) {
 	}
 
 	return true;
+}
+function DamCardChoose(player, damHp) {
+	let pokemon = chooseCard(player);
+	let before = pokemon.currentHp;
+
+	if (before < damHp) {
+		logger.logBattle(pokemon.cardName + "'s HP reduced by " + damHp);
+		pokemon.currentHp -= damHp;
+		if (pokemon.currentHp <= 0) {
+			logger.logBattle(pokemon.cardName + " is dead.. Move it to discard.");
+			//removeFromArray(player.matCollection, player.currentPokemon);
+			//player.discardCollection.push(player.currentPokemon);
+			//player.currentPokemon = null;
+			//TODO move to discard
+		}
+	} else {
+		pokemon.damageAmount += damHp;
+		pokemon.currentHp -= damHp;
+		logger.logBattle(pokemon.cardName + "'s HP reduced by " + damHp);
+	}
 }
 
 function damBench(player, damHp) {
@@ -621,7 +644,7 @@ function healCard(player, healHp) {
 }
 
 function healCardChoose(player, healHp) {
-    let pokemon = chooseCard(player);
+	let pokemon = chooseCard(player);
 	let before = pokemon.currentHp;
 	pokemon.currentHp += healHp;
 	if (pokemonn.currentHp > pokemon.hp) {
@@ -678,3 +701,45 @@ function drawCard(player, amount) {
 		}
 	}
 }
+
+function chooseHandCardDisCard(player, amount) {
+	if (amount <= player.handCollection.length) {
+		while (amount != 0) {
+			let choosedCard = chooseHandCard(player);
+			let index = player.handCollection.indexOf(choosedCard);
+			let card = player.handCollection.slice(index,index+1);
+			amount--;
+			if (card) {
+				player.discardCollection.push(card);
+			}
+		}
+		return true;
+	 }else{
+		 logger.logWarning("Do not have enought cards to discard");
+		 return false;
+	 }
+	
+}
+function chooseFromDeckAndShuffle(player,amount,startindex,endindex){
+	if(amount <= player.deckCollection.length)
+	{
+		while(amount !=0){
+			let choosedCard = chooseOneDeckCardinArrangeOf(player,startindex,endindex)
+			if(choosedCard){
+				player.handCollection.push(chooseCard);
+				removeFromArray(player.deckCollection,choosedCard);
+			}
+			amount--;
+		}
+		shuffle(player.deckCollection);
+		return ture;
+
+	}else{
+		return false;
+	}
+}
+function searchCardFrom(player,filter,amount)
+{
+
+
+};

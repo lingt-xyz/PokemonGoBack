@@ -107,12 +107,12 @@ function applyAbility(id, isAi, abilityIndex) {
 
 function chooseCard(player) {
 	let prompt = "";
-	for (let item of this.matCollection) {
+	for (let item of player.matCollection) {
 		if (item.cardType == Card_Type.pokemon) {
 			prompt += (item.id + ":" + item.cardName + ";");
 		}
 	}
-	for (let item of this.benchCollection) {
+	for (let item of player.benchCollection) {
 		if (item.cardType == Card_Type.pokemon) {
 			prompt += (item.id + ":" + item.cardName);
 		}
@@ -123,18 +123,64 @@ function chooseCard(player) {
 	if (isNaN(res)) {
 		return null;
 	} else {
-		for (let item of this.matCollection) {
+		for (let item of player.matCollection) {
 			if (item.cardType == Card_Type.pokemon) {
 				if (item.id == res) {
 					return item;
 				}
 			}
 		}
-		for (let item of this.benchCollection) {
+		for (let item of player.benchCollection) {
 			if (item.cardType == Card_Type.pokemon) {
 				if (item.id == res) {
 					return item;
 				}
+			}
+		}
+		return null;
+	}
+}
+function chooseHandCard(player) {
+	let prompt = "";
+
+	for (let item of player.handCollection) {
+
+		prompt += (item.id + ":" + item.cardName);
+
+	}
+
+	let res = prompt("Choose your target: " + prompt, "");
+
+	if (isNaN(res)) {
+		return null;
+	} else {
+		for (let item of player.handCollection) {
+			if (item.id == res) {
+				return item;
+			}
+
+		}
+		return null;
+	}
+}
+function chooseOneDeckCardinArrangeOf(player,arrange_start, arrange_end){
+	let cardsWaitForChoose = player.deckCollection.slice(arrange_start,arrange_end);
+	let prompt = "";
+
+	for (let item of cardsWaitForChoose) {
+
+		prompt += (item.id + ":" + item.cardName);
+
+	}
+
+	let res = prompt("Choose your target: " + prompt, "");
+
+	if (isNaN(res)) {
+		return null;
+	} else {
+		for (let item of cardsWaitForChoose) {
+			if (item.id == res) {
+				return item;
 			}
 		}
 		return null;
