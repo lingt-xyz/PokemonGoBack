@@ -185,6 +185,7 @@ class Player {
      */
     playable(){
         // in what cases the player cannot do any action: attack, envolve, use energy, use trainer
+        return true;
     }
 
     play() {
