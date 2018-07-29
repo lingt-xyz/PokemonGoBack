@@ -23,6 +23,13 @@ class Player {
         this.buildCardInHand();
         this.buildPrizeCard();
         this.currentPokemon = null;
+		
+		//in-turn action
+		this.canUseAttact = true;//attack once per turn
+		this.canUseEnvolve = true;//envolve once per turn when saticfy envolve require(has stage-one in bench/hand)
+		this.canUseTrainer = true;//has at least one trainer in hand && only can use one trainer card per turn
+		this.canUseEnergy = true;
+		this.canUseRetreat = true;//has energy on pokemon that can use 
     }
 
     // build deck: use fixed order or randomly generate
@@ -185,7 +192,50 @@ class Player {
      */
     playable() {
         // in what cases the player cannot do any action: attack, envolve, use energy, use trainer
-        return true;
+        this.canUseEnergy = false;
+        for (let item of this.matCollection) {
+            if (item.cardType == Card_Type.pokemon) {
+                if(item.applyEnergy){
+
+                }else{
+                    this.canUseEnergy = true;
+                    break;
+                }
+            }
+        }
+        for (let item of this.benchCollection) {
+            if (item.cardType == Card_Type.pokemon) {
+                if(item.applyEnergy){
+
+                }else{
+                    this.canUseEnergy = true;
+                    break;
+                }
+            }
+        }
+		return (this.canUseAttact || this.canUseEnvolve || this.canUseTrainer || this.canUseEnergy ||this.canUseRetreat);
+    }
+    
+    initPlayable(){
+        this.canUseAttact = true;
+        this.canUseEnvolve = true;
+        this.canUseTrainer = true;
+        this.canUseEnergy = true;
+        this.canUseRetreat = true;
+        for (let item of this.matCollection) {
+            if (item.cardType == Card_Type.pokemon) {
+               item.applyEnergy = false;
+            }
+        }
+        for (let item of this.benchCollection) {
+            if (item.cardType == Card_Type.pokemon) {
+                item.applyEnergy = false;
+            }
+        }
+    }
+
+    canApplyEnergy(pokemon){
+        return !pokemon.applyEnergy;
     }
 
     play() {
@@ -204,6 +254,7 @@ class Player {
                 item.refreshState();
             }
         }
+
         if (this.dealCard()) {
             if (this == ai) {
                 let pokemon = this.matCollection.find(item => item.cardType == Card_Type.pokemon);
@@ -216,6 +267,7 @@ class Player {
                             pokemon.addEnergy(energy);
                             logger.logBattle("(AI) Apply Energy to Pokemon.");
                             removeFromArray(ai.matCollection, energy);
+                            ai.discardCollection.push(energy);
                         }, 500);
                     }
                 } else {// pick a pokemon, put it on the mat
@@ -227,6 +279,25 @@ class Player {
                         this.currentPokemon.showImage();
                     } else {
                         logger.logGeneral("No more pokemon, AI lose the Game ");
+                    }
+                }
+
+                // attach
+                if(user.currentPokemon){
+                    let abilityIndex = 0;
+                    this.currentPokemon.attacks.forEach(element => {
+                        if (element.length == 3) {
+                            abilityIndex = element[2];
+                            return;
+                        } else if (element.length == 5) {
+                            abilityIndex = element[4];
+                            return;
+                        }
+                    });
+
+                    if (this.currentPokemon.sufficientEnergy(abilityIndex)) {
+                        useAbility(this.currentPokemon, abilityIndex);
+                        this.currentPokemon.consumeEnergy(abilityIndex);
                     }
                 }
                 // do more

@@ -19,6 +19,7 @@ class Game {
 	}
 
 	aiPlayTurn() {
+		user.initPlayable();
 		if(user.isParalyzed){
 			user.isParalyzedCounter++;
 		}
@@ -36,6 +37,7 @@ class Game {
 	}
 
 	userPlayTurn() {
+		ai.initPlayable();
 		if(ai.isParalyzed){
 			ai.isParalyzedCounter++;
 		}

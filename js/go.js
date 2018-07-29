@@ -22,7 +22,15 @@ function startDefinedGame() {
 
 function startEnvolveGame() {
 	logger = new GameConsole();
-	user = new Player(Deck_Envolve, false);
+	user = new Player(Deck_Heal, false);
+	ai = new Player(null, true);
+
+	startGame();
+}
+
+function startItemGame() {
+	logger = new GameConsole();
+	user = new Player(Deck_Heal, false);
 	ai = new Player(null, true);
 
 	startGame();
@@ -81,6 +89,19 @@ function showCardInfo(id, isAi) {
 
 function loadDefaultImg(id) {
 	$("#" + id + "").attr("src", "image/Default.png");
+}
+
+function showDiscard() {
+	if (user.discardCollection.length) {
+		let info = "Show discard:";
+		for (let card of user.discardCollection) {
+			info += "<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + card.cardType + ": " + card.cardName;
+		}
+		logger.logGeneral(info);
+	} else {
+		logger.logGeneral("Nothing to show.");
+	}
+
 }
 
 /**
@@ -248,9 +269,25 @@ function drop_handler(ev) {
 		let sourceCard = findFromArray(user.handCollection, id);
 		if (isNaN(targetId)) {// moving to a div
 			if (sourceCard.cardType == Card_Type.energy) {// moving an energy
-				logger.logWarning("Energy cannot be moved to here!");
+				logger.logWarning("Energy cannot be moved here!");
 			} else if (sourceCard.cardType == Card_Type.trainer) {// moving a trainer
-				logger.logGeneral("TODO: Trainer!");
+				if (targetId == "divBenchCollection") {// moving to bench
+					removeFromArray(user.handCollection, sourceCard);
+					user.benchCollection.push(sourceCard);
+				} else if (targetId == "divMatCollection") {// moving to mat
+					logger.logBattle("Use Trainer: " + sourceCard.cardName);
+					removeFromArray(user.handCollection, sourceCard);
+					user.matCollection.push(sourceCard);
+					sourceCard.useAbility();
+					setTimeout(function () {
+						removeFromArray(user.matCollection, sourceCard);
+						user.discardCollection.push(sourceCard);
+					}, 1000);
+				} else if (targetId == "divHandCollection") {// moving in the same div, do nothing
+
+				} else {// moving to other div
+					logger.logWarning("Trainer cannot be moved here!");
+				}
 			} else {// moving a pokemon
 				if (targetId == "divBenchCollection") {// moving to bench
 					removeFromArray(user.handCollection, sourceCard);
@@ -266,7 +303,7 @@ function drop_handler(ev) {
 				} else if (targetId == "divHandCollection") {// moving in the same div, do nothing
 
 				} else {// moving to other div
-					logger.logWarning("Pokemon cannot be moved to here!");
+					logger.logWarning("Pokemon cannot be moved here!");
 				}
 			}
 		} else {// moving to a card
@@ -275,23 +312,37 @@ function drop_handler(ev) {
 				if (targetCard.cardType == Card_Type.energy) {
 					logger.logError("Unexpected logic error!");
 				} else if (sourceCard.cardType == Card_Type.trainer) {
-					logger.logGeneral("TODO: Trainer!");
+					logger.logGeneral("Move Trainer to your mat to use its ability.");
 				} else {// this is a pokemon
 					if (sourceCard.cardType == Card_Type.energy) {
-						logger.logBattle("Apply Energy to Pokemon " + targetCard.cardName);
-						// TODO some cards only have colorless energy
-						targetCard.addEnergy(sourceCard);
-						removeFromArray(user.handCollection, sourceCard);
-						user.discardCollection.push(sourceCard);
+						if (user.canApplyEnergy(targetCard)) {
+							targetCard.applyEnergy = true;
+							logger.logBattle("Apply Energy to Pokemon " + targetCard.cardName);
+							// TODO some cards only have colorless energy
+							targetCard.addEnergy(sourceCard);
+							removeFromArray(user.handCollection, sourceCard);
+							user.discardCollection.push(sourceCard);
+						} else {
+							logger.logWarning("You can only apply energy once per turn.");
+							return;
+						}
 					} else if (sourceCard.cardType == Card_Type.trainer) {
-						logger.logGeneral("TODO: Trainer!");
+						// do nothing
 					} else {// moving a pokemon to a pokemon: evolve
 						if (sourceCard.cardBasic == targetCard.cardName) {
-							logger.logBattle("Evolve pokemon " + targetCard.cardName + " to " + sourceCard.cardName);
-							removeFromArray(user.benchCollection, targetCard);
-							user.discardCollection.push(targetCard);
-							removeFromArray(user.handCollection, sourceCard);
-							user.benchCollection.push(sourceCard);
+							if (user.canUseEnvolve) {
+								user.canUseEnvolve = false;
+								logger.logBattle("Evolve pokemon " + targetCard.cardName + " to " + sourceCard.cardName);
+								sourceCard.currentEnergy += targetCard.currentEnergy;
+								sourceCard.currentColorLessEnergy += targetCard.currentColorLessEnergy;
+								removeFromArray(user.benchCollection, targetCard);
+								user.discardCollection.push(targetCard);
+								removeFromArray(user.handCollection, sourceCard);
+								user.benchCollection.push(sourceCard);
+							} else {
+								logger.logWarning("You can only envolve one pokemon per turn.");
+								return;
+							}
 						} else {// do nothing
 
 						}
@@ -302,23 +353,37 @@ function drop_handler(ev) {
 				if (targetCard.cardType == Card_Type.energy) {
 					logger.logError("Unexpected logic error!");
 				} else if (sourceCard.cardType == Card_Type.trainer) {
-					logger.logGeneral("TODO: Trainer!");
+					// do nothing
 				} else {// this is a pokemon
 					if (sourceCard.cardType == Card_Type.energy) {
-						logger.logBattle("Apply Energy to Pokemon " + targetCard.cardName);
-						targetCard.addEnergy(sourceCard);
-						removeFromArray(user.handCollection, sourceCard);
-						user.discardCollection.push(sourceCard);
+						if (user.canApplyEnergy(targetCard)) {
+							targetCard.applyEnergy = true;
+							logger.logBattle("Apply Energy to Pokemon " + targetCard.cardName);
+							targetCard.addEnergy(sourceCard);
+							removeFromArray(user.handCollection, sourceCard);
+							user.discardCollection.push(sourceCard);
+						} else {
+							logger.logWarning("You can only apply energy once per turn.");
+							return;
+						}
 					} else if (sourceCard.cardType == Card_Type.trainer) {
-						logger.logGeneral("TODO: Trainer!");
+						// do nothing
 					} else {// moving a pokemon to a pokemon: envole
 						if (sourceCard.cardBasic == targetCard.cardName) {
-							logger.logBattle("Evolve pokemon " + targetCard.cardName + " to " + sourceCard.cardName);
-							removeFromArray(user.matCollection, targetCard);
-							user.discardCollection.push(targetCard);
-							removeFromArray(user.handCollection, sourceCard);
-							user.matCollection.push(sourceCard);
-							user.currentPokemon = sourceCard;
+							if (user.canUseEnvolve) {
+								user.canUseEnvolve = false;
+								logger.logBattle("Evolve pokemon " + targetCard.cardName + " to " + sourceCard.cardName);
+								sourceCard.currentEnergy += targetCard.currentEnergy;
+								sourceCard.currentColorLessEnergy += targetCard.currentColorLessEnergy;
+								removeFromArray(user.matCollection, targetCard);
+								user.discardCollection.push(targetCard);
+								removeFromArray(user.handCollection, sourceCard);
+								user.matCollection.push(sourceCard);
+								user.currentPokemon = sourceCard;
+							} else {
+								logger.logWarning("You can only envolve one pokemon per turn.");
+								return;
+							}
 						} else {// do nothing
 
 						}
@@ -334,7 +399,16 @@ function drop_handler(ev) {
 			if (sourceCard.cardType == Card_Type.energy) {// moving an energy
 				logger.logError("Unexpected logic error!");
 			} else if (sourceCard.cardType == Card_Type.trainer) {// moving a trainer
-				logger.logGeneral("TODO: Trainer!");
+				if (targetId == "divMatCollection") {
+					logger.logBattle("Use Trainer: " + sourceCard.cardName);
+					removeFromArray(user.benchCollection, sourceCard);
+					user.matCollection.push(sourceCard);
+					sourceCard.useAbility();
+					setTimeout(function () {
+						removeFromArray(user.matCollection, sourceCard);
+						user.discardCollection.push(sourceCard);
+					}, 1000);
+				}
 			} else {// moving a pokemon
 				if (targetId == "divBenchCollection") {// moving in the same div, do nothing
 
@@ -349,7 +423,7 @@ function drop_handler(ev) {
 				} else if (targetId == "divHandCollection") {// moving back to handCollection
 					logger.logWarning("Pokemon cannot be moved back to here!");
 				} else {// moving to other div
-					logger.logWarning("Pokemon cannot be moved to here!");
+					logger.logWarning("Pokemon cannot be moved here!");
 				}
 			}
 		} else {// moving to a card
@@ -360,12 +434,12 @@ function drop_handler(ev) {
 				if (targetCard.cardType == Card_Type.energy) {
 					logger.logError("Unexpected logic error!");
 				} else if (sourceCard.cardType == Card_Type.trainer) {
-					logger.logGeneral("TODO: Trainer!");
+					// do nothing
 				} else {// this is a pokemon
 					if (sourceCard.cardType == Card_Type.energy) {
 						logger.logError("Unexpected logic error!");
 					} else if (sourceCard.cardType == Card_Type.trainer) {
-						logger.logGeneral("TODO: Trainer!");
+						logger.logError("Unexpected logic error!");
 					} else {// moving a pokemon to a pokemon: envole
 						if (sourceCard.cardBasic == targetCard.cardName) {
 							logger.logBattle("Evolve pokemon " + targetCard.cardName + " to " + sourceCard.cardName);
@@ -389,7 +463,7 @@ function drop_handler(ev) {
 			if (sourceCard.cardType == Card_Type.energy) {// moving an energy
 				logger.logError("Unexpected logic error!");
 			} else if (sourceCard.cardType == Card_Type.trainer) {// moving a trainer
-				logger.logGeneral("TODO: Trainer!");
+				logger.logError("Unexpected logic error!");
 			} else {// moving a pokemon
 				if (targetId == "divBenchCollection") {// moving to bench, retreat
 					if (sourceCard.isStuck) {
@@ -397,24 +471,36 @@ function drop_handler(ev) {
 						return;
 					}
 					if (sourceCard.retreat.length == 2) {// needs energy (colorless) to retreat
-						let energyNeeded = sourceCard.retreat[0];
-						if (sourceCard.currentColorLessEnergy >= energyNeeded) {
-							sourceCard.currentColorLessEnergy -= energyNeeded;
-							logger.logBattle("Retreat " + sourceCard.cardName + ".");
-							findAndRemoveFromArray(user.matCollection, sourceCard);
-							user.benchCollection.push(sourceCard);
-						} else if ((sourceCard.currentColorLessEnergy + sourceCard.currentEnergy) >= energyNeeded) {
-							sourceCard.currentEnergy = (sourceCard.currentEnergy + sourceCard.currentColorLessEnergy - energyNeeded);
+						if (user.canUseRetreat) {
+							user.canUseRetreat = false;
+							let energyNeeded = sourceCard.retreat[0];
+							if (sourceCard.currentColorLessEnergy >= energyNeeded) {
+								sourceCard.currentColorLessEnergy -= energyNeeded;
+								logger.logBattle("Retreat " + sourceCard.cardName + ".");
+								findAndRemoveFromArray(user.matCollection, sourceCard);
+								user.benchCollection.push(sourceCard);
+							} else if ((sourceCard.currentColorLessEnergy + sourceCard.currentEnergy) >= energyNeeded) {
+								sourceCard.currentEnergy = (sourceCard.currentEnergy + sourceCard.currentColorLessEnergy - energyNeeded);
+								logger.logBattle("Retreat " + sourceCard.cardName + ".");
+								findAndRemoveFromArray(user.matCollection, sourceCard);
+								user.benchCollection.push(sourceCard);
+							} else {
+								logger.logBattle("Retreat " + sourceCard.cardName + " failed, insufficient energy.");
+							}
+						} else {
+							logger.logWarning("You can only retreat one pokemon per turn.");
+							return;
+						}
+					} else {
+						if (user.canUseRetreat) {
+							user.canUseRetreat = false;
 							logger.logBattle("Retreat " + sourceCard.cardName + ".");
 							findAndRemoveFromArray(user.matCollection, sourceCard);
 							user.benchCollection.push(sourceCard);
 						} else {
-							logger.logBattle("Retreat " + sourceCard.cardName + " failed, insufficient energy.");
+							logger.logWarning("You can only retreat one pokemon per turn.");
+							return;
 						}
-					} else {
-						logger.logBattle("Retreat " + sourceCard.cardName + ".");
-						findAndRemoveFromArray(user.matCollection, sourceCard);
-						user.benchCollection.push(sourceCard);
 					}
 				} else if (targetId == "divMatCollection") {// moving in the same div, do nothing
 
@@ -423,7 +509,7 @@ function drop_handler(ev) {
 				} else if (targetId == "divMatCollectionAi") {// moving to ai mat: battle
 					logger.logAbility(sourceCard);
 				} else {// moving to other div
-					logger.logWarning("Pokemon cannot be moved to here!");
+					logger.logWarning("Pokemon cannot be moved here!");
 				}
 			}
 		} else {// moving to a card

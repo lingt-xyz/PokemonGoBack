@@ -71,6 +71,26 @@ $Web_Root: Web Document Root (e.g. /var/www/html)
 $MySQL_U: MySQL username
 $MySQL_P: MySQL password
 ```
+### Git
+```
+create a new branch [branch_name] on https://github.com/panda2ici/PokemonGoBack
+
+git clone https://github.com/panda2ici/PokemonGoback.git
+
+git checkout master
+
+git pull
+
+git checkout -b 'branch_name'
+
+git status
+
+git add .
+
+git commit -m ''
+
+git push
+```
 
 ## References:
 

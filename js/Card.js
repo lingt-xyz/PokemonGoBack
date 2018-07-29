@@ -66,6 +66,8 @@ class Pokemon extends Card {
         //
         this.headledAmount = 0;
         //
+        this.applyEnergy = false;
+        //
         this.isParalyzed = false;
         this.isParalyzedCounter = 0;
         //
@@ -235,6 +237,10 @@ class Trainer extends Card {
         super(id, cardName, Card_Type.trainer, isAi);
         this.trainerType = trainerType;
         this.abilityIndex = abilityIndex;
+    }
+
+    useAbility(){
+        // TODO
     }
 
     toConsole() {//"<div class='gamelog text-light'>[Info]: " + text + "</div>

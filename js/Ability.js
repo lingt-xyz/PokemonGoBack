@@ -351,7 +351,7 @@ function useAbility(sourceCard, abilityIndex) {
 			break;
 		case 36:
 			//Ear Influence:redamage:source:choice:opponent:destination:opponent:count(target:last:source:damage)
-			//TODO
+			red
 			break;
 		case 37:
 			//Psychic:dam:target:opponent-active:60,dam:target:opponent-active:count(target:opponent-active:energy)*10
@@ -463,11 +463,13 @@ function useAbility(sourceCard, abilityIndex) {
 			break;
 		case 58:
 			//Scavenge:cond:ability:deenergize:target:your-active:1:(search:target:your:source:discard:filter:cat:item:1)
+			//search[target]:[source]:[filter]:[amount]
+			deenergizeCard(you,1);
 			// TODO
 			break;
 		case 59:
 			//Stretch Kick:dam:target:choice:opponent-bench:30
-			// TODO
+			damBench(opponent,30);
 			break;
 		case 60:
 			//Spiral Kick:dam:target:opponent-active:30
@@ -510,11 +512,13 @@ function useAbility(sourceCard, abilityIndex) {
 			break;
 		case 68:
 			//Poké Ball:cond:flip:search:target:your:source:deck:filter:pokemon:1
-			// TODO
+			if(flipCoin()){
+				//TODO
+			}
 			break;
 		case 69:
 			//Shauna:deck:target:your:destination:deck:count(your-hand),shuffle:target:your,draw:5
-			// TODO
+			you.cu
 			break;
 		case 70:
 			//Pokémon Fan Club:search:target:your:source:deck:filter:pokemon:cat:basic:2,shuffle:target:your
@@ -682,6 +686,20 @@ function applyStatAsleep(player) {
 
 function deenergizeCard(player, amount) {
 	//TODO
+	if(amount>=(player.currentPokemon.currentEnergy+player.currentPokemon.currentColorLessEnergy)){
+		player.currentPokemon.currentEnergy=0;
+		player.currentPokemon.currentColorLessEnergy=0;
+	}
+	else {
+		if(amount<player.currentPokemon.currentEnergy){
+			player.currentPokemon.currentEnergy-=amount;
+		}
+		else{
+			player.currentPokemon.currentColorLessEnergy=(player.currentPokemon.currentEnergy-amount);
+			player.currentPokemon.currentEnergy=0;
+		}
+	}
+	
 }
 
 function deenergizeCardFlip(player, amount) {
@@ -700,6 +718,7 @@ function drawCard(player, amount) {
 			player.handCollection.push(card);
 		}
 	}
+<<<<<<< HEAD
 }
 
 function chooseHandCardDisCard(player, amount) {
@@ -767,4 +786,22 @@ function searchfromDeck(player, amount){
 		}
 	}
 	shuffle(player.deckCollection);
+=======
+
+function redamage(player,amount) {
+	let card = chooseCard(opponent);
+
+}
+
+function destat(player){
+	player.currentPokemon.isAsleep=false;
+	player.currentPokemon.isParalyzed=false;
+	player.currentPokemon.isPoisoned=false;
+	player.currentPokemon.isStuck=false;
+}
+
+function search(player,sourceCard,type,amount){
+
+}
+>>>>>>> master
 }
