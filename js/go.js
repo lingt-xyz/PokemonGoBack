@@ -44,7 +44,7 @@ function startItemGame() {
 	startGame();
 }
 
-function startPrizeGame(){
+function startPrizeGame() {
 	logger = new GameConsole();
 	user = new Player(Deck_Heal_AI, false);
 	ai = new Player(Deck_Heal, true);
@@ -177,16 +177,15 @@ function chooseCard(player) {
 		return null;
 	}
 }
+
 function chooseHandCard(player) {
-	let prompt = "";
+	let promptInfo = "";
 
 	for (let item of player.handCollection) {
-
-		prompt += (item.id + ":" + item.cardName);
-
+		promptInfo += (item.id + ":" + item.cardName);
 	}
 
-	let res = prompt("Choose your target: " + prompt, "");
+	let res = prompt("Choose your target: " + promptInfo + "");
 
 	if (isNaN(res)) {
 		return null;
@@ -195,22 +194,20 @@ function chooseHandCard(player) {
 			if (item.id == res) {
 				return item;
 			}
-
 		}
 		return null;
 	}
 }
-function chooseOneDeckCardinArrangeOf(player,arrange_start, arrange_end){
-	let cardsWaitForChoose = player.deckCollection.slice(arrange_start,arrange_end);
-	let prompt = "";
+
+function chooseOneDeckCardinArrangeOf(player, arrange_start, arrange_end) {
+	let cardsWaitForChoose = player.deckCollection.slice(arrange_start, arrange_end);
+	let promptInfo = "";
 
 	for (let item of cardsWaitForChoose) {
-
-		prompt += (item.id + ":" + item.cardName);
-
+		promptInfo += (item.id + ":" + item.cardName);
 	}
 
-	let res = prompt("Choose your target: " + prompt, "");
+	let res = prompt("Choose your target: " + promptInfo + "");
 
 	if (isNaN(res)) {
 		return null;
@@ -523,10 +520,10 @@ function drop_handler(ev) {
 				} else if (targetId == "divHandCollection") {// moving back to handCollection
 					logger.logWarning("Pokemon cannot be moved back to here!");
 				} else if (targetId == "divMatCollectionAi") {// moving to ai mat: battle
-					if(user.canUseAttact){
+					if (user.canUseAttact) {
 						user.canUseAttact = false;
 						logger.logAbility(sourceCard);
-					}else{
+					} else {
 						logger.logWarning("You can only attach once per turn.");
 						return;
 					}
