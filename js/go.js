@@ -28,10 +28,18 @@ function startEnvolveGame() {
 	startGame();
 }
 
+function startChooseAbilityGame() {
+	logger = new GameConsole();
+	user = new Player(Deck_Choose, false);
+	ai = new Player(null, true);
+
+	startGame();
+}
+
 function startItemGame() {
 	logger = new GameConsole();
 	user = new Player(Deck_Heal, false);
-	ai = new Player(null, true);
+	ai = new Player(Deck_Heal_AI, true);
 
 	startGame();
 }
