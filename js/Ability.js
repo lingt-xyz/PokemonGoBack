@@ -299,7 +299,7 @@ function useAbility(sourceCard, abilityIndex) {
 			break;
 		case 24:
 			//Random Spark:dam:target:choice:opponent:30
-			DamCardChoose(opponent, 30);
+			damCardChoose(opponent, 30);
 			break;
 		case 25:
 			//Bite:dam:target:opponent-active:40
@@ -577,12 +577,21 @@ function damCard(player, damHp) {
 		removeFromArray(player.matCollection, player.currentPokemon);
 		player.discardCollection.push(player.currentPokemon);
 		player.currentPokemon = null;
+		if(player.isAi){
+			let card = user.prizeCollection.pop();
+			logger.logBattle("Collect Prize Card: " + card.cardName);
+			user.handCollection.push(card);
+		}else{
+			let card = ai.prizeCollection.pop();
+			logger.logBattle("Collect Prize Card: " + card.cardName);
+			ai.handCollection.push(card);
+		}
 		return false;
 	}
 
 	return true;
 }
-function DamCardChoose(player, damHp) {
+function damCardChoose(player, damHp) {
 	let pokemon = chooseCard(player);
 	let before = pokemon.currentHp;
 
@@ -591,10 +600,18 @@ function DamCardChoose(player, damHp) {
 		pokemon.currentHp -= damHp;
 		if (pokemon.currentHp <= 0) {
 			logger.logBattle(pokemon.cardName + " is dead.. Move it to discard.");
-			//removeFromArray(player.matCollection, player.currentPokemon);
-			//player.discardCollection.push(player.currentPokemon);
-			//player.currentPokemon = null;
-			//TODO move to discard
+			removeFromArray(player.matCollection, player.currentPokemon);
+			player.discardCollection.push(player.currentPokemon);
+			player.currentPokemon = null;
+			if(player.isAi){
+				let card = user.prizeCollection.pop();
+				logger.logBattle("Collect Prize Card: " + card.cardName);
+				user.handCollection.push(card);
+			}else{
+				let card = ai.prizeCollection.pop();
+				logger.logBattle("Collect Prize Card: " + card.cardName);
+				ai.handCollection.push(card);
+			}
 		}
 	} else {
 		pokemon.damageAmount += damHp;

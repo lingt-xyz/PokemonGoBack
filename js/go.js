@@ -44,6 +44,14 @@ function startItemGame() {
 	startGame();
 }
 
+function startPrizeGame(){
+	logger = new GameConsole();
+	user = new Player(Deck_Heal_AI, false);
+	ai = new Player(Deck_Heal, true);
+
+	startGame();
+}
+
 function startGame() {
 	game = new Game();
 
@@ -515,7 +523,13 @@ function drop_handler(ev) {
 				} else if (targetId == "divHandCollection") {// moving back to handCollection
 					logger.logWarning("Pokemon cannot be moved back to here!");
 				} else if (targetId == "divMatCollectionAi") {// moving to ai mat: battle
-					logger.logAbility(sourceCard);
+					if(user.canUseAttact){
+						user.canUseAttact = false;
+						logger.logAbility(sourceCard);
+					}else{
+						logger.logWarning("You can only attach once per turn.");
+						return;
+					}
 				} else {// moving to other div
 					logger.logWarning("Pokemon cannot be moved here!");
 				}

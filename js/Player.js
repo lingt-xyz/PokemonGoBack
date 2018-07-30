@@ -296,7 +296,7 @@ class Player {
                             if(this.currentPokemon.sufficientEnergy(abilityIndex)){
                                 applyAbility(this.currentPokemon.id, true, abilityIndex);
                             }else{
-                                logger.logBattle("Try to use " + element[0] + " failed: insufficient energy.");
+                                logger.logBattle("(AI) Try to use " + element[0] + " failed: insufficient energy.");
                             }
                             break;
                         }  
