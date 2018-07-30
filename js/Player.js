@@ -287,10 +287,10 @@ class Player {
                     for (let element of this.currentPokemon.attacks) {
                         let abilityIndex = 0;
                         if (element.length == 3) {
-                            abilityIndex = element[2];
+                            abilityIndex = +element[2];
                             
                         } else if (element.length == 5) {
-                            abilityIndex = element[4];
+                            abilityIndex = +element[4];
                         }
                         if(abilityIndex){
                             if(this.currentPokemon.sufficientEnergy(abilityIndex)){
