@@ -134,6 +134,11 @@ function applyAbility(id, isAi, abilityIndex) {
 		sourceCard = user.currentPokemon;
 	}
 	if (sourceCard.sufficientEnergy(abilityIndex)) {
+		if (isAi) {
+			ai.canUseAttack = false;
+		}else{
+			user.canUseAttack = false;
+		}
 		useAbility(sourceCard, abilityIndex);
 		sourceCard.consumeEnergy(abilityIndex);
 	} else {
@@ -478,8 +483,8 @@ function drop_handler(ev) {
 				logger.logError("Unexpected logic error!");
 			} else {// moving a pokemon
 				if (targetId == "divBenchCollection") {// moving to bench, retreat
-					if (sourceCard.isStuck) {
-						logger.logBattle("Retreat " + sourceCard.cardName + "(Stuck) failed.");
+					if (sourceCard.isStuck || sourceCard.isParalyzed || sourceCard.isAsleep) {
+						logger.logBattle("Retreat " + sourceCard.cardName + " failed: in abnormal state(s).");
 						return;
 					}
 					if (sourceCard.retreat.length == 2) {// needs energy (colorless) to retreat
@@ -519,11 +524,14 @@ function drop_handler(ev) {
 				} else if (targetId == "divHandCollection") {// moving back to handCollection
 					logger.logWarning("Pokemon cannot be moved back to here!");
 				} else if (targetId == "divMatCollectionAi") {// moving to ai mat: battle
-					if (user.canUseAttact) {
-						user.canUseAttact = false;
+					if (sourceCard.isParalyzed || sourceCard.isAsleep) {
+						logger.logBattle(sourceCard.cardName + " attack failed: in abnormal state(s).");
+						return;
+					}
+					if (user.canUseAttack) {
 						logger.logAbility(sourceCard);
 					} else {
-						logger.logWarning("You can only attach once per turn.");
+						logger.logWarning("You can only attack once per turn.");
 						return;
 					}
 				} else {// moving to other div

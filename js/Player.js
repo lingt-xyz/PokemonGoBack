@@ -25,7 +25,7 @@ class Player {
         this.currentPokemon = null;
 
         //in-turn action
-        this.canUseAttact = true;//attack once per turn
+        this.canUseAttack = true;//attack once per turn
         this.canUseEnvolve = true;//envolve once per turn when saticfy envolve require(has stage-one in bench/hand)
         this.canUseTrainer = true;//has at least one trainer in hand && only can use one trainer card per turn
         this.canUseEnergy = true;
@@ -188,6 +188,7 @@ class Player {
     }
 
     /**
+     * Whether user can do more actions, or has to end his turn.
      * @returns {boolean}
      */
     playable() {
@@ -213,17 +214,22 @@ class Player {
                 }
             }
         }
-        return (this.canUseAttact || this.canUseEnvolve || this.canUseTrainer || this.canUseEnergy || this.canUseRetreat);
+        return (this.canUseAttack || this.canUseEnvolve || this.canUseTrainer || this.canUseEnergy || this.canUseRetreat);
     }
 
+    /**
+     * Update user's info when his turn ends.
+     */
     updateWhenTurnEnd() {
-        this.canUseAttact = true;
+        this.canUseAttack = true;
         this.canUseEnvolve = true;
         this.canUseTrainer = true;
         this.canUseEnergy = true;
         this.canUseRetreat = true;
-        for (let item of this.matCollection) {
-            if (item.cardType == Card_Type.pokemon) {
+
+        let i = this.matCollection.length;
+        while (i--) {
+            if (this.matCollection[i] == Card_Type.pokemon) {
                 item.applyEnergy = false;
 
                 if (item.isParalyzed) {
@@ -232,14 +238,22 @@ class Player {
                 if (item.isStuck) {
                     item.isStuckCounter++;
                 }
-                if(item.isPoisoned){
+                if (item.isPoisoned) {
                     item.currentHp--;
-                    // TODO
+                }
+                if (item.isPoisoned) {
+                    item.currentHp--;
+                }
+                if (item.currentHp == 0) {
+                    this.matCollection.splice(i, 1);
+                    this.discardCollection.push(item);
                 }
             }
         }
-        for (let item of this.benchCollection) {
-            if (item.cardType == Card_Type.pokemon) {
+
+        i = this.benchCollection.length;
+        while (i--) {
+            if (this.benchCollection[i] == Card_Type.pokemon) {
                 item.applyEnergy = false;
 
                 if (item.isParalyzed) {
@@ -248,14 +262,18 @@ class Player {
                 if (item.isStuck) {
                     item.isStuckCounter++;
                 }
-                if(item.isPoisoned){
+                if (item.isPoisoned) {
                     item.currentHp--;
-                    // TODO
+                }
+                if (item.isPoisoned) {
+                    item.currentHp--;
+                }
+                if (item.currentHp == 0) {
+                    this.benchCollection.splice(i, 1);
+                    this.discardCollection.push(item);
                 }
             }
         }
-
-
     }
 
     canApplyEnergy(pokemon) {
@@ -302,7 +320,7 @@ class Player {
                         this.currentPokemon = pokemon;
                         this.currentPokemon.showImage();
                     } else {
-                        logger.logGeneral("No more pokemon, AI lose the Game ");
+                        logger.logGeneral("No more pokemon, AI lost the Game.");
                         game.isEnd = true;
                     }
                 }

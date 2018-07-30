@@ -58,7 +58,7 @@ class GameConsole {
         this.logChooseCard(player.deckCollection);
     }
 
-    logChooseAllCard(player, attach_type, damHp) {
+    logChooseAllCard(player, attack_type, damHp) {
         this.logBattle("Choose ");
         this.logChooseCard(player.benchCollection);
         this.logChooseCard(player.matCollection);

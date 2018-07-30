@@ -21,7 +21,7 @@ class Game {
 
 	aiPlayTurn() {
 		user.updateWhenTurnEnd();
-		if (game.isEnd) {
+		if (this.isEnd) {
 
 		} else {
 			currentPlayer = ai;
@@ -37,7 +37,7 @@ class Game {
 
 	userPlayTurn() {
 		ai.updateWhenTurnEnd();
-		if (game.isEnd) {
+		if (this.isEnd) {
 
 		} else {
 			let hasPokemon = false;
