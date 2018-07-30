@@ -20,16 +20,10 @@ class Game {
 	}
 
 	aiPlayTurn() {
+		user.updateWhenTurnEnd();
 		if (game.isEnd) {
 
 		} else {
-			user.initPlayable();
-			if (user.isParalyzed) {
-				user.isParalyzedCounter++;
-			}
-			if (user.isStuck) {
-				user.isStuckCounter++;
-			}
 			currentPlayer = ai;
 			$("#endTurn").prop("disabled", true);
 			logger.logGeneral("AI's Turn.");
@@ -42,6 +36,7 @@ class Game {
 	}
 
 	userPlayTurn() {
+		ai.updateWhenTurnEnd();
 		if (game.isEnd) {
 
 		} else {
@@ -68,13 +63,6 @@ class Game {
 			}
 
 			if (hasPokemon) {
-				ai.initPlayable();
-				if (ai.isParalyzed) {
-					ai.isParalyzedCounter++;
-				}
-				if (ai.isStuck) {
-					ai.isStuckCounter++;
-				}
 				currentPlayer = user;
 				$("#endTurn").prop("disabled", false);
 				logger.logGeneral("User's Turn.");

@@ -23,13 +23,13 @@ class Player {
         this.buildCardInHand();
         this.buildPrizeCard();
         this.currentPokemon = null;
-		
-		//in-turn action
-		this.canUseAttact = true;//attack once per turn
-		this.canUseEnvolve = true;//envolve once per turn when saticfy envolve require(has stage-one in bench/hand)
-		this.canUseTrainer = true;//has at least one trainer in hand && only can use one trainer card per turn
-		this.canUseEnergy = true;
-		this.canUseRetreat = true;//has energy on pokemon that can use 
+
+        //in-turn action
+        this.canUseAttact = true;//attack once per turn
+        this.canUseEnvolve = true;//envolve once per turn when saticfy envolve require(has stage-one in bench/hand)
+        this.canUseTrainer = true;//has at least one trainer in hand && only can use one trainer card per turn
+        this.canUseEnergy = true;
+        this.canUseRetreat = true;//has energy on pokemon that can use 
     }
 
     // build deck: use fixed order or randomly generate
@@ -195,9 +195,9 @@ class Player {
         this.canUseEnergy = false;
         for (let item of this.matCollection) {
             if (item.cardType == Card_Type.pokemon) {
-                if(item.applyEnergy){
+                if (item.applyEnergy) {
 
-                }else{
+                } else {
                     this.canUseEnergy = true;
                     break;
                 }
@@ -205,18 +205,18 @@ class Player {
         }
         for (let item of this.benchCollection) {
             if (item.cardType == Card_Type.pokemon) {
-                if(item.applyEnergy){
+                if (item.applyEnergy) {
 
-                }else{
+                } else {
                     this.canUseEnergy = true;
                     break;
                 }
             }
         }
-		return (this.canUseAttact || this.canUseEnvolve || this.canUseTrainer || this.canUseEnergy ||this.canUseRetreat);
+        return (this.canUseAttact || this.canUseEnvolve || this.canUseTrainer || this.canUseEnergy || this.canUseRetreat);
     }
-    
-    initPlayable(){
+
+    updateWhenTurnEnd() {
         this.canUseAttact = true;
         this.canUseEnvolve = true;
         this.canUseTrainer = true;
@@ -224,17 +224,41 @@ class Player {
         this.canUseRetreat = true;
         for (let item of this.matCollection) {
             if (item.cardType == Card_Type.pokemon) {
-               item.applyEnergy = false;
+                item.applyEnergy = false;
+
+                if (item.isParalyzed) {
+                    item.isParalyzedCounter++;
+                }
+                if (item.isStuck) {
+                    item.isStuckCounter++;
+                }
+                if(item.isPoisoned){
+                    item.currentHp--;
+                    // TODO
+                }
             }
         }
         for (let item of this.benchCollection) {
             if (item.cardType == Card_Type.pokemon) {
                 item.applyEnergy = false;
+
+                if (item.isParalyzed) {
+                    item.isParalyzedCounter++;
+                }
+                if (item.isStuck) {
+                    item.isStuckCounter++;
+                }
+                if(item.isPoisoned){
+                    item.currentHp--;
+                    // TODO
+                }
             }
         }
+
+
     }
 
-    canApplyEnergy(pokemon){
+    canApplyEnergy(pokemon) {
         return !pokemon.applyEnergy;
     }
 
@@ -284,23 +308,23 @@ class Player {
                 }
 
                 // attack
-                if(user.currentPokemon){
+                if (user.currentPokemon) {
                     for (let element of this.currentPokemon.attacks) {
                         let abilityIndex = 0;
                         if (element.length == 3) {
                             abilityIndex = +element[2];
-                            
+
                         } else if (element.length == 5) {
                             abilityIndex = +element[4];
                         }
-                        if(abilityIndex){
-                            if(this.currentPokemon.sufficientEnergy(abilityIndex)){
+                        if (abilityIndex) {
+                            if (this.currentPokemon.sufficientEnergy(abilityIndex)) {
                                 applyAbility(this.currentPokemon.id, true, abilityIndex);
-                            }else{
+                            } else {
                                 logger.logBattle("(AI) Try to use " + element[0] + " failed: insufficient energy.");
                             }
                             break;
-                        }  
+                        }
                     }
                 }
                 // do more: trainer
