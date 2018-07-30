@@ -335,9 +335,9 @@ function useAbility(sourceCard, abilityIndex) {
 			break;
 		case 33:
 			//Misty's Determination:cond:ability:deck:target:your:destination:discard:choice:you:1:(search:target:your:source:deck:filter:top:8:1,shuffle:target:your)
-			if (chooseHandCardDisCard(player, 1)) {
+			if (chooseHandCardDisCard(you, 1)) {
 				//choose one from top-8 card in deck,then shuffle
-				chooseFromDeckAndShuffle(player, 1, 0, 9);
+				chooseFromDeckAndShuffle(you, 1, 0, 9);
 			}
 			break;
 		case 34:
@@ -347,7 +347,7 @@ function useAbility(sourceCard, abilityIndex) {
 			break;
 		case 35:
 			//Clemont:search:target:your:source:deck:filter:energy:4
-			searchEnergyCardFromDeck(player, 4);
+			searchEnergyCardFromDeck(you, 4);
 			break;
 		case 36:
 			//Ear Influence:redamage:source:choice:opponent:destination:opponent:count(target:last:source:damage)
@@ -367,7 +367,7 @@ function useAbility(sourceCard, abilityIndex) {
 			break;
 		case 39:
 			//Wish:search:target:your:source:deck:1
-			searchfromDeck(player, 1);
+			searchfromDeck(you, 1);
 			break;
 		case 40:
 			//Heart Sign:dam:target:opponent-active:50
@@ -438,7 +438,7 @@ function useAbility(sourceCard, abilityIndex) {
 			break;
 		case 52:
 			//Mine:search:target:opponent:source:deck:filter:top:1:0,cond:choice:shuffle:target:opponent
-			//TODO
+			chooseFromDeckAndShuffle(opponent,1,0,1);
 			break;
 		case 53:
 			//Mud Slap:dam:target:opponent-active:20
@@ -464,8 +464,10 @@ function useAbility(sourceCard, abilityIndex) {
 		case 58:
 			//Scavenge:cond:ability:deenergize:target:your-active:1:(search:target:your:source:discard:filter:cat:item:1)
 			//search[target]:[source]:[filter]:[amount]
-			deenergizeCard(you, 1);
-			// TODO
+			if(deenergizeCard(you, 1)){
+				searchItemFromDiscard(you,1)
+			}
+			
 			break;
 		case 59:
 			//Stretch Kick:dam:target:choice:opponent-bench:30
@@ -508,17 +510,21 @@ function useAbility(sourceCard, abilityIndex) {
 			break;
 		case 67:
 			//Floral Crown:add:target:your:trigger:opponent:turn-end:(heal:target:self:20)
+			//simplify--->heal your active 20
 			// TODO
+			healCard(you,20);
 			break;
 		case 68:
 			//Poké Ball:cond:flip:search:target:your:source:deck:filter:pokemon:1
 			if (flipCoin()) {
-				//TODO
+				searchPokemonFromDeck(you,1);
 			}
 			break;
 		case 69:
 			//Shauna:deck:target:your:destination:deck:count(your-hand),shuffle:target:your,draw:5
-			you.cu
+			if(shuffleAllHandcard(you)){
+				drawCard(you,5);
+			}
 			break;
 		case 70:
 			//Pokémon Fan Club:search:target:your:source:deck:filter:pokemon:cat:basic:2,shuffle:target:your
@@ -538,7 +544,7 @@ function useAbility(sourceCard, abilityIndex) {
 			break;
 		case 74:
 			//Wally:search:target:choice:your-pokemon:cat:basic:source:deck:filter:evolves-from:target:last:1,shuffle:target:your
-			// TODO
+			searchEnvolveFromDeck(you);
 			break;
 		default:
 			break;
@@ -791,4 +797,75 @@ function destat(player) {
 	player.currentPokemon.isParalyzed = false;
 	player.currentPokemon.isPoisoned = false;
 	player.currentPokemon.isStuck = false;
+}
+function searchItemFromDiscard(player,amount){
+	for (let item of player.discardCollection) {
+
+		if (item.cardType == Card_Type.trainer) {
+			if(item.trainerType == Trainer_Type.item){
+				player.handCollection.push(item);
+			}
+			
+			removeFromArray(player.discardCollection, item);
+			amount--;
+		}
+		if (amount == 0) {
+			break;
+		}
+
+	}
+	
+}
+
+function searchPokemonFromDeck(player,amount){
+	for (let item of player.deckCollection) {
+
+		if (item.cardType == Card_Type.pokemon) {
+			player.handCollection.push(item);
+			removeFromArray(player.deckCollection, item);
+			amount--;
+		}
+		if (amount == 0) {
+			break;
+		}
+
+	}
+	shuffle(player.deckCollection);
+}
+function shuffleAllHandcard(player){
+	let counter = player.handCollection.length;
+	while(counter !=0){
+		let card = player.handCollection.pop();
+		amount--;
+		if (card) {
+			player.deckCollection.push(card);
+		}
+		
+	}
+	shuffle(player.deckCollection);
+}
+
+function searchEnvolveFromDeck(player){
+	let pokemonWaitEnvolve = player.currentPokemon;
+	if(pokemonWaitEnvolve != null){
+		for (let stageOne of player.deckCollection) {
+
+			if (stageOne.cardBasic == pokemonWaitEnvolve.cardName) {
+				
+				removeFromArray(player.deckCollection, stageOne);
+				//TODO pokemonWaitEnvolve.Envolve
+				shuffle(player.deckCollection);
+				break;
+			}else{
+				logger.logWarning("No stageOne pokemon of active pokemon in deck.");
+				break;
+			}
+			
+		}
+	}else{
+		logger.logWarning("No active pokemon can be envolove.");
+		return false;
+	}
+	
+
 }
