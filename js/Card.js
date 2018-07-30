@@ -16,7 +16,7 @@ class Card {
         if (this.isAi) {
             return "<img id='" + this.id + "'"
                 + " ondblclick='showCardInfo(" + this.id + ", " + this.isAi + ")'"
-                + " height='90px' width='60px' src='image/" + this.cardName + ".png'>";
+                + " height='90px' width='60px' src=\"image/" + this.cardName + ".png\">";
         } else {
         }
     }
@@ -34,7 +34,7 @@ class Card {
                 + " ondragover='dragover_handler(event)'"
                 + " onerror='loadDefaultImg(" + this.id + ")'"
                 + " ondblclick='showCardInfo(" + this.id + ", " + this.isAi + ")'"
-                + " height='90px' width='60px' src='image/" + this.cardName + ".png'>";
+                + " height='90px' width='60px' src=\"image/" + this.cardName + ".png\">";
         }
     }
 
