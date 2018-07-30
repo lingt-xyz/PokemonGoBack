@@ -237,7 +237,6 @@ class Trainer extends Card {
         super(id, cardName, Card_Type.trainer, isAi);
         this.trainerType = trainerType;
         this.abilityIndex = abilityIndex;
-        this.cat = null;
     }
 
     useAbility(){
