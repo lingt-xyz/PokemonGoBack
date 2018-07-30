@@ -22,7 +22,7 @@ function startDefinedGame() {
 
 function startEnvolveGame() {
 	logger = new GameConsole();
-	user = new Player(Deck_Heal, false);
+	user = new Player(Deck_Envolve, false);
 	ai = new Player(null, true);
 
 	startGame();
@@ -143,19 +143,19 @@ function applyAbility(id, isAi, abilityIndex) {
 }
 
 function chooseCard(player) {
-	let prompt = "";
+	let promptInfo = "";
 	for (let item of player.matCollection) {
 		if (item.cardType == Card_Type.pokemon) {
-			prompt += (item.id + ":" + item.cardName + ";");
+			promptInfo += (item.id + ":" + item.cardName + ";");
 		}
 	}
 	for (let item of player.benchCollection) {
 		if (item.cardType == Card_Type.pokemon) {
-			prompt += (item.id + ":" + item.cardName);
+			promptInfo += (item.id + ":" + item.cardName);
 		}
 	}
 
-	let res = prompt("Choose your target: " + prompt, "");
+	let res = prompt("Choose your target: " + promptInfo + "");
 
 	if (isNaN(res)) {
 		return null;
