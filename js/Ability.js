@@ -299,7 +299,7 @@ function useAbility(sourceCard, abilityIndex) {
 			break;
 		case 24:
 			//Random Spark:dam:target:choice:opponent:30
-			DamCardChoose(opponent, 30);
+			damCardChoose(opponent, 30);
 			break;
 		case 25:
 			//Bite:dam:target:opponent-active:40
@@ -342,7 +342,7 @@ function useAbility(sourceCard, abilityIndex) {
 			break;
 		case 34:
 			//Pokémon Center Lady:heal:target:choice:your:60,destat:target:last
-			healCardChoose(you, 60);
+			destat(healCardChoose(you, 60));
 			//TODO
 			break;
 		case 35:
@@ -438,7 +438,7 @@ function useAbility(sourceCard, abilityIndex) {
 			break;
 		case 52:
 			//Mine:search:target:opponent:source:deck:filter:top:1:0,cond:choice:shuffle:target:opponent
-			chooseFromDeckAndShuffle(opponent,1,0,1);
+			chooseFromDeckAndShuffle(opponent, 1, 0, 1);
 			break;
 		case 53:
 			//Mud Slap:dam:target:opponent-active:20
@@ -464,10 +464,10 @@ function useAbility(sourceCard, abilityIndex) {
 		case 58:
 			//Scavenge:cond:ability:deenergize:target:your-active:1:(search:target:your:source:discard:filter:cat:item:1)
 			//search[target]:[source]:[filter]:[amount]
-			if(deenergizeCard(you, 1)){
-				searchItemFromDiscard(you,1)
+			if (deenergizeCard(you, 1)) {
+				searchItemFromDiscard(you, 1)
 			}
-			
+
 			break;
 		case 59:
 			//Stretch Kick:dam:target:choice:opponent-bench:30
@@ -512,35 +512,44 @@ function useAbility(sourceCard, abilityIndex) {
 			//Floral Crown:add:target:your:trigger:opponent:turn-end:(heal:target:self:20)
 			//simplify--->heal your active 20
 			// TODO
-			healCard(you,20);
+			healCard(you, 20);
 			break;
 		case 68:
 			//Poké Ball:cond:flip:search:target:your:source:deck:filter:pokemon:1
 			if (flipCoin()) {
-				searchPokemonFromDeck(you,1);
+				searchPokemonFromDeck(you, 1);
 			}
 			break;
 		case 69:
 			//Shauna:deck:target:your:destination:deck:count(your-hand),shuffle:target:your,draw:5
-			if(shuffleAllHandcard(you)){
-				drawCard(you,5);
+			if (shuffleAllHandcard(you)) {
+				drawCard(you, 5);
 			}
 			break;
 		case 70:
 			//Pokémon Fan Club:search:target:your:source:deck:filter:pokemon:cat:basic:2,shuffle:target:your
-			// TODO
+			searchfromDeck(your, 2);
 			break;
 		case 71:
 			//Switch:swap:source:your-active:destination:choice:your-bench
-			// TODO
+			let card = chooseCard(player.benchCollection);
+			player.benchCollection.pull(card);
+			player.benchCollection.push(player.currentPokemon);
+			player.currentPokemon = card;
 			break;
 		case 72:
 			//Energy Switch:reenergize:target:choice:your:1:target:choice:your:1
-			// TODO
+			reenergize(player, 1);
 			break;
 		case 73:
 			//Red Card:deck:target:opponent:destination:deck:count(opponent-hand),shuffle:target:opponent,draw:opponent:4
-			// TODO
+			for (let card of opponent.handCollection) {
+				opponent.deckCollection.push(card);
+				let index = opponent.handCollection.indexOf(card);
+				opponent.handCollection.splice(index, 1);
+			}
+			shuffle(opponent.deckCollection);
+			drawCard(opponent, 4);
 			break;
 		case 74:
 			//Wally:search:target:choice:your-pokemon:cat:basic:source:deck:filter:evolves-from:target:last:1,shuffle:target:your
@@ -583,12 +592,21 @@ function damCard(player, damHp) {
 		removeFromArray(player.matCollection, player.currentPokemon);
 		player.discardCollection.push(player.currentPokemon);
 		player.currentPokemon = null;
+		if (player.isAi) {
+			let card = user.prizeCollection.pop();
+			logger.logBattle("Collect Prize Card: " + card.cardName);
+			user.handCollection.push(card);
+		} else {
+			let card = ai.prizeCollection.pop();
+			logger.logBattle("Collect Prize Card: " + card.cardName);
+			ai.handCollection.push(card);
+		}
 		return false;
 	}
 
 	return true;
 }
-function DamCardChoose(player, damHp) {
+function damCardChoose(player, damHp) {
 	let pokemon = chooseCard(player);
 	let before = pokemon.currentHp;
 
@@ -597,10 +615,18 @@ function DamCardChoose(player, damHp) {
 		pokemon.currentHp -= damHp;
 		if (pokemon.currentHp <= 0) {
 			logger.logBattle(pokemon.cardName + " is dead.. Move it to discard.");
-			//removeFromArray(player.matCollection, player.currentPokemon);
-			//player.discardCollection.push(player.currentPokemon);
-			//player.currentPokemon = null;
-			//TODO move to discard
+			removeFromArray(player.matCollection, player.currentPokemon);
+			player.discardCollection.push(player.currentPokemon);
+			player.currentPokemon = null;
+			if (player.isAi) {
+				let card = user.prizeCollection.pop();
+				logger.logBattle("Collect Prize Card: " + card.cardName);
+				user.handCollection.push(card);
+			} else {
+				let card = ai.prizeCollection.pop();
+				logger.logBattle("Collect Prize Card: " + card.cardName);
+				ai.handCollection.push(card);
+			}
 		}
 	} else {
 		pokemon.damageAmount += damHp;
@@ -664,6 +690,7 @@ function healCardChoose(player, healHp) {
 	pokemon.healed = true;
 	pokemon.healAmount += after - before;
 	logger.logBattle(pokemon.cardName + "'s HP increased by " + healHp);
+	return pokemon;
 }
 
 function applyStatParalyzed(player) {
@@ -691,7 +718,6 @@ function applyStatAsleep(player) {
 }
 
 function deenergizeCard(player, amount) {
-	//TODO
 	if (amount >= (player.currentPokemon.currentEnergy + player.currentPokemon.currentColorLessEnergy)) {
 		player.currentPokemon.currentEnergy = 0;
 		player.currentPokemon.currentColorLessEnergy = 0;
@@ -744,6 +770,7 @@ function chooseHandCardDisCard(player, amount) {
 	}
 
 }
+
 function chooseFromDeckAndShuffle(player, amount, startindex, endindex) {
 	if (amount <= player.deckCollection.length) {
 		while (amount != 0) {
@@ -763,10 +790,7 @@ function chooseFromDeckAndShuffle(player, amount, startindex, endindex) {
 	}
 }
 function searchEnergyCardFromDeck(player, amount) {
-
-
 	for (let item of player.deckCollection) {
-
 		if (item.cardType == Card_Type.energy) {
 			player.handCollection.push(item);
 			removeFromArray(player.deckCollection, item);
@@ -775,7 +799,6 @@ function searchEnergyCardFromDeck(player, amount) {
 		if (amount == 0) {
 			break;
 		}
-
 	}
 	shuffle(player.deckCollection);
 }
@@ -798,14 +821,15 @@ function destat(player) {
 	player.currentPokemon.isPoisoned = false;
 	player.currentPokemon.isStuck = false;
 }
-function searchItemFromDiscard(player,amount){
+
+function searchItemFromDiscard(player, amount) {
 	for (let item of player.discardCollection) {
 
 		if (item.cardType == Card_Type.trainer) {
-			if(item.trainerType == Trainer_Type.item){
+			if (item.trainerType == Trainer_Type.item) {
 				player.handCollection.push(item);
 			}
-			
+
 			removeFromArray(player.discardCollection, item);
 			amount--;
 		}
@@ -814,10 +838,10 @@ function searchItemFromDiscard(player,amount){
 		}
 
 	}
-	
+
 }
 
-function searchPokemonFromDeck(player,amount){
+function searchPokemonFromDeck(player, amount) {
 	for (let item of player.deckCollection) {
 
 		if (item.cardType == Card_Type.pokemon) {
@@ -832,40 +856,67 @@ function searchPokemonFromDeck(player,amount){
 	}
 	shuffle(player.deckCollection);
 }
-function shuffleAllHandcard(player){
+
+function shuffleAllHandcard(player) {
 	let counter = player.handCollection.length;
-	while(counter !=0){
+	while (counter != 0) {
 		let card = player.handCollection.pop();
 		amount--;
 		if (card) {
 			player.deckCollection.push(card);
 		}
-		
+
 	}
 	shuffle(player.deckCollection);
 }
 
-function searchEnvolveFromDeck(player){
+function searchEnvolveFromDeck(player) {
 	let pokemonWaitEnvolve = player.currentPokemon;
-	if(pokemonWaitEnvolve != null){
+	if (pokemonWaitEnvolve != null) {
 		for (let stageOne of player.deckCollection) {
 
 			if (stageOne.cardBasic == pokemonWaitEnvolve.cardName) {
-				
+
 				removeFromArray(player.deckCollection, stageOne);
 				//TODO pokemonWaitEnvolve.Envolve
 				shuffle(player.deckCollection);
 				break;
-			}else{
+			} else {
 				logger.logWarning("No stageOne pokemon of active pokemon in deck.");
 				break;
 			}
-			
+
 		}
-	}else{
+	} else {
 		logger.logWarning("No active pokemon can be envolove.");
 		return false;
 	}
-	
+}
 
+function redamage(player, amount) {
+	let card1 = chooseCard(opponent);
+	let amount = card1.damageAmount;
+	card1.damageAmount -= amount;
+	card1.currentHp += amount;
+	let card2 = chooseCard(opponent);
+	card2.damageAmount += amount;
+	card2.currentHp -= amount;
+
+}
+
+function destat(card) {
+	card.isAsleep = false;
+	card.isParalyzed = false;
+	card.isPoisoned = false;
+	card.isStuck = false;
+}
+
+function reenergize(player,amount){
+	let card1 = chooseCard(you);
+	while(card1.currentColorLessEnergy<amount){
+			let card1 = chooseCard(you);
+	}
+		card1.currentColorLessEnergy-=amount;
+	let card2 = chooseCard(you);
+		card2.currentColorLessEnergy+=amounty;
 }
