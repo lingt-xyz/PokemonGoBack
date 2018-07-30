@@ -240,7 +240,7 @@ class Trainer extends Card {
     }
 
     useAbility(){
-        // TODO
+        useAbility(this, +(this.abilityIndex));
     }
 
     toConsole() {//"<div class='gamelog text-light'>[Info]: " + text + "</div>

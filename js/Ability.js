@@ -676,20 +676,20 @@ function healCard(player, healHp) {
 	let after = player.currentPokemon.currentHp;
 	player.currentPokemon.healed = true;
 	player.currentPokemon.healAmount += after - before;
-	logger.logBattle(player.currentPokemon.cardName + "'s HP increased by " + healHp);
+	logger.logBattle(player.currentPokemon.cardName + "'s HP increased by " + (after - before));
 }
 
 function healCardChoose(player, healHp) {
 	let pokemon = chooseCard(player);
 	let before = pokemon.currentHp;
 	pokemon.currentHp += healHp;
-	if (pokemonn.currentHp > pokemon.hp) {
+	if (pokemon.currentHp > pokemon.hp) {
 		pokemon.currentHp = pokemon.hp;
 	}
 	let after = pokemon.currentHp;
 	pokemon.healed = true;
 	pokemon.healAmount += after - before;
-	logger.logBattle(pokemon.cardName + "'s HP increased by " + healHp);
+	logger.logBattle(pokemon.cardName + "'s HP increased by " + (after - before));
 	return pokemon;
 }
 
