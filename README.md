@@ -75,7 +75,6 @@ $MySQL_P: MySQL password
 
 create a new branch [branch_name] on https://github.com/panda2ici/PokemonGoBack
 
-    ```
     git clone https://github.com/panda2ici/PokemonGoback.git
     git checkout master
 
@@ -90,7 +89,7 @@ create a new branch [branch_name] on https://github.com/panda2ici/PokemonGoBack
     git commit -m ''
 
     git push
-    ```
+    
 
 ## References:
 
