@@ -2,6 +2,7 @@ class Game {
 	constructor() {
 		this.coinHead = 0;
 		this.coinTail = 0;
+		this.isEnd = false;
 	}
 
 	// Pokemon, GoGoGo!
@@ -19,34 +20,69 @@ class Game {
 	}
 
 	aiPlayTurn() {
-		user.initPlayable();
-		if(user.isParalyzed){
-			user.isParalyzedCounter++;
+		if (game.isEnd) {
+
+		} else {
+			user.initPlayable();
+			if (user.isParalyzed) {
+				user.isParalyzedCounter++;
+			}
+			if (user.isStuck) {
+				user.isStuckCounter++;
+			}
+			currentPlayer = ai;
+			$("#endTurn").prop("disabled", true);
+			logger.logGeneral("AI's Turn.");
+			let temp = this;
+			ai.play();
+			setTimeout(function () {
+				temp.userPlayTurn();
+			}, 1000);
 		}
-		if(user.isStuck){
-			user.isStuckCounter++;
-		}
-		currentPlayer = ai;
-		$("#endTurn").prop("disabled", true);
-		logger.logGeneral("AI's Turn.");
-		let temp = this;
-		ai.play();
-		setTimeout(function () {
-			temp.userPlayTurn();
-		}, 1000);
 	}
 
 	userPlayTurn() {
-		ai.initPlayable();
-		if(ai.isParalyzed){
-			ai.isParalyzedCounter++;
+		if (game.isEnd) {
+
+		} else {
+			let hasPokemon = false;
+			for (let card of user.handCollection) {
+				if (card.cardType == Card_Type.pokemon) {
+					hasPokemon = true;
+				}
+			}
+			for (let card of user.benchCollection) {
+				if (card.cardType == Card_Type.pokemon) {
+					hasPokemon = true;
+				}
+			}
+			for (let card of user.matCollection) {
+				if (card.cardType == Card_Type.pokemon) {
+					hasPokemon = true;
+				}
+			}
+			for (let card of user.deckCollection) {
+				if (card.cardType == Card_Type.pokemon) {
+					hasPokemon = true;
+				}
+			}
+
+			if (hasPokemon) {
+				ai.initPlayable();
+				if (ai.isParalyzed) {
+					ai.isParalyzedCounter++;
+				}
+				if (ai.isStuck) {
+					ai.isStuckCounter++;
+				}
+				currentPlayer = user;
+				$("#endTurn").prop("disabled", false);
+				logger.logGeneral("User's Turn.");
+				user.play();
+			} else {
+				logger.logBattle("No more pokemon, you lost the game.");
+			}
+
 		}
-		if(ai.isStuck){
-			ai.isStuckCounter++;
-		}
-		currentPlayer = user;
-		$("#endTurn").prop("disabled", false);
-		logger.logGeneral("User's Turn.");
-		user.play();
 	}
 }

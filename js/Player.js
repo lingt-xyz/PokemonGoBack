@@ -279,6 +279,7 @@ class Player {
                         this.currentPokemon.showImage();
                     } else {
                         logger.logGeneral("No more pokemon, AI lose the Game ");
+                        game.isEnd = true;
                     }
                 }
 

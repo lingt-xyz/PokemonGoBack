@@ -117,7 +117,6 @@ function showDiscard() {
 	} else {
 		logger.logGeneral("Nothing to show.");
 	}
-
 }
 
 /**
