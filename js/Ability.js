@@ -573,7 +573,7 @@ function deckRandomCard(player) {
 
 function damCard(player, damHp) {
 	if (!player.currentPokemon) {
-		logger.logBattle("No avaliable target.");
+		logger.logWarning("No avaliable target.");
 		return false;
 	}
 
@@ -608,6 +608,10 @@ function damCard(player, damHp) {
 }
 function damCardChoose(player, damHp) {
 	let pokemon = chooseCard(player);
+	if (!pokemon) {
+		logger.logWarning("Invalide target.");
+		return false;
+	}
 	let before = pokemon.currentHp;
 
 	if (before < damHp) {
@@ -668,6 +672,10 @@ function damCardFlip(player, damHp) {
 }
 
 function healCard(player, healHp) {
+	if (!player.currentPokemon) {
+		logger.logWarning("No avaliable target.");
+		return false;
+	}
 	let before = player.currentPokemon.currentHp;
 	player.currentPokemon.currentHp += healHp;
 	if (player.currentPokemon.currentHp > player.currentPokemon.hp) {
@@ -681,6 +689,10 @@ function healCard(player, healHp) {
 
 function healCardChoose(player, healHp) {
 	let pokemon = chooseCard(player);
+	if (!pokemon) {
+		logger.logWarning("Invalide target.");
+		return false;
+	}
 	let before = pokemon.currentHp;
 	pokemon.currentHp += healHp;
 	if (pokemon.currentHp > pokemon.hp) {
@@ -694,7 +706,12 @@ function healCardChoose(player, healHp) {
 }
 
 function applyStatParalyzed(player) {
+	if (!player.currentPokemon) {
+		logger.logWarning("No avaliable target.");
+		return false;
+	}
 	player.currentPokemon.isParalyzed = true;
+	logger.logBattle(player.currentPokemon.cardName + " is paralyzed.");
 }
 
 function applyStatParalyzedFlip(player) {
@@ -706,32 +723,48 @@ function applyStatParalyzedFlip(player) {
 }
 
 function applyStatStuck(player) {
+	if (!player.currentPokemon) {
+		logger.logWarning("No avaliable target.");
+		return false;
+	}
 	player.currentPokemon.isStuck = true;
 }
 
 function applyStatPoisoned(player) {
+	if (!player.currentPokemon) {
+		logger.logWarning("No avaliable target.");
+		return false;
+	}
 	player.currentPokemon.isPoisoned = true;
 }
 
 function applyStatAsleep(player) {
+	if (!player.currentPokemon) {
+		logger.logWarning("No avaliable target.");
+		return false;
+	}
 	player.currentPokemon.isAsleep = true;
 }
 
 function deenergizeCard(player, amount) {
-	if (amount >= (player.currentPokemon.currentEnergy + player.currentPokemon.currentColorLessEnergy)) {
-		player.currentPokemon.currentEnergy = 0;
-		player.currentPokemon.currentColorLessEnergy = 0;
+	let pokemon = player.currentPokemon;
+	if (!pokemon) {
+		logger.logWarning("No avaliable target.");
+		return false;
 	}
-	else {
-		if (amount < player.currentPokemon.currentEnergy) {
-			player.currentPokemon.currentEnergy -= amount;
+	if (amount >= (pokemon.currentEnergy + pokemon.currentColorLessEnergy)) {
+		pokemon.currentEnergy = 0;
+		pokemon.currentColorLessEnergy = 0;
+		logger.logBattle(pokemon.cardName + "'s energy decreased by " + (pokemon.currentEnergy + pokemon.currentColorLessEnergy));
+	} else {
+		if (amount <= pokemon.currentEnergy) {
+			pokemon.currentEnergy -= amount;
+		} else {
+			pokemon.currentColorLessEnergy = (pokemon.currentEnergy + pokemon.currentColorLessEnergy - amount);
+			pokemon.currentEnergy = 0;
 		}
-		else {
-			player.currentPokemon.currentColorLessEnergy = (player.currentPokemon.currentEnergy - amount);
-			player.currentPokemon.currentEnergy = 0;
-		}
+		logger.logBattle(pokemon.cardName + "'s energy decreased by " + amount);
 	}
-
 }
 
 function deenergizeCardFlip(player, amount) {
@@ -789,6 +822,7 @@ function chooseFromDeckAndShuffle(player, amount, startindex, endindex) {
 		return false;
 	}
 }
+
 function searchEnergyCardFromDeck(player, amount) {
 	for (let item of player.deckCollection) {
 		if (item.cardType == Card_Type.energy) {
@@ -886,7 +920,6 @@ function searchEnvolveFromDeck(player) {
 				logger.logWarning("No stageOne pokemon of active pokemon in deck.");
 				break;
 			}
-
 		}
 	} else {
 		logger.logWarning("No active pokemon can be envolove.");
@@ -902,7 +935,6 @@ function redamage(player, amount) {
 	let card2 = chooseCard(opponent);
 	card2.damageAmount += amount;
 	card2.currentHp -= amount;
-
 }
 
 function destat(card) {
@@ -912,12 +944,27 @@ function destat(card) {
 	card.isStuck = false;
 }
 
-function reenergize(player,amount){
-	let card1 = chooseCard(you);
-	while(card1.currentColorLessEnergy<amount){
-			let card1 = chooseCard(you);
+function reenergize(player, amount) {
+	logger.logBattle("Please choose the source pokemon and target pokemon respectively.");
+	let source = chooseCard(you);
+	if (!source) {
+		logger.logWarning("Invalide source pokemon.");
+		return false;
 	}
-		card1.currentColorLessEnergy-=amount;
-	let card2 = chooseCard(you);
-		card2.currentColorLessEnergy+=amounty;
+
+	let target = chooseCard(you);
+	if (!target) {
+		logger.logWarning("Invalide target pokemon.");
+		return false;
+	}
+
+	if (source.currentColorLessEnergy < amount) {
+		source.currentColorLessEnergy -= amount;
+		target.currentColorLessEnergy += amounty;
+		logger.logBattle("Move " + amount + " engrgy from " + source.cardName + " to " + target.cardName);
+	} else {
+		target.currentColorLessEnergy += source.currentColorLessEnergy;
+		logger.logBattle("Move " + source.currentColorLessEnergy + " engrgy from " + source.cardName + " to " + target.cardName);
+		source.currentColorLessEnergy = 0;
+	}
 }
