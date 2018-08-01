@@ -870,7 +870,6 @@ function searchItemFromDiscard(player, amount) {
 			break;
 		}
 	}
-
 }
 
 function searchPokemonFromDeck(player, amount) {
