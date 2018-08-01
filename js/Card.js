@@ -91,6 +91,7 @@ class Pokemon extends Card {
             this.isStuck = false;
             this.isStuckCounter = 0;
         }
+        this.applyEnergy = false;
     }
 
     addEnergy(energy) {
