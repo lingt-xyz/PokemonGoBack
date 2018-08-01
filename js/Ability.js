@@ -976,13 +976,18 @@ function reenergize(player, amount) {
 		return false;
 	}
 
-	if (source.currentColorLessEnergy < amount) {
-		source.currentColorLessEnergy -= amount;
+	if ((source.currentEnergy + source.currentColorLessEnergy) < amount) {
+		source.currentEnergy = 0;
+		source.currentColorLessEnergy = 0;
+		target.currentColorLessEnergy += (source.currentEnergy + source.currentColorLessEnergy);
+		logger.logBattle("Move " + (source.currentEnergy + source.currentColorLessEnergy) + " engrgy from " + source.cardName + " to " + target.cardName);
+	} else if (source.currentColorLessEnergy < amount) {
+		source.currentEnergy = (source.currentEnergy + source.currentColorLessEnergy - amount);
 		target.currentColorLessEnergy += amount;
 		logger.logBattle("Move " + amount + " engrgy from " + source.cardName + " to " + target.cardName);
 	} else {
+		source.currentColorLessEnergy -= amount;
 		target.currentColorLessEnergy += source.currentColorLessEnergy;
-		logger.logBattle("Move " + source.currentColorLessEnergy + " engrgy from " + source.cardName + " to " + target.cardName);
-		source.currentColorLessEnergy = 0;
+		logger.logBattle("Move " + amount + " engrgy from " + source.cardName + " to " + target.cardName);
 	}
 }
