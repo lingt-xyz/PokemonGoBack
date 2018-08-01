@@ -606,6 +606,7 @@ function damCard(player, damHp) {
 
 	return true;
 }
+
 function damCardChoose(player, damHp) {
 	let pokemon = chooseCard(player);
 	if (!pokemon) {
@@ -848,13 +849,6 @@ function searchfromDeck(player, amount) {
 		}
 	}
 	shuffle(player.deckCollection);
-}
-
-function destat(player) {
-	player.currentPokemon.isAsleep = false;
-	player.currentPokemon.isParalyzed = false;
-	player.currentPokemon.isPoisoned = false;
-	player.currentPokemon.isStuck = false;
 }
 
 function searchItemFromDiscard(player, amount) {
