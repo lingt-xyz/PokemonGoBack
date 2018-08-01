@@ -532,14 +532,14 @@ function useAbility(sourceCard, abilityIndex) {
 			break;
 		case 71:
 			//Switch:swap:source:your-active:destination:choice:your-bench
-			let card = chooseCard(player.benchCollection);
-			player.benchCollection.pull(card);
-			player.benchCollection.push(player.currentPokemon);
-			player.currentPokemon = card;
+			let card = chooseCard(you.benchCollection);
+			you.benchCollection.pull(card);
+			you.benchCollection.push(you.currentPokemon);
+			you.currentPokemon = card;
 			break;
 		case 72:
 			//Energy Switch:reenergize:target:choice:your:1:target:choice:your:1
-			reenergize(player, 1);
+			reenergize(you, 1);
 			break;
 		case 73:
 			//Red Card:deck:target:opponent:destination:deck:count(opponent-hand),shuffle:target:opponent,draw:opponent:4
@@ -892,7 +892,6 @@ function shuffleAllHandcard(player) {
 		player.deckCollection.push(card);
 	}
 	player.handCollection = [];
-
 	shuffle(player.deckCollection);
 }
 
