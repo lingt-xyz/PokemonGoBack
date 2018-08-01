@@ -911,6 +911,7 @@ function searchEnvolveFromDeck(player) {
 		for (let card of player.deckCollection) {
 			if(card.cardType == Card_Type.pokemon){
 				if (card.cardBasic == pokemonWaitEnvolve.cardName) {
+					logger.logBattle(pokemonWaitEnvolve.cardName + " envolve to " + card.cardName + ".");
 					removeFromArray(player.deckCollection, card);
 					shuffle(player.deckCollection);
 					return;
