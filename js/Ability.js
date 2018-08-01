@@ -639,16 +639,16 @@ function damBench(player, damHp) {
 		if (card.cardType == Card_Type.pokemon) {
 			if (card.currentHp < damHp) {
 				card.damageAmount += card.currentHp;
-				looger.logBattle(card.cardName + "'s HP reduced by " + card.currentHp);
+				logger.logBattle(card.cardName + "'s HP reduced by " + card.currentHp);
 				card.currentHp = 0;
 			} else {
 				card.damageAmount += damHp;
 				card.currentHp -= damHp;
-				looger.logBattle(card.cardName + "'s HP reduced by " + damHp);
+				logger.logBattle(card.cardName + "'s HP reduced by " + damHp);
 			}
 
 			if (card.currentHp <= 0) {
-				looger.logBattle(card.cardName + " is dead.. Move it to discard.");
+				logger.logBattle(card.cardName + " is dead.. Move it to discard.");
 				removeFromArray(player.benchCollection, card);
 				player.discardCollection.push(card);
 			}
@@ -839,6 +839,7 @@ function searchEnergyCardFromDeck(player, amount) {
 			break;
 		}
 	}
+	logger.logBattle("Move energy cards and shuffle.");
 	shuffle(player.deckCollection);
 }
 
@@ -875,6 +876,7 @@ function searchItemFromDiscard(player, amount) {
 			break;
 		}
 	}
+	logger.logBattle("Move item cards from discard.");
 }
 
 function searchDeckFlip(player, amount) {
@@ -889,6 +891,7 @@ function searchDeckFlip(player, amount) {
 				break;
 			}
 		}
+		logger.logBattle("Move cards from deck and shuffle.");
 		shuffle(player.deckCollection);
 	} else {
 		logger.logBattle("So: cancel search deck.");
@@ -902,6 +905,7 @@ function shuffleAllHandcard(player) {
 	}
 	player.handCollection = [];
 	shuffle(player.deckCollection);
+	logger.logWarning("Shuffle all hand cards.");
 }
 
 function searchEnvolveFromDeck(player) {
@@ -957,7 +961,7 @@ function redamage(player, amount) {
 	logger.logBattle("Move " + amount + " damage from " + source.cardName + " to " + target.cardName + ".");
 	if (target.currentHp - amount <= 0) {
 		target.currentHp = 0;
-
+		logger.logBattle(target.cardName + " is dead.. Move it to discard.");
 		if (player.currentPokemon == target) {
 			player.currentPokemon = null;
 			removeFromArray(player.matCollection, target);
