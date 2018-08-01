@@ -908,21 +908,18 @@ function shuffleAllHandcard(player) {
 function searchEnvolveFromDeck(player) {
 	let pokemonWaitEnvolve = player.currentPokemon;
 	if (pokemonWaitEnvolve != null) {
-		for (let stageOne of player.deckCollection) {
-
-			if (stageOne.cardBasic == pokemonWaitEnvolve.cardName) {
-
-				removeFromArray(player.deckCollection, stageOne);
-				//TODO pokemonWaitEnvolve.Envolve
-				shuffle(player.deckCollection);
-				break;
-			} else {
-				logger.logWarning("No stageOne pokemon of active pokemon in deck.");
-				break;
-			}
+		for (let card of player.deckCollection) {
+			if(card.cardType == Card_Type.pokemon){
+				if (card.cardBasic == pokemonWaitEnvolve.cardName) {
+					removeFromArray(player.deckCollection, card);
+					shuffle(player.deckCollection);
+					return;
+				}
+			}	
 		}
+		logger.logWarning("No stageOne pokemon of active pokemon in deck.");
 	} else {
-		logger.logWarning("No active pokemon can be envolove.");
+		logger.logWarning("No active pokemon can be envolved.");
 		return false;
 	}
 }
@@ -938,6 +935,7 @@ function redamage(player, amount) {
 }
 
 function destat(card) {
+	logger.logBattle("Clear " + card.cardName + " abnormal status.");
 	card.isAsleep = false;
 	card.isParalyzed = false;
 	card.isPoisoned = false;
