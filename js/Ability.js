@@ -940,8 +940,21 @@ function redamage(player, amount) {
 	}
 
 	logger.logBattle("Move " + amount + " damage from " + source.cardName + " to " + target.cardName + ".");
-	if (target.currentHp - amount < 0) {
+	if (target.currentHp - amount <= 0) {
 		target.currentHp = 0;
+
+		if(player.currentPokemon == target){
+			player.currentPokemon = null;
+			removeFromArray(player.matCollection, target);
+			player.discardCollection.push(target);
+		}else{
+			for (let card of player.benchCollection) {
+				if (card.cardType == Card_Type.pokemon && card == target) {
+					removeFromArray(player.deckCollection, target);
+					player.discardCollection.push(target);
+				}
+			}
+		}
 	} else {
 		target.currentHp -= amount;
 	}
