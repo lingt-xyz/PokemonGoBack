@@ -896,7 +896,7 @@ function shuffleAllHandcard(player) {
 	let counter = player.handCollection.length;
 	while (counter != 0) {
 		let card = player.handCollection.pop();
-		amount--;
+		counter--;
 		if (card) {
 			player.deckCollection.push(card);
 		}
@@ -909,7 +909,7 @@ function searchEnvolveFromDeck(player) {
 	let pokemonWaitEnvolve = player.currentPokemon;
 	if (pokemonWaitEnvolve != null) {
 		for (let card of player.deckCollection) {
-			if(card.cardType == Card_Type.pokemon){
+			if (card.cardType == Card_Type.pokemon) {
 				if (card.cardBasic == pokemonWaitEnvolve.cardName) {
 					logger.logBattle(pokemonWaitEnvolve.cardName + " envolve to " + card.cardName + ".");
 					removeFromArray(player.matCollection, pokemonWaitEnvolve);
@@ -919,7 +919,7 @@ function searchEnvolveFromDeck(player) {
 					shuffle(player.deckCollection);
 					return;
 				}
-			}	
+			}
 		}
 		logger.logWarning("No stageOne pokemon of active pokemon in deck.");
 	} else {
@@ -929,13 +929,39 @@ function searchEnvolveFromDeck(player) {
 }
 
 function redamage(player, amount) {
-	let card1 = chooseCard(opponent);
-	let amount = card1.damageAmount;
-	card1.damageAmount -= amount;
-	card1.currentHp += amount;
-	let card2 = chooseCard(opponent);
-	card2.damageAmount += amount;
-	card2.currentHp -= amount;
+	let source = chooseCard(opponent);
+	let target = chooseCard(opponent);
+
+	if (!source) {
+		logger.logWarning("Invalide source pokemon.");
+		return false;
+	}
+
+	let target = chooseCard(you);
+	if (!target) {
+		logger.logWarning("Invalide target pokemon.");
+		return false;
+	}
+
+	if (source.damageAmount <= amount) {
+		amount = source.damageAmount;
+		source.damageAmount = 0;
+	} else {
+		source.damageAmount -= amount;
+	}
+
+	if (source.currentHp + amount > source.hp) {
+		source.currentHp = source.hp;
+	} else {
+		source.currentHp += amount;
+	}
+
+	logger.logBattle("Move " + amount + " damage from " + source.cardName + " to " + target.cardName + ".");
+	if (target.currentHp - amount < 0) {
+		target.currentHp = 0;
+	} else {
+		target.currentHp -= amount;
+	}
 }
 
 function destat(card) {
