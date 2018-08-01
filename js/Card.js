@@ -79,15 +79,15 @@ class Pokemon extends Card {
         this.isPoisoned = false;
     }
 
-    refreshState(){
-        if(this.isParalyzedCounter){
+    refreshState() {
+        if (this.isParalyzedCounter) {
             this.isParalyzed = false;
             this.isParalyzedCounter = 0;
         }
-        if(getRandom(1)){
+        if (getRandom(1)) {
             this.isAsleep = false;
         }
-        if(this.isStuckCounter){
+        if (this.isStuckCounter) {
             this.isStuck = false;
             this.isStuckCounter = 0;
         }
@@ -105,20 +105,23 @@ class Pokemon extends Card {
     sufficientEnergy(abilityIndex) {
         for (let element of this.attacks) {
             if (element.length == 3 && element[2] == abilityIndex) {
-                // TODO check only colorless
-                if (element[0] == this.property) {
-                    if (this.currentEnergy >= element[1]) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                } else {// only need colorless energy
-                    if (this.currentColorLessEnergy >= element[1]) {
-                        return true;
-                    } else if ((this.currentColorLessEnergy + this.currentEnergy) >= element[1]) {
-                        return true;
-                    } else {
-                        return false;
+                if (this.property == "colorless") {
+                    return (this.currentEnergy + this.currentColorLessEnergy) >= element[1];
+                } else {
+                    if (element[0] == this.property) {
+                        if (this.currentEnergy >= element[1]) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    } else {// only need colorless energy
+                        if (this.currentColorLessEnergy >= element[1]) {
+                            return true;
+                        } else if ((this.currentColorLessEnergy + this.currentEnergy) >= element[1]) {
+                            return true;
+                        } else {
+                            return false;
+                        }
                     }
                 }
             } else if (element.length == 5 && element[4] == abilityIndex) {
@@ -145,15 +148,7 @@ class Pokemon extends Card {
     consumeEnergy(abilityIndex) {
         for (let element of this.attacks) {
             if (element.length == 3 && element[2] == abilityIndex) {
-                // TODO check only colorless
-                if (element[0] == this.property) {
-                    if (this.currentEnergy >= element[1]) {
-                        this.currentEnergy -= element[1];
-                        return true;
-                    } else {
-                        return false;
-                    }
-                } else {// only need colorless energy
+                if (this.property == "colorless") {// only need colorless energy
                     if (this.currentColorLessEnergy >= element[1]) {
                         this.currentColorLessEnergy -= element[1];
                         return true;
@@ -162,6 +157,25 @@ class Pokemon extends Card {
                         return true;
                     } else {
                         return false;
+                    }
+                } else {
+                    if (element[0] == this.property) {
+                        if (this.currentEnergy >= element[1]) {
+                            this.currentEnergy -= element[1];
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    } else {// only need colorless energy
+                        if (this.currentColorLessEnergy >= element[1]) {
+                            this.currentColorLessEnergy -= element[1];
+                            return true;
+                        } else if ((this.currentColorLessEnergy + this.currentEnergy) >= element[1]) {
+                            this.currentEnergy = (this.currentEnergy + this.currentColorLessEnergy - element[1]);
+                            return true;
+                        } else {
+                            return false;
+                        }
                     }
                 }
             } else if (element.length == 5 && element[4] == abilityIndex) {
@@ -212,9 +226,9 @@ class Pokemon extends Card {
         if (this.isPoisoned) {
             states += "Poisoned,"
         }
-        if(states){
+        if (states) {
             states = states.substr(0, states.length - 1);
-        }else{
+        } else {
             states = "None";
         }
 
@@ -240,7 +254,7 @@ class Trainer extends Card {
         this.abilityIndex = abilityIndex;
     }
 
-    useAbility(){
+    useAbility() {
         useAbility(this, +(this.abilityIndex));
     }
 

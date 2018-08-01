@@ -723,6 +723,7 @@ function applyStatStuck(player) {
 		return false;
 	}
 	player.currentPokemon.isStuck = true;
+	logger.logBattle(player.currentPokemon.cardName + " is stuck.");
 }
 
 function applyStatPoisoned(player) {
@@ -731,6 +732,7 @@ function applyStatPoisoned(player) {
 		return false;
 	}
 	player.currentPokemon.isPoisoned = true;
+	logger.logBattle(player.currentPokemon.cardName + " is poisoned.");
 }
 
 function applyStatAsleep(player) {
@@ -739,6 +741,7 @@ function applyStatAsleep(player) {
 		return false;
 	}
 	player.currentPokemon.isAsleep = true;
+	logger.logBattle(player.currentPokemon.cardName + " is asleep.");
 }
 
 function deenergizeCard(player, amount) {
