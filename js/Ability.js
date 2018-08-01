@@ -912,7 +912,10 @@ function searchEnvolveFromDeck(player) {
 			if(card.cardType == Card_Type.pokemon){
 				if (card.cardBasic == pokemonWaitEnvolve.cardName) {
 					logger.logBattle(pokemonWaitEnvolve.cardName + " envolve to " + card.cardName + ".");
+					removeFromArray(player.matCollection, pokemonWaitEnvolve);
 					removeFromArray(player.deckCollection, card);
+					player.matCollection.push(card);
+					player.currentPokemon = card;
 					shuffle(player.deckCollection);
 					return;
 				}
