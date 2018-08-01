@@ -787,21 +787,27 @@ function drawCard(player, amount) {
 }
 
 function chooseHandCardDisCard(player, amount) {
-	if (amount <= player.handCollection.length) {
-		while (amount != 0) {
-			let choosedCard = chooseHandCard(player);
-			let index = player.handCollection.indexOf(choosedCard);
-			let card = player.handCollection.slice(index, index + 1);
-			amount--;
-			if (card) {
-				player.discardCollection.push(card);
+	let result = confirm("Would you want to switch a card from your deck?");
+	if (result) {
+		if (amount <= player.handCollection.length) {
+			while (amount != 0) {
+				let choosedCard = chooseHandCard(player);
+				amount--;
+				if (choosedCard) {
+					removeFromArray(player.handCollection, choosedCard);
+					player.discardCollection.push(choosedCard);
+				}
 			}
+			return true;
+		} else {
+			logger.logWarning("Do not have enought cards to discard");
+			return false;
 		}
-		return true;
 	} else {
-		logger.logWarning("Do not have enought cards to discard");
+		logger.logBattle("So: cancel switch.");
 		return false;
 	}
+
 
 }
 
