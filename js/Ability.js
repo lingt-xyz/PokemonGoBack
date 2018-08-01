@@ -883,7 +883,7 @@ function searchPokemonFromDeck(player, amount) {
 
 function shuffleAllHandcard(player) {
 	for (let item of player.handCollection) {
-		player.deckCollection.push(card);
+		player.deckCollection.push(item);
 	}
 	player.handCollection = [];
 	shuffle(player.deckCollection);
