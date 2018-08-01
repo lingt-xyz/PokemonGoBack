@@ -511,14 +511,11 @@ function useAbility(sourceCard, abilityIndex) {
 		case 67:
 			//Floral Crown:add:target:your:trigger:opponent:turn-end:(heal:target:self:20)
 			//simplify--->heal your active 20
-			// TODO
 			healCard(you, 20);
 			break;
 		case 68:
 			//Poké Ball:cond:flip:search:target:your:source:deck:filter:pokemon:1
-			if (flipCoin()) {
-				searchPokemonFromDeck(you, 1);
-			}
+			searchDeckFlip(you, 1);
 			break;
 		case 69:
 			//Shauna:deck:target:your:destination:deck:count(your-hand),shuffle:target:your,draw:5
@@ -807,8 +804,6 @@ function chooseHandCardDisCard(player, amount) {
 		logger.logBattle("So: cancel switch.");
 		return false;
 	}
-
-
 }
 
 function chooseFromDeckAndShuffle(player, amount, startindex, endindex) {
@@ -822,10 +817,10 @@ function chooseFromDeckAndShuffle(player, amount, startindex, endindex) {
 			amount--;
 		}
 		shuffle(player.deckCollection);
+		logger.logBattle("Choose from Deck and shuffle.");
 		return ture;
-
 	} else {
-		logger.logWarning("Do not have enought cards ind Deck");
+		logger.logWarning("Do not have enought cards in Deck");
 		return false;
 	}
 }
@@ -879,18 +874,23 @@ function searchItemFromDiscard(player, amount) {
 	}
 }
 
-function searchPokemonFromDeck(player, amount) {
-	for (let item of player.deckCollection) {
-		if (item.cardType == Card_Type.pokemon) {
-			player.handCollection.push(item);
-			removeFromArray(player.deckCollection, item);
-			amount--;
+function searchDeckFlip(player, amount) {
+	if (flipCoin()) {
+		for (let item of player.deckCollection) {
+			if (item.cardType == Card_Type.pokemon) {
+				player.handCollection.push(item);
+				removeFromArray(player.deckCollection, item);
+				amount--;
+			}
+			if (amount == 0) {
+				break;
+			}
 		}
-		if (amount == 0) {
-			break;
-		}
-	}
-	shuffle(player.deckCollection);
+		shuffle(player.deckCollection);
+	} else {
+		logger.logBattle("So: cancel search deck.");
+		return true;
+	}	
 }
 
 function shuffleAllHandcard(player) {
