@@ -182,6 +182,31 @@ function chooseCard(player) {
 	}
 }
 
+function chooseBenchCard(player) {
+	let promptInfo = "";
+	
+	for (let item of player.benchCollection) {
+		if (item.cardType == Card_Type.pokemon) {
+			promptInfo += (item.id + ":" + item.cardName);
+		}
+	}
+
+	let res = prompt("Choose your target: " + promptInfo + "");
+
+	if (isNaN(res)) {
+		return null;
+	} else {
+		for (let item of player.benchCollection) {
+			if (item.cardType == Card_Type.pokemon) {
+				if (item.id == res) {
+					return item;
+				}
+			}
+		}
+		return null;
+	}
+}
+
 function chooseHandCard(player) {
 	let promptInfo = "";
 

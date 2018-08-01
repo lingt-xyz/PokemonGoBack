@@ -532,10 +532,7 @@ function useAbility(sourceCard, abilityIndex) {
 			break;
 		case 71:
 			//Switch:swap:source:your-active:destination:choice:your-bench
-			let card = chooseCard(you.benchCollection);
-			you.benchCollection.pull(card);
-			you.benchCollection.push(you.currentPokemon);
-			you.currentPokemon = card;
+			switchPokemon(you);
 			break;
 		case 72:
 			//Energy Switch:reenergize:target:choice:your:1:target:choice:your:1
@@ -943,11 +940,11 @@ function redamage(player, amount) {
 	if (target.currentHp - amount <= 0) {
 		target.currentHp = 0;
 
-		if(player.currentPokemon == target){
+		if (player.currentPokemon == target) {
 			player.currentPokemon = null;
 			removeFromArray(player.matCollection, target);
 			player.discardCollection.push(target);
-		}else{
+		} else {
 			for (let card of player.benchCollection) {
 				if (card.cardType == Card_Type.pokemon && card == target) {
 					removeFromArray(player.deckCollection, target);
@@ -996,4 +993,16 @@ function reenergize(player, amount) {
 		target.currentColorLessEnergy += source.currentColorLessEnergy;
 		logger.logBattle("Move " + amount + " engrgy from " + source.cardName + " to " + target.cardName);
 	}
+}
+
+function switchPokemon(player) {
+	let card = chooseBenchCard(player);
+	if (!card) {
+		logger.logWarning("Invalide source pokemon.");
+		return false;
+	}
+	removeFromArray(player.matCollection, player.currentPokemon);
+	player.benchCollection.push(player.currentPokemon);
+	player.matCollection.push(card);
+	player.currentPokemon = card;
 }
