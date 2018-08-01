@@ -845,15 +845,22 @@ function searchEnergyCardFromDeck(player, amount) {
 }
 
 function searchfromDeck(player, amount) {
-	logger.logBattle("Shuffle deck, then pick up one card from the deck.");
 	shuffle(player.deckCollection);//shuffle first to make the card will be picked randomly from you deck
-	while (amount != 0) {
-		let card = player.deckCollection.pop();
-		amount--;
-		if (card) {
+
+	let should = amount;
+	let i = player.deckCollection.length;
+	while (i--) {
+		let card = player.deckCollection[i];
+		if (card.cardType == Card_Type.pokemon) {
 			player.handCollection.push(card);
+			player.deckCollection.splice(i, 1);
+			amount--;
+			if (amount == 0) {
+				break;
+			}
 		}
 	}
+	logger.logBattle("Shuffle deck, then pick up " + (should - amount) + " card from the deck.");
 	shuffle(player.deckCollection);
 }
 
