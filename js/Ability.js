@@ -774,13 +774,16 @@ function deenergizeCardFlip(player, amount) {
 }
 
 function drawCard(player, amount) {
+	let counter = 0;
 	while (amount != 0) {
 		let card = player.deckCollection.pop();
 		amount--;
 		if (card) {
+			counter++;
 			player.handCollection.push(card);
 		}
 	}
+	logger.logBattle("Draw " + counter + " cards.");
 }
 
 function chooseHandCardDisCard(player, amount) {
@@ -1002,6 +1005,7 @@ function switchPokemon(player) {
 		return false;
 	}
 	removeFromArray(player.matCollection, player.currentPokemon);
+	removeFromArray(player.benchCollection, card);
 	player.benchCollection.push(player.currentPokemon);
 	player.matCollection.push(card);
 	player.currentPokemon = card;
