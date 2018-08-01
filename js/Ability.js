@@ -859,26 +859,22 @@ function destat(player) {
 
 function searchItemFromDiscard(player, amount) {
 	for (let item of player.discardCollection) {
-
 		if (item.cardType == Card_Type.trainer) {
 			if (item.trainerType == Trainer_Type.item) {
 				player.handCollection.push(item);
 			}
-
 			removeFromArray(player.discardCollection, item);
 			amount--;
 		}
 		if (amount == 0) {
 			break;
 		}
-
 	}
 
 }
 
 function searchPokemonFromDeck(player, amount) {
 	for (let item of player.deckCollection) {
-
 		if (item.cardType == Card_Type.pokemon) {
 			player.handCollection.push(item);
 			removeFromArray(player.deckCollection, item);
@@ -887,21 +883,16 @@ function searchPokemonFromDeck(player, amount) {
 		if (amount == 0) {
 			break;
 		}
-
 	}
 	shuffle(player.deckCollection);
 }
 
 function shuffleAllHandcard(player) {
-	let counter = player.handCollection.length;
-	while (counter != 0) {
-		let card = player.handCollection.pop();
-		counter--;
-		if (card) {
-			player.deckCollection.push(card);
-		}
-
+	for (let item of player.handCollection) {
+		player.deckCollection.push(card);
 	}
+	player.handCollection = [];
+
 	shuffle(player.deckCollection);
 }
 
@@ -974,13 +965,13 @@ function destat(card) {
 
 function reenergize(player, amount) {
 	logger.logBattle("Please choose the source pokemon and target pokemon respectively.");
-	let source = chooseCard(you);
+	let source = chooseCard(player);
 	if (!source) {
 		logger.logWarning("Invalide source pokemon.");
 		return false;
 	}
 
-	let target = chooseCard(you);
+	let target = chooseCard(player);
 	if (!target) {
 		logger.logWarning("Invalide target pokemon.");
 		return false;
