@@ -804,6 +804,7 @@ function searchEnergyCardFromDeck(player, amount) {
 }
 
 function searchfromDeck(player, amount) {
+	logger.logBattle("Shuffle deck, then pick up one card from the deck.");
 	shuffle(player.deckCollection);//shuffle first to make the card will be picked randomly from you deck
 	while (amount != 0) {
 		let card = player.deckCollection.pop();
