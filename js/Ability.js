@@ -528,7 +528,7 @@ function useAbility(sourceCard, abilityIndex) {
 			break;
 		case 70:
 			//Pokémon Fan Club:search:target:your:source:deck:filter:pokemon:cat:basic:2,shuffle:target:your
-			searchfromDeck(your, 2);
+			searchfromDeck(you, 2);
 			break;
 		case 71:
 			//Switch:swap:source:your-active:destination:choice:your-bench
