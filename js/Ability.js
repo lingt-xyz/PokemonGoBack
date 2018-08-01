@@ -920,15 +920,14 @@ function searchEnvolveFromDeck(player) {
 }
 
 function redamage(player, amount) {
-	let source = chooseCard(opponent);
-	let target = chooseCard(opponent);
+	let source = chooseCard(player);
+	let target = chooseCard(player);
 
 	if (!source) {
 		logger.logWarning("Invalide source pokemon.");
 		return false;
 	}
 
-	let target = chooseCard(you);
 	if (!target) {
 		logger.logWarning("Invalide target pokemon.");
 		return false;
@@ -979,7 +978,7 @@ function reenergize(player, amount) {
 
 	if (source.currentColorLessEnergy < amount) {
 		source.currentColorLessEnergy -= amount;
-		target.currentColorLessEnergy += amounty;
+		target.currentColorLessEnergy += amount;
 		logger.logBattle("Move " + amount + " engrgy from " + source.cardName + " to " + target.cardName);
 	} else {
 		target.currentColorLessEnergy += source.currentColorLessEnergy;
