@@ -351,7 +351,7 @@ function useAbility(sourceCard, abilityIndex) {
 			break;
 		case 36:
 			//Ear Influence:redamage:source:choice:opponent:destination:opponent:count(target:last:source:damage)
-			redamage(opponent,);
+			//redamage(opponent,);
 			break;
 		case 37:
 			//Psychic:dam:target:opponent-active:60,dam:target:opponent-active:count(target:opponent-active:energy)*10
@@ -746,6 +746,12 @@ function applyStatAsleep(player) {
 }
 
 function deenergizeCard(player, amount) {
+	let m_player = "";
+	if(player.isAi){
+		m_player = "Ai";
+	}else{
+		m_player ="Player"
+	}
 	let pokemon = player.currentPokemon;
 	if (!pokemon) {
 		logger.logWarning("No avaliable target.");
@@ -754,7 +760,7 @@ function deenergizeCard(player, amount) {
 	if (amount >= (pokemon.currentEnergy + pokemon.currentColorLessEnergy)) {
 		pokemon.currentEnergy = 0;
 		pokemon.currentColorLessEnergy = 0;
-		logger.logBattle(pokemon.cardName + "'s energy decreased by " + (pokemon.currentEnergy + pokemon.currentColorLessEnergy));
+		logger.logBattle(m_player + "'s "+ pokemon.cardName + "'s energy decreased by " + (pokemon.currentEnergy + pokemon.currentColorLessEnergy));
 		return true;
 	} else {
 		if (amount <= pokemon.currentEnergy) {
@@ -763,7 +769,7 @@ function deenergizeCard(player, amount) {
 			pokemon.currentColorLessEnergy = (pokemon.currentEnergy + pokemon.currentColorLessEnergy - amount);
 			pokemon.currentEnergy = 0;
 		}
-		logger.logBattle(pokemon.cardName + "'s energy decreased by " + amount);
+		logger.logBattle(m_player + "'s "+ pokemon.cardName + "'s energy decreased by " + amount);
 		return true;
 	}
 }
@@ -839,6 +845,7 @@ function chooseFromDeckAndShuffle(player, amount, startindex, endindex) {
 }
 
 function searchEnergyCardFromDeck(player, amount) {
+	let num = amount;
 	for (let item of player.deckCollection) {
 		if (item.cardType == Card_Type.energy) {
 			player.handCollection.push(item);
@@ -849,7 +856,15 @@ function searchEnergyCardFromDeck(player, amount) {
 			break;
 		}
 	}
-	logger.logBattle("Move energy cards and shuffle.");
+	
+	let str = "";
+	if(player.isAi){
+		str = "Ai moves";
+	}else{
+		str = "Player move"
+	}
+	str+= num+ " energy cards from deck"
+	logger.logBattle(str);
 	shuffle(player.deckCollection);
 }
 
