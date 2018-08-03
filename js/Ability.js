@@ -351,7 +351,7 @@ function useAbility(sourceCard, abilityIndex) {
 			break;
 		case 36:
 			//Ear Influence:redamage:source:choice:opponent:destination:opponent:count(target:last:source:damage)
-			redamage(opponent,);
+			redamage(opponent);
 			break;
 		case 37:
 			//Psychic:dam:target:opponent-active:60,dam:target:opponent-active:count(target:opponent-active:energy)*10
@@ -398,7 +398,7 @@ function useAbility(sourceCard, abilityIndex) {
 			//Double Stab:cond:flip:dam:target:opponent-active:10,cond:flip:dam:target:opponent-active:10
 			damCardFlip(opponent, 10);
 			damCardFlip(opponent, 10);
-			
+
 			break;
 		case 45:
 			//Doduo Delivery:draw:2
@@ -823,11 +823,11 @@ function chooseFromDeckAndShuffle(player, amount, startindex, endindex) {
 			amount--;
 		}
 		shuffle(player.deckCollection);
-		let num = amount +1;
-		let str ="";
-		if(player.isAi){
+		let num = amount + 1;
+		let str = "";
+		if (player.isAi) {
 			str = "Choose " + num + "card from AI's Deck and shuffle";
-		}else{
+		} else {
 			str = "Choose " + num + "card from Player's Deck and shuffle";
 		}
 		logger.logBattle(str);
@@ -882,14 +882,14 @@ function searchItemFromDiscard(player, amount) {
 				logger.logBattle("Move item cards from discard.");
 				removeFromArray(player.discardCollection, item);
 				amount--;
-			} 
-			
+			}
+
 		}
 		if (amount == 0) {
 			break;
 		}
 	}
-	if(amount != 0){
+	if (amount != 0) {
 		logger.logWarning("No item card in discard");
 	}
 
@@ -946,9 +946,12 @@ function searchEnvolveFromDeck(player) {
 		return false;
 	}
 }
-//TODO, CHOOSE 
-function redamage(player, amount) {
+
+function redamage(player) {
+	logger.logBattle("Choose the card you are going to transfer damage from.");
 	let source = chooseCard(player);
+
+	logger.logBattle("Choose the card you are going to transfer damage to.");
 	let target = chooseCard(player);
 
 	if (!source) {
@@ -959,6 +962,20 @@ function redamage(player, amount) {
 	if (!target) {
 		logger.logWarning("Invalide target pokemon.");
 		return false;
+	}
+
+	let amount = prompt("Choose the damage you would like to transfer (0 - +" + source.damageAmount + "): ");
+
+	if (isNaN(amount)) {
+		logger.logWarning("Invalide input.");
+		return false;
+	} else {
+		if(amount <= source.damageAmount && amount >=0){
+
+		}else{
+			logger.logWarning("Invalide input.");
+			return false;
+		}
 	}
 
 	if (source.damageAmount <= amount) {
