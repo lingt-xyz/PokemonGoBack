@@ -1,12 +1,9 @@
 ## PokemonGoBack
 
-http://dumblev3.encs.concordia.ca/
-
 http://dumblev3.encs.concordia.ca/test.html
 
 http://dumblev3.encs.concordia.ca/index.html
 
-http://dumblev3.encs.concordia.ca/info.php
 
 http://dumblev3.encs.concordia.ca/phpmyadmin
 
