@@ -591,10 +591,12 @@ function damCard(player, damHp) {
 			let card = user.prizeCollection.pop();
 			logger.logBattle("Collect Prize Card: " + card.cardName);
 			user.handCollection.push(card);
+			user.cardCollection.push(card);
 		} else {
 			let card = ai.prizeCollection.pop();
 			logger.logBattle("Collect Prize Card: " + card.cardName);
 			ai.handCollection.push(card);
+			ai.cardCollection.push(card);
 		}
 		return false;
 	}
@@ -622,10 +624,12 @@ function damCardChoose(player, damHp) {
 				let card = user.prizeCollection.pop();
 				logger.logBattle("Collect Prize Card: " + card.cardName);
 				user.handCollection.push(card);
+				user.cardCollection.push(card);
 			} else {
 				let card = ai.prizeCollection.pop();
 				logger.logBattle("Collect Prize Card: " + card.cardName);
 				ai.handCollection.push(card);
+				ai.cardCollection.push(card);
 			}
 		}
 	} else {
