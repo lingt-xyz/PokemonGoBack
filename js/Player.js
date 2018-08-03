@@ -301,17 +301,7 @@ class Player {
             if (this == ai) {
                 let pokemon = this.matCollection.find(item => item.cardType == Card_Type.pokemon);
                 if (pokemon) {// there is a pokemon on mat
-                    let energy = null;
-                    if (energy = this.handCollection.find(item => item.cardType == Card_Type.energy)) {
-                        removeFromArray(this.handCollection, energy);
-                        this.matCollection.push(energy);
-                        setTimeout(function () {
-                            pokemon.addEnergy(energy);
-                            logger.logBattle("(AI) Apply Energy to Pokemon.");
-                            removeFromArray(ai.matCollection, energy);
-                            ai.discardCollection.push(energy);
-                        }, 500);
-                    }
+
                 } else {// pick a pokemon, put it on the mat
                     pokemon = this.handCollection.find(item => item.cardType == Card_Type.pokemon);
                     if (pokemon) {
@@ -322,29 +312,45 @@ class Player {
                     } else {
                         logger.logGeneral("No more pokemon, AI lost the Game.");
                         game.isEnd = true;
+                        return;
                     }
                 }
 
-                // attack
-                if (user.currentPokemon) {
-                    for (let element of this.currentPokemon.attacks) {
-                        let abilityIndex = 0;
-                        if (element.length == 3) {
-                            abilityIndex = +element[2];
+                let energy = null;
+                if (energy = this.handCollection.find(item => item.cardType == Card_Type.energy)) {
+                    removeFromArray(this.handCollection, energy);
+                    this.matCollection.push(energy);
+                    setTimeout(function () {
+                        pokemon.addEnergy(energy);
+                        logger.logBattle("(AI) Apply Energy to Pokemon.");
+                        removeFromArray(ai.matCollection, energy);
+                        ai.discardCollection.push(energy);
 
-                        } else if (element.length == 5) {
-                            abilityIndex = +element[4];
-                        }
-                        if (abilityIndex) {
-                            if (this.currentPokemon.sufficientEnergy(abilityIndex)) {
-                                applyAbility(this.currentPokemon.id, true, abilityIndex);
-                            } else {
-                                logger.logBattle("(AI) Try to use " + element[0] + " failed: insufficient energy.");
+                        // attack
+                        if (user.currentPokemon) {
+                            for (let element of ai.currentPokemon.attacks) {
+                                let abilityIndex = 0;
+                                if (element.length == 3) {
+                                    abilityIndex = +element[2];
+
+                                } else if (element.length == 5) {
+                                    abilityIndex = +element[4];
+                                }
+                                if (abilityIndex) {
+                                    if (this.currentPokemon.sufficientEnergy(abilityIndex)) {
+                                        applyAbility(ai.currentPokemon.id, true, abilityIndex);
+                                    } else {
+                                        logger.logBattle("(AI) Try to use " + element[0] + " failed: insufficient energy.");
+                                    }
+                                    break;
+                                }
                             }
-                            break;
                         }
-                    }
+
+                    }, 500);
                 }
+
+
                 // do more: trainer
             } else {
                 // do nothing
