@@ -351,7 +351,7 @@ function useAbility(sourceCard, abilityIndex) {
 			break;
 		case 36:
 			//Ear Influence:redamage:source:choice:opponent:destination:opponent:count(target:last:source:damage)
-			red
+			redamage(opponent,);
 			break;
 		case 37:
 			//Psychic:dam:target:opponent-active:60,dam:target:opponent-active:count(target:opponent-active:energy)*10
@@ -375,6 +375,7 @@ function useAbility(sourceCard, abilityIndex) {
 			break;
 		case 41:
 			//Act Tough:dam:target:opponent-active:10,cond:count(target:your-active:energy:psychic)>0:dam:target:opponent-active:20
+			//EnergyType TODO
 			if (damCard(opponent, 10)) {
 				if (you.currentPokemon.property == "psychic" && you.currentPokemon.currentEnergy > 0) {
 					damCard(opponent, 20);
@@ -395,9 +396,9 @@ function useAbility(sourceCard, abilityIndex) {
 			break;
 		case 44:
 			//Double Stab:cond:flip:dam:target:opponent-active:10,cond:flip:dam:target:opponent-active:10
-			if (damCardFlip(opponent, 10)) {
-				damCardFlip(opponent, 10);
-			}
+			damCardFlip(opponent, 10);
+			damCardFlip(opponent, 10);
+			
 			break;
 		case 45:
 			//Doduo Delivery:draw:2
@@ -754,6 +755,7 @@ function deenergizeCard(player, amount) {
 		pokemon.currentEnergy = 0;
 		pokemon.currentColorLessEnergy = 0;
 		logger.logBattle(pokemon.cardName + "'s energy decreased by " + (pokemon.currentEnergy + pokemon.currentColorLessEnergy));
+		return true;
 	} else {
 		if (amount <= pokemon.currentEnergy) {
 			pokemon.currentEnergy -= amount;
@@ -762,6 +764,7 @@ function deenergizeCard(player, amount) {
 			pokemon.currentEnergy = 0;
 		}
 		logger.logBattle(pokemon.cardName + "'s energy decreased by " + amount);
+		return true;
 	}
 }
 
@@ -814,14 +817,21 @@ function chooseFromDeckAndShuffle(player, amount, startindex, endindex) {
 		while (amount != 0) {
 			let choosedCard = chooseOneDeckCardinArrangeOf(player, startindex, endindex)
 			if (choosedCard) {
-				player.handCollection.push(chooseCard);
+				player.handCollection.push(choosedCard);
 				removeFromArray(player.deckCollection, choosedCard);
 			}
 			amount--;
 		}
 		shuffle(player.deckCollection);
-		logger.logBattle("Choose from Deck and shuffle.");
-		return ture;
+		let num = amount +1;
+		let str ="";
+		if(player.isAi){
+			str = "Choose " + num + "card from AI's Deck and shuffle";
+		}else{
+			str = "Choose " + num + "card from Player's Deck and shuffle";
+		}
+		logger.logBattle(str);
+		return true;
 	} else {
 		logger.logWarning("Do not have enought cards in Deck");
 		return false;
@@ -859,24 +869,30 @@ function searchfromDeck(player, amount) {
 			}
 		}
 	}
-	logger.logBattle("Shuffle deck, then pick up " + (should - amount) + " card from the deck.");
+	logger.logBattle("Ramdom pick up " + (should - amount) + " card from the deck.");
 	shuffle(player.deckCollection);
 }
 
 function searchItemFromDiscard(player, amount) {
+
 	for (let item of player.discardCollection) {
 		if (item.cardType == Card_Type.trainer) {
 			if (item.trainerType == Trainer_Type.item) {
 				player.handCollection.push(item);
-			}
-			removeFromArray(player.discardCollection, item);
-			amount--;
+				logger.logBattle("Move item cards from discard.");
+				removeFromArray(player.discardCollection, item);
+				amount--;
+			} 
+			
 		}
 		if (amount == 0) {
 			break;
 		}
 	}
-	logger.logBattle("Move item cards from discard.");
+	if(amount != 0){
+		logger.logWarning("No item card in discard");
+	}
+
 }
 
 function searchDeckFlip(player, amount) {
@@ -896,7 +912,7 @@ function searchDeckFlip(player, amount) {
 	} else {
 		logger.logBattle("So: cancel search deck.");
 		return true;
-	}	
+	}
 }
 
 function shuffleAllHandcard(player) {
@@ -930,7 +946,7 @@ function searchEnvolveFromDeck(player) {
 		return false;
 	}
 }
-
+//TODO, CHOOSE 
 function redamage(player, amount) {
 	let source = chooseCard(player);
 	let target = chooseCard(player);
