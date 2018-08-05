@@ -34,7 +34,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Home
+                    <a class="nav-link" href="#" onclick="goHome(); return false;">Home
                         <span class="sr-only">(current)</span>
                     </a>
                 </li>
@@ -157,10 +157,21 @@
     </div>
 
     <div class="container" id="hideDiv">
-        <h2>Pokemon Goback</h2>
-        <div class="panel panel-default">
-            <div class="panel-body">Click "Start a New Game" to play.</div>
-            <div class="panel-body">Place your pokemon to your opponent's <font color="red">mat</font> to battle.</div>
+        <div class="jumbotron">
+            <h1 class="display-4">Pokemon Goback!</h1>
+            <h2 class="display-5">How to Play:</h2>
+            <hr class="my-4">
+            <ol class="list-group text-left">
+                <li class="list-group-item">Click "Start a New Game" from the menu or the button below to play.</li>
+                <li class="list-group-item">Place your Pokemon to your opponent's <font color="red">mat</font> to battle.</li>
+                <li class="list-group-item">Place your Item to your opponent's <font color="red">mat</font> to use.</li>
+                <li class="list-group-item">Double click a card to show details.</li>
+                <li class="list-group-item">Get more information from the panel on the right side of the page.</li>
+            </ol>
+            <p></p>
+            <p class="lead">
+                    <a class="btn btn-primary btn-lg" href="#" onclick="startNewGame(); return false;" role="button">Start</a>
+            </p>
         </div>
     </div>
 

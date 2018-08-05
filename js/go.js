@@ -4,6 +4,11 @@ $(function () {
 	initCardCollection();
 });
 
+function goHome(){
+	$("#gobackDiv").hide();
+	$("#hideDiv").show();
+}
+
 function startNewGame() {
 	logger = new GameConsole();
 	user = new Player(null, false);
