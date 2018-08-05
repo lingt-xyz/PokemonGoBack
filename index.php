@@ -1,3 +1,10 @@
+<?php
+if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
+	
+}else{
+	header('Location: signin.php');
+}
+?>
 <html lang="en">
   <head>
       <?php
