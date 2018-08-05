@@ -161,8 +161,8 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
             <hr class="my-4">
             <ol class="list-group text-left">
                 <li class="list-group-item">Click "Start a New Game" from the menu or the button below to play.</li>
-                <li class="list-group-item">Place your Pokemon to your opponent's <font color="red">mat</font> to battle.</li>
-                <li class="list-group-item">Place your Item to your opponent's <font color="red">mat</font> to use.</li>
+                <li class="list-group-item">Place your Pokemon on your opponent's <font color="red">mat</font> to battle.</li>
+                <li class="list-group-item">Place your Item on your opponent's <font color="red">mat</font> to use.</li>
                 <li class="list-group-item">Double click a card to show details.</li>
                 <li class="list-group-item">Get more information from the panel on the right side of the page.</li>
             </ol>
