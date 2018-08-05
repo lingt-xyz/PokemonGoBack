@@ -298,7 +298,8 @@ function initAbility() {
                     let condAbility = conds[2];
                     s = condAbility;
                 }
-                let subAbility = getSubAbility(s);
+                //let subAbility = getSubAbility(s);
+                let subAbility = new Object();
                 if (condName != "") {
                     subAbility.condition = condName;
                     condName = "";
