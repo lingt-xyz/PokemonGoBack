@@ -956,7 +956,7 @@ function searchEnvolveFromDeck(player) {
 				}
 			}
 		}
-		logger.logWarning("No stageOne pokemon of active pokemon in deck.");
+		logger.logWarning("No next stage pokemon found in the deck.");
 	} else {
 		logger.logWarning("No active pokemon can be envolved.");
 		return false;
