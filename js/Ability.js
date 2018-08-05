@@ -520,9 +520,8 @@ function useAbility(sourceCard, abilityIndex) {
 			break;
 		case 69:
 			//Shauna:deck:target:your:destination:deck:count(your-hand),shuffle:target:your,draw:5
-			if (shuffleAllHandcard(you)) {
-				drawCard(you, 5);
-			}
+			shuffleAllHandcard(you);
+			drawCard(you, 5);
 			break;
 		case 70:
 			//Pokémon Fan Club:search:target:your:source:deck:filter:pokemon:cat:basic:2,shuffle:target:your
@@ -938,7 +937,7 @@ function shuffleAllHandcard(player) {
 	}
 	player.handCollection = [];
 	shuffle(player.deckCollection);
-	logger.logWarning("Shuffle all hand cards.");
+	logger.logBattle("Shuffle all hand cards.");
 }
 
 function searchEnvolveFromDeck(player) {
