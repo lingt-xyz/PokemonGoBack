@@ -108,14 +108,18 @@ function loadDefaultImg(id) {
 }
 
 function showDiscard() {
-	if (user.discardCollection.length) {
-		let info = "Show discard:";
-		for (let card of user.discardCollection) {
-			info += "<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + card.cardType + ": " + card.cardName;
+	if(user){
+		if (user.discardCollection.length) {
+			let info = "Show discard:";
+			for (let card of user.discardCollection) {
+				info += "<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + card.cardType + ": " + card.cardName;
+			}
+			logger.logGeneral(info);
+		} else {
+			logger.logGeneral("Nothing to show.");
 		}
-		logger.logGeneral(info);
-	} else {
-		logger.logGeneral("Nothing to show.");
+	}else{
+		logger.logWarning("Start a game to show discard.");
 	}
 }
 
