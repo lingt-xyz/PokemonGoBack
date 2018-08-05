@@ -1,11 +1,9 @@
 <html lang="en">
   <head>
-      <head>
-          <?php
-          $page_header = 'Update Deck';
-          require_once("header.php");
-          ?>
-      </head>
+	  <?php
+	  $page_header = 'Update Deck';
+	  require_once("header.php");
+	  ?>
   </head>
   <body class="text-center">
     <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
