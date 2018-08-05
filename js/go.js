@@ -118,8 +118,6 @@ function showDiscard() {
 		} else {
 			logger.logGeneral("Nothing to show.");
 		}
-	}else{
-		logger.logWarning("Start a game to show discard.");
 	}
 }
 
