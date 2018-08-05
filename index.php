@@ -159,6 +159,7 @@
         <h2>Pokemon Goback</h2>
         <div class="panel panel-default">
             <div class="panel-body">Click "Start a New Game" to play.</div>
+            <div class="panel-body">Place your pokemon to your opponent's <font color="red">mat</font> to battle.</div>
         </div>
     </div>
 

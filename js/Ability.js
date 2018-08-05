@@ -750,6 +750,12 @@ function applyStatAsleep(player) {
 }
 
 function deenergizeCard(player, amount) {
+	let m_player = "";
+	if (player.isAi) {
+		m_player = "Ai";
+	} else {
+		m_player = "Player";
+	}
 	let pokemon = player.currentPokemon;
 	if (!pokemon) {
 		logger.logWarning("No avaliable target.");
@@ -758,7 +764,7 @@ function deenergizeCard(player, amount) {
 	if (amount >= (pokemon.currentEnergy + pokemon.currentColorLessEnergy)) {
 		pokemon.currentEnergy = 0;
 		pokemon.currentColorLessEnergy = 0;
-		logger.logBattle(pokemon.cardName + "'s energy decreased by " + (pokemon.currentEnergy + pokemon.currentColorLessEnergy));
+		logger.logBattle(m_player + "'s " + pokemon.cardName + "'s energy decreased by " + (pokemon.currentEnergy + pokemon.currentColorLessEnergy));
 		return true;
 	} else {
 		if (amount <= pokemon.currentEnergy) {
@@ -767,7 +773,7 @@ function deenergizeCard(player, amount) {
 			pokemon.currentColorLessEnergy = (pokemon.currentEnergy + pokemon.currentColorLessEnergy - amount);
 			pokemon.currentEnergy = 0;
 		}
-		logger.logBattle(pokemon.cardName + "'s energy decreased by " + amount);
+		logger.logBattle(m_player + "'s " + pokemon.cardName + "'s energy decreased by " + amount);
 		return true;
 	}
 }
@@ -853,7 +859,14 @@ function searchEnergyCardFromDeck(player, amount) {
 			break;
 		}
 	}
-	logger.logBattle("Move energy cards and shuffle.");
+	let str = "";
+	if (player.isAi) {
+		str = "Ai moves";
+	} else {
+		str = "Player move";
+	}
+	str += (num + " energy cards from deck and shuffle.");
+	logger.logBattle(str);
 	shuffle(player.deckCollection);
 }
 
@@ -974,9 +987,9 @@ function redamage(player) {
 		logger.logWarning("Invalide input.");
 		return false;
 	} else {
-		if(amount <= source.damageAmount && amount >=0){
+		if (amount <= source.damageAmount && amount >= 0) {
 
-		}else{
+		} else {
 			logger.logWarning("Invalide input.");
 			return false;
 		}
