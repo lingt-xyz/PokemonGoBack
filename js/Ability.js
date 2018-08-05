@@ -612,7 +612,7 @@ function damCardChoose(player, damHp) {
 	}
 	let before = pokemon.currentHp;
 
-	if (before < damHp) {
+	if (before <= damHp) {
 		logger.logBattle(pokemon.cardName + "'s HP reduced by " + damHp);
 		pokemon.currentHp -= damHp;
 		if (pokemon.currentHp <= 0) {
