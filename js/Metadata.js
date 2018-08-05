@@ -314,7 +314,6 @@ function initAbility() {
 
 function getSubAbility(s) {
     let items = s.match(/^([a-zA-ZÀ-ÿ-' ]+):(.*)$/);
-    return new Object();
     switch (items[1]) {
         case Ability_Type.dam:
             // dam:target:opponent:10
