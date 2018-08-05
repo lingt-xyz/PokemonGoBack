@@ -7,10 +7,6 @@ if(!isset($_SESSION)){
 }
 
 if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
-	
-}else{
-	header('Location: signin.php');
-}
 ?>
 <html lang="en">
   <head>
@@ -71,7 +67,7 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
         </div>
     </nav>
 
-    <div class="container-fluid" id="gobackDiv">
+    <div class="container-fluid" id="gobackDiv" style="display: none;">
         <div class="row">
             <!-- playing area -->
             <div class="col-7 offset-md-1 bg-warning" style="height: 810px;">
@@ -172,3 +168,8 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
 
   </body>
 </html>
+<?php
+}else{
+	header('Location: signin.php');
+}
+?>
