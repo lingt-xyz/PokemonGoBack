@@ -169,6 +169,7 @@ class Player {
                     } else {
                         logger.logGeneral("No more pokemon, you lose the Game ");
                     }
+                    game.isEnd = true;
                     return false;
                 }
             }
