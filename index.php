@@ -2,7 +2,7 @@
   <head>
       <?php
       $page_header = 'PokemonGoBack';
-      require_once ("header.php");
+      require_once("header.php");
       ?>
       <script src="js/go.js"></script>
   </head>
