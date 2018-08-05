@@ -209,7 +209,7 @@ function useAbility(sourceCard, abilityIndex) {
 			break;
 		case 7:
 			//Circle Circuit:dam:target:opponent-active:20*count(target:your-bench)
-			damCard(opponent, 20 * opponent.benchCollection.length);
+			damCard(opponent, 20 * you.benchCollection.length);
 			break;
 		case 8:
 			//Thunderbolt:dam:target:opponent-active:100,deenergize:target:your-active:count(target:your-active:energy)
