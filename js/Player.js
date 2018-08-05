@@ -242,9 +242,6 @@ class Player {
                 if (item.isPoisoned) {
                     item.currentHp--;
                 }
-                if (item.isPoisoned) {
-                    item.currentHp--;
-                }
                 if (item.currentHp == 0) {
                     this.matCollection.splice(i, 1);
                     this.discardCollection.push(item);
