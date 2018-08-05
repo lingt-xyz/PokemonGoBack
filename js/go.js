@@ -155,7 +155,7 @@ function chooseCard(player) {
 	}
 	for (let item of player.benchCollection) {
 		if (item.cardType == Card_Type.pokemon) {
-			promptInfo += (item.id + ":" + item.cardName);
+			promptInfo += (item.id + ":" + item.cardName + ";");
 		}
 	}
 
