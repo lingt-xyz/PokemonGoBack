@@ -50,6 +50,7 @@
             <a class="p-2 text-dark" href="collection.php?action=update">Update Collection</a>
             <a class="p-2 text-dark" href="deck.php?action=update">Update Deck</a>
             <?php
+            require_once( 'util.php');
             require_once( 'db.php');
 
             if(!isset($_SESSION)){
