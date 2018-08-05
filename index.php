@@ -1,4 +1,11 @@
 <?php
+require_once( 'util.php');
+require_once( 'db.php');
+
+if(!isset($_SESSION)){
+    session_start();
+}
+
 if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
 	
 }else{
@@ -57,21 +64,9 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
             <a class="p-2 text-dark" href="collection.php?action=update">Update Collection</a>
             <a class="p-2 text-dark" href="deck.php?action=update">Update Deck</a>
             <?php
-            require_once( 'util.php');
-            require_once( 'db.php');
-
-            if(!isset($_SESSION)){
-                session_start();
-            }
-
             // step 1: sign in
-            if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
-                echo '<a class="p-2 text-dark" href="#">' . $_SESSION['user_name'] . ' </a>';
-                echo '<a class="btn btn-outline-primary" href="signout.php">Log out</a>';
-            }else{
-                header('Location: signin.php');
-            }
-
+            echo '<a class="p-2 text-dark" href="#">' . $_SESSION['user_name'] . ' </a>';
+			echo '<a class="btn btn-outline-primary" href="signout.php">Log out</a>';
             ?>
         </div>
     </nav>
