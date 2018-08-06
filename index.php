@@ -78,7 +78,7 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
                             <span>Hand: {{ player.handCollection.length }} </span>
                             <img src="image/DeckCard.png" height="90" width="63">
                         </div>
-                        <div class="col-8 bg-light" id="divHandCollectionAi" ondrop="drop_handler(event)" ondragover="dragover_handler(event)">
+                        <div class="col-8 bg-light" id="divHandCollectionAi" ondrop="drop_handler(event)" ondragover="dragover_handler(event)" style="overflow-x: auto; white-space:nowrap">
                             <span v-for="card in player.handCollection" v-html="card.toHtml()"></span>
                         </div>
                         <div class="col-2 bg-light"></div>
@@ -139,7 +139,7 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
                             <span>Hand: {{ player.handCollection.length }} </span>
                             <img src="image/DeckCard.png" height="90" width="63">
                         </div>
-                        <div class="col-8 bg-light" id="divHandCollection" ondrop="drop_handler(event)" ondragover="dragover_handler(event)">
+                        <div class="col-8 bg-light" id="divHandCollection" ondrop="drop_handler(event)" ondragover="dragover_handler(event)" style="overflow-x: auto; white-space:nowrap">
                             <span v-for="card in player.handCollection" v-html="card.toHtml()"></span>
                         </div>
                         <div class="col-2 bg-light"></div>
