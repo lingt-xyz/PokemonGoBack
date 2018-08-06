@@ -557,7 +557,7 @@ function useAbility(sourceCard, abilityIndex) {
 function deckRandomCard(player) {
 	let index = getRandom(player.handCollection.length - 1);
 	let card = player.handCollection[index];
-	logger.logBattle("Move one random card " + card.cardName + "to deck.");
+	logger.logBattle("Move one random card " + card.cardName + " to deck.");
 	removeFromArrayByIndex(player.handCollection, index);
 	player.deckCollection.push(card);
 }
@@ -832,9 +832,9 @@ function chooseFromDeckAndShuffle(player, amount, startindex, endindex) {
 		let num = amount + 1;
 		let str = "";
 		if (player.isAi) {
-			str = "Choose " + num + "card from AI's Deck and shuffle";
+			str = "Remove " + num + " card from AI's Deck and shuffle";
 		} else {
-			str = "Choose " + num + "card from Player's Deck and shuffle";
+			str = "Remove " + num + " card from Player's Deck and shuffle";
 		}
 		logger.logBattle(str);
 		return true;
@@ -857,9 +857,9 @@ function searchEnergyCardFromDeck(player, amount) {
 	}
 	let str = "";
 	if (player.isAi) {
-		str = "Ai moves";
+		str = "Ai moves ";
 	} else {
-		str = "Player move";
+		str = "Player moves ";
 	}
 	str += (num + " energy cards from deck and shuffle.");
 	logger.logBattle(str);
@@ -977,7 +977,7 @@ function redamage(player) {
 		return false;
 	}
 
-	let amount = prompt("Choose the damage you would like to transfer (0 - +" + source.damageAmount + "): ");
+	let amount = prompt("Choose the damage you would like to transfer (0 - " + source.damageAmount + "): ");
 
 	if (isNaN(amount)) {
 		logger.logWarning("Invalide input.");
