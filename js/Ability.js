@@ -555,14 +555,11 @@ function useAbility(sourceCard, abilityIndex) {
 }
 
 function deckRandomCard(player) {
-	let arrayFrom = player.handCollection;
-	let arrayTo = player.deckCollection;
-
-	let index = getRandom(arrayFrom.length);
-	let card = arrayFrom[index];
+	let index = getRandom(player.handCollection.length - 1);
+	let card = player.handCollection[index];
 	logger.logBattle("Move one random card " + card.cardName + "to deck.");
-	removeFromArrayByIndex(arrayFrom, index);
-	arrayTo.push(card);
+	removeFromArrayByIndex(player.handCollection, index);
+	player.deckCollection.push(card);
 }
 
 function damCard(player, damHp) {
