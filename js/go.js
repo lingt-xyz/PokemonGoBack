@@ -194,7 +194,7 @@ function chooseBenchCard(player) {
 	
 	for (let item of player.benchCollection) {
 		if (item.cardType == Card_Type.pokemon) {
-			promptInfo += (item.id + ":" + item.cardName);
+			promptInfo += (item.id + ":" + item.cardName + ";");
 		}
 	}
 
@@ -218,7 +218,7 @@ function chooseHandCard(player) {
 	let promptInfo = "";
 
 	for (let item of player.handCollection) {
-		promptInfo += (item.id + ":" + item.cardName);
+		promptInfo += (item.id + ":" + item.cardName + ";");
 	}
 
 	let res = prompt("Choose your target: " + promptInfo + "");
@@ -240,7 +240,7 @@ function chooseOneDeckCardinArrangeOf(player, arrange_start, arrange_end) {
 	let promptInfo = "";
 
 	for (let item of cardsWaitForChoose) {
-		promptInfo += (item.id + ":" + item.cardName);
+		promptInfo += (item.id + ":" + item.cardName + ";");
 	}
 
 	let res = prompt("Choose your target: " + promptInfo + "");
