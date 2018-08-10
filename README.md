@@ -87,11 +87,15 @@ define('DB_HOST', 'localhost');
 ### Assumptions
 
 ```
-$Web_Root: Web Document Root (e.g. /var/www/html)
+$Web_Root: Web Document Root (i.g. /var/www/html)
 $MySQL_U: MySQL username
 $MySQL_P: MySQL password
 ```
-### Git workflow
+
+### Deploy PokemonGoBack
+* unzip source code to ```$Web_Root```
+
+## Git workflow
 
 create a new branch [branch_name] on https://github.com/panda2ici/PokemonGoBack
 
