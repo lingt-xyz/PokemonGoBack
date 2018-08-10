@@ -19,7 +19,7 @@ Connection: ssh username@host
 Apache2 WebRoot: /var/www/html
 ```
 
-## Installation
+## MySQL, PHP
 ```
 # su
 # apt install mysql-server
@@ -51,20 +51,41 @@ Move the PHP index file to the first position after the DirectoryIndex specifica
 # exit
 ```
 
-## PokemonGoBackInstallation
+## MySQL Table
+
+```mysql
+CREATE TABLE `USER` (
+  `USER_NAME` varchar(50) NOT NULL,
+  `USER_PWD` varchar(20) NOT NULL,
+  `REGISTER_DATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+)
+```
+
+## PokemonGoBack
 ### System Requirement
 
-Unix/Linux
+* Unix/Linux
 
 ### Prerequisites
 
-Apache2
+* Apache2
+* PHP7.0
+* MySQL
 
-PHP7.0
-
-MySQL
+### Database Configuration
+* Update db.php
+```
+define('DB_NAME', 'pokemongoback');
+/** MySQL database username */
+define('DB_USER', 'pokemongoback');
+/** MySQL database password */
+define('DB_PASSWORD', 'pokemongoback');
+/** MySQL hostname */
+define('DB_HOST', 'localhost');
+```
 
 ### Assumptions
+
 ```
 $Web_Root: Web Document Root (e.g. /var/www/html)
 $MySQL_U: MySQL username
